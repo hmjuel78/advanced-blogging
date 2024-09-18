@@ -1,8 +1,69 @@
+import { useDispatch, useSelector } from "react-redux"
+import { authorFetch, authorSelector } from "../../features/author/authorSlice"
+import { useEffect } from "react"
+import { MdOutlineDeleteOutline, MdOutlineModeEdit } from "react-icons/md"
+import { categorySelector } from "../../features/category/categorySlice"
 
 const AuthorList = () => {
+    const { authors } = useSelector(authorSelector)
+    const { categories } = useSelector(categorySelector)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(authorFetch())
+    }, [dispatch])
+
+
+
     return (
         <div>
-            <h2 className='text-xl'>Author List</h2>
+            <h2 className='text-xl mb-4'>Author List</h2>
+
+            <div className="overflow-x-auto">
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Category Name</th>
+                            <th>Author Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {categories &&
+                            categories?.map((category, idx) => (
+                                <tr key={category.id}>
+                                    <th>{idx + 1}</th>
+                                    <td>{category.name}</td>
+                                    <td>
+                                        <div className="flex gap-3">
+                                            {
+                                                authors?.map(author => {
+                                                    if (author.category_id === category.id) {
+                                                        return <span key={author.id}>{author.name}</span>
+                                                    }
+                                                })
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className="flex gap-4">
+                                            <button className="btn btn-circle btn-sm hover:btn-info hover:text-white">
+                                                <MdOutlineModeEdit />
+                                            </button>
+                                            <button className="btn btn-circle btn-sm hover:btn-error hover:text-white">
+                                                <MdOutlineDeleteOutline />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     )
 }
