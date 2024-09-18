@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getCategory } from './categoryFetchAPI'
+
+const BASE_URL = 'http://localhost:3000/catagories'
 
 const initialState = {
-    categoryName: '',
     isLoading: false,
     isError: false,
     error: false,
@@ -11,19 +11,27 @@ const initialState = {
 
 export const categoryFetch = createAsyncThunk('category/categoryFetch',
     async () => {
-        const categories = getCategory()
-        return categories
+        const categories = await fetch(BASE_URL)
+        return categories.json()
+    }
+)
+
+export const categoryPost = createAsyncThunk('category/categoryPost',
+    async (content) => {
+        const newCategory = await fetch(BASE_URL, {
+            method: 'POST',
+            body: JSON.stringify(content),
+            headers: {
+                'Content-type': 'application/json',
+            }
+        })
+        return newCategory.json()
     }
 )
 
 export const categorySlice = createSlice({
     name: 'category',
     initialState,
-    reducers: {
-        CHAGE_CAT_NAME: (state, action) => {
-            state.categoryName = action.payload
-        },
-    },
     extraReducers: (builder) => {
         builder
             .addCase(categoryFetch.pending, (state) => {
@@ -39,6 +47,15 @@ export const categorySlice = createSlice({
                 state.isError = true
                 state.error = action.error
             })
+            .addCase(categoryPost.fulfilled, (state, action) => {
+                state.categories.push(action.payload)
+                // console.log(action.payload, 'action-payload')
+            })
+            .addCase(categoryPost.rejected, (state, action) => {
+                state.error = action.error
+                console.log(action.error)
+            })
+
     }
 })
 
