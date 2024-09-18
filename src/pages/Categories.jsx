@@ -1,9 +1,16 @@
+import AuthorForm from "../components/author/AuthorForm"
+import AuthorList from "../components/author/AuthorList"
+import CategoryForm from "../components/category/CategoryForm"
+import CategoryList from "../components/category/CategoryList"
 
 
 const Categories = () => {
     return (
-        <div>
-            <h2 className="text-xl">Categories page</h2>
+        <div className="grid md:grid-cols-2 gap-10 max-w-7xl mx-auto mt-10 px-4">
+            <CategoryForm />
+            <CategoryList />
+            <AuthorForm />
+            <AuthorList />
         </div>
     )
 }
