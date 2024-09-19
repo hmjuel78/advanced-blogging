@@ -25,7 +25,6 @@ const AuthorForm = () => {
                             <option key={category.id} value={category.id}>{category.name}</option>
                         ))
                     }
-
                 </select>
                 <input onChange={changeAuthName} value={authorName} type="text" placeholder="Author Name" className="input input-bordered w-full" />
                 <button className="btn btn-outline">Save</button>

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-const BASE_URL = 'http://localhost:3000/catagories'
+const BASE_URL = 'http://localhost:3000/authors'
 
 const initialState = {
     authors: [],
@@ -10,11 +10,11 @@ const initialState = {
 }
 export const authorFetch = createAsyncThunk('author/authorFetch',
     async () => {
-        const authors = fetch(BASE_URL)
+        const authors = await fetch(BASE_URL)
         return authors.json()
     }
 )
-export const authorPost = createAsyncThunk('author/authorPost',
+export const authorCreate = createAsyncThunk('author/authorPost',
     async (content) => {
         const newAuthor = await fetch(BASE_URL, {
             method: 'POST',
@@ -29,10 +29,10 @@ export const authorPost = createAsyncThunk('author/authorPost',
 
 export const authorDelete = createAsyncThunk('author/authorDelete',
     async (id) => {
-        const categoriesDetele = await fetch(`${BASE_URL}/${id}`, {
+        await fetch(`${BASE_URL}/${id}`, {
             method: "DELETE"
         })
-        return categoriesDetele.json()
+        return id
     }
 )
 

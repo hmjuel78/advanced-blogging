@@ -29,35 +29,27 @@ const AuthorList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {categories && categories.length > 0 ?
-                            categories?.map((category, idx) => (
-                                <tr key={category.id}>
-                                    <th>{idx + 1}</th>
-                                    <td>{category.name}</td>
-                                    <td>
-                                        <div className="flex gap-3">
-                                            {
-                                                authors?.map(author => {
-                                                    if (author.category_id === category.id) {
-                                                        return <span key={author.id}>{author.name}</span>
-                                                    }
-                                                })
-                                            }
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div className="flex gap-4 justify-end">
-                                            <button className="btn btn-circle btn-sm hover:btn-info hover:text-white">
-                                                <MdOutlineModeEdit />
-                                            </button>
-                                            <button className="btn btn-circle btn-sm hover:btn-error hover:text-white">
-                                                <MdOutlineDeleteOutline />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
-                            : <tr><td><h2 className="text-xl">Category not found!!!</h2></td></tr>
+                        {
+                            authors?.map((author, idx) => {
+                                const category = categories.find(cat => cat.id === author.category_id);
+                                if (category) {
+                                    return <tr key={author.id}>
+                                        <td>{idx + 1}</td>
+                                        <td>{category.name}</td>
+                                        <td>{author.name}</td>
+                                        <td>
+                                            <div className="flex gap-4 justify-end">
+                                                <button className="btn btn-circle btn-sm hover:btn-info hover:text-white">
+                                                    <MdOutlineModeEdit />
+                                                </button>
+                                                <button className="btn btn-circle btn-sm hover:btn-error hover:text-white">
+                                                    <MdOutlineDeleteOutline />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            })
                         }
 
                     </tbody>

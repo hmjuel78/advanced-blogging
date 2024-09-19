@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { categoryDelete, categoryFetch, categorySelector } from "../../features/category/categorySlice"
 import { MdOutlineDeleteOutline, MdOutlineModeEdit } from "react-icons/md"
+import toast from "react-hot-toast"
 
 const CategoryList = (props) => {
     const { handleCatEdit } = props
@@ -14,6 +15,7 @@ const CategoryList = (props) => {
 
     const handleCatDelete = (catId) => {
         dispatch(categoryDelete(catId))
+        toast.success('Category delete successfully!!')
     }
 
     return (

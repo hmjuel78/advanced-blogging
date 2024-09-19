@@ -51,6 +51,7 @@ const Root = () => {
             </div>
             <div id="detail">
                 <Outlet />
+
             </div>
         </>
     )
