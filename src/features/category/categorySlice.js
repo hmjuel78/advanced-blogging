@@ -16,7 +16,7 @@ export const categoryFetch = createAsyncThunk('category/categoryFetch',
     }
 )
 
-export const categoryPost = createAsyncThunk('category/categoryPost',
+export const categoryCreate = createAsyncThunk('category/categoryCreate',
     async (content) => {
         const newCategory = await fetch(BASE_URL, {
             method: 'POST',
@@ -31,7 +31,7 @@ export const categoryPost = createAsyncThunk('category/categoryPost',
 
 export const categoryDelete = createAsyncThunk('category/categoryDelete',
     async (id) => {
-        const categoriesDetele = await fetch(`${BASE_URL}/${id}`, {
+        await fetch(`${BASE_URL}/${id}`, {
             method: "DELETE"
         })
         return id
@@ -70,10 +70,15 @@ export const categorySlice = createSlice({
                 state.isError = true
                 state.error = action.error
             })
-            .addCase(categoryPost.fulfilled, (state, action) => {
+            .addCase(categoryCreate.pending, (state) => {
+                state.isError = false
+                state.isLoading = true
+            })
+            .addCase(categoryCreate.fulfilled, (state, action) => {
+                state.isLoading = false
                 state.categories.push(action.payload)
             })
-            .addCase(categoryPost.rejected, (state, action) => {
+            .addCase(categoryCreate.rejected, (state, action) => {
                 state.error = action.error
             })
             .addCase(categoryDelete.pending, (state) => {

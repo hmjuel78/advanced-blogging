@@ -31,45 +31,35 @@ const AuthorList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {error ? (<tr><td className="text-error">{error}</td></tr>)
-                            : isLoading ?
-                                <tr>
+                        {categories && categories.length > 0 ?
+                            categories?.map((category, idx) => (
+                                <tr key={category.id}>
+                                    <th>{idx + 1}</th>
+                                    <td>{category.name}</td>
                                     <td>
-                                        <div className="flex w-full flex-col gap-4">
-                                            <div className="skeleton h-4 w-full"></div>
-                                            <div className="skeleton h-4 w-full"></div>
+                                        <div className="flex gap-3">
+                                            {
+                                                authors?.map(author => {
+                                                    if (author.category_id === category.id) {
+                                                        return <span key={author.id}>{author.name}</span>
+                                                    }
+                                                })
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className="flex gap-4 justify-end">
+                                            <button className="btn btn-circle btn-sm hover:btn-info hover:text-white">
+                                                <MdOutlineModeEdit />
+                                            </button>
+                                            <button className="btn btn-circle btn-sm hover:btn-error hover:text-white">
+                                                <MdOutlineDeleteOutline />
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
-                                : categories && categories.length > 0 ?
-                                    categories?.map((category, idx) => (
-                                        <tr key={category.id}>
-                                            <th>{idx + 1}</th>
-                                            <td>{category.name}</td>
-                                            <td>
-                                                <div className="flex gap-3">
-                                                    {
-                                                        authors?.map(author => {
-                                                            if (author.category_id === category.id) {
-                                                                return <span key={author.id}>{author.name}</span>
-                                                            }
-                                                        })
-                                                    }
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="flex gap-4 justify-end">
-                                                    <button className="btn btn-circle btn-sm hover:btn-info hover:text-white">
-                                                        <MdOutlineModeEdit />
-                                                    </button>
-                                                    <button className="btn btn-circle btn-sm hover:btn-error hover:text-white">
-                                                        <MdOutlineDeleteOutline />
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))
-                                    : <tr><td><h2 className="text-xl">Category not found</h2></td></tr>
+                            ))
+                            : <tr><td><h2 className="text-xl">Category not found!!!</h2></td></tr>
                         }
 
                     </tbody>

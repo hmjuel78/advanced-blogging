@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux"
-import { categoryPost, categoryUpdate } from "../../features/category/categorySlice"
+import { categoryCreate, categoryUpdate } from "../../features/category/categorySlice"
 
 const CategoryForm = (props) => {
     const { categoryName, setCategoryName, editableCat, setEditableCat } = props
@@ -16,7 +16,7 @@ const CategoryForm = (props) => {
         }
 
         editableCat === null
-            ? dispatch(categoryPost(newCategory))
+            ? dispatch(categoryCreate(newCategory))
             : dispatch(categoryUpdate({
                 id: editableCat.id,
                 name: categoryName

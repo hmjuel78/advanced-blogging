@@ -1,4 +1,5 @@
 import { Link, Outlet } from "react-router-dom"
+import Loading from "../pages/Loading"
 
 const Root = () => {
     return (
@@ -49,6 +50,7 @@ const Root = () => {
                 </div>
             </div>
             <div id="detail">
+                <Loading />
                 <Outlet />
             </div>
         </>
