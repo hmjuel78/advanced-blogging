@@ -6,15 +6,13 @@ import { categorySelector } from "../../features/category/categorySlice"
 
 const AuthorList = () => {
     const { authors } = useSelector(authorSelector)
-    const { categories, isLoading, error } = useSelector(categorySelector)
+    const { categories } = useSelector(categorySelector)
     const dispatch = useDispatch()
 
 
     useEffect(() => {
         dispatch(authorFetch())
     }, [dispatch])
-
-
 
     return (
         <div>

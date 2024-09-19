@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux"
 import { categoryCreate, categoryUpdate } from "../../features/category/categorySlice"
+import toast from "react-hot-toast"
 
 const CategoryForm = (props) => {
     const { categoryName, setCategoryName, editableCat, setEditableCat } = props
@@ -8,23 +9,30 @@ const CategoryForm = (props) => {
     const changeCatName = (e) => {
         setCategoryName(e.target.value)
     }
+
     const catNameOnSubmit = (e) => {
         e.preventDefault()
-
+        if (categoryName.trim() === '') {
+            return toast.error('Type Category name properly!!')
+        }
         const newCategory = {
             name: categoryName
         }
-
-        editableCat === null
-            ? dispatch(categoryCreate(newCategory))
-            : dispatch(categoryUpdate({
+        if (editableCat === null) {
+            dispatch(categoryCreate(newCategory))
+            toast.success('Category name upadate successfully!!')
+        } else {
+            dispatch(categoryUpdate({
                 id: editableCat.id,
                 name: categoryName
             }))
+            toast.success('Category create successfully!!')
+        }
 
         setCategoryName('')
         setEditableCat(null)
     }
+
 
     return (
         <div>
