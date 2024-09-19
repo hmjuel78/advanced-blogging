@@ -5,7 +5,7 @@ import { MdOutlineDeleteOutline, MdOutlineModeEdit } from "react-icons/md"
 import toast from "react-hot-toast"
 
 const CategoryList = (props) => {
-    const { handleCatEdit } = props
+    const { setEditableCat } = props
     const { categories } = useSelector(categorySelector)
     const dispatch = useDispatch()
 
@@ -17,6 +17,11 @@ const CategoryList = (props) => {
         dispatch(categoryDelete(catId))
         toast.success('Category delete successfully!!')
     }
+
+    const handleCatEdit = (cat) => {
+        setEditableCat(cat)
+    }
+
 
     return (
         <div>

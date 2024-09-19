@@ -36,6 +36,22 @@ export const authorDelete = createAsyncThunk('author/authorDelete',
     }
 )
 
+export const authorUpdate = createAsyncThunk('author/authorUpdate',
+    async (content) => {
+        const newAuthor = await fetch(`${BASE_URL}/${content.id}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                name: content.name,
+                category_id: content.category_id
+            }),
+            headers: {
+                'Content-type': 'application/json',
+            }
+        })
+        return newAuthor.json()
+    }
+)
+
 export const authorSlice = createSlice({
     name: 'author',
     initialState,
@@ -73,6 +89,16 @@ export const authorSlice = createSlice({
             .addCase(authorDelete.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.authors = state.authors.filter(author => author.id !== action.payload)
+            })
+            .addCase(authorUpdate.pending, (state) => {
+                state.isError = false
+                state.isLoading = true
+            })
+            .addCase(authorUpdate.fulfilled, (state, action) => {
+                state.isLoading = false
+                const index = state.authors.findIndex(author => author.id === action.payload.id)
+                state.authors[index].name = action.payload.name
+                state.authors[index].category_id = action.payload.category_id
             });
     }
 })

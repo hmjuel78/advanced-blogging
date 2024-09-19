@@ -3,8 +3,10 @@ import { authorDelete, authorFetch, authorSelector } from "../../features/author
 import { useEffect } from "react"
 import { MdOutlineDeleteOutline, MdOutlineModeEdit } from "react-icons/md"
 import { categorySelector } from "../../features/category/categorySlice"
+import toast from "react-hot-toast"
 
-const AuthorList = () => {
+const AuthorList = (props) => {
+    const { setEditableAuthor } = props
     const { authors } = useSelector(authorSelector)
     const { categories } = useSelector(categorySelector)
     const dispatch = useDispatch()
@@ -14,9 +16,12 @@ const AuthorList = () => {
         dispatch(authorFetch())
     }, [dispatch])
 
+    const authorEditHandle = (author) => {
+        setEditableAuthor(author)
+    }
     const authorDeleteHandle = (authorId) => {
-        console.log(authorId)
         dispatch(authorDelete(authorId))
+        toast.success('Author Successfully Delete !!!')
     }
 
     return (
@@ -36,7 +41,8 @@ const AuthorList = () => {
                     <tbody>
                         {
                             authors?.map((author, idx) => {
-                                const category = categories.find(cat => cat.id === author.category_id);
+                                const category = categories.find(cat => parseInt(cat.id) === parseInt(author.category_id))
+
                                 if (category) {
                                     return (
                                         <tr key={author.id}>
@@ -45,7 +51,7 @@ const AuthorList = () => {
                                             <td>{author.name}</td>
                                             <td>
                                                 <div className="flex gap-4 justify-end">
-                                                    <button className="btn btn-circle btn-sm hover:btn-info hover:text-white">
+                                                    <button onClick={() => authorEditHandle(author)} className="btn btn-circle btn-sm hover:btn-info hover:text-white">
                                                         <MdOutlineModeEdit />
                                                     </button>
                                                     <button

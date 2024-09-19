@@ -25,8 +25,12 @@
       "id": 6
     },
     {
-      "name": "Bangla 2",
+      "name": "Mathmatics",
       "id": 7
+    },
+    {
+      "name": "Technology",
+      "id": 8
     }
   ],
   "authors": [
@@ -56,14 +60,13 @@
       "category_id": 2
     },
     {
-      "name": "Abul",
-      "id": 6,
-      "category_id": "7"
+      "name": "Babul munshi",
+      "category_id": "6",
+      "id": 7
     },
     {
-      "name": "Babul",
-      "id": 7,
-      "category_id": "3"
+      "name": "Arafat islam",
+      "id": 8
     }
   ],
   "tags": [

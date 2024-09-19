@@ -1,10 +1,12 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { categorySelector } from "../../features/category/categorySlice"
-import { authorCreate } from "../../features/author/authorSlice"
+import { authorCreate, authorUpdate } from "../../features/author/authorSlice"
+import toast from "react-hot-toast"
 
 
-const AuthorForm = () => {
+const AuthorForm = (props) => {
+    const { editableAuthor, setEditableAuthor } = props
     const [authorName, setAuthorName] = useState('')
     const [selectCategory, setSelectCategory] = useState('')
     const { categories } = useSelector(categorySelector)
@@ -26,7 +28,18 @@ const AuthorForm = () => {
             name: authorName,
             category_id: selectCategory
         }
-        dispatch(authorCreate(newAuthor))
+        if (editableAuthor !== null) {
+            dispatch(authorUpdate({
+                id: editableAuthor.id,
+                name: authorName,
+                category_id: selectCategory
+            }))
+            toast.success('Author update successfully!!')
+        } else {
+            dispatch(authorCreate(newAuthor))
+            toast.success('Author Create successfully!!')
+        }
+        setEditableAuthor(null)
         resetField()
     }
 
@@ -34,6 +47,13 @@ const AuthorForm = () => {
         setAuthorName('')
         setSelectCategory('')
     }
+
+    useEffect(() => {
+        if (editableAuthor !== null) {
+            setAuthorName(editableAuthor.name)
+            setSelectCategory(editableAuthor.category_id)
+        }
+    }, [editableAuthor])
 
     return (
         <div>
@@ -60,7 +80,9 @@ const AuthorForm = () => {
                     placeholder="Author Name"
                     className="input input-bordered w-full"
                 />
-                <button className="btn btn-outline">Save</button>
+                <button className="btn btn-outline">
+                    {editableAuthor !== null ? 'Update' : 'Create'}
+                </button>
             </form>
         </div>
     )
