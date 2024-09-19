@@ -14,7 +14,7 @@ export const authorFetch = createAsyncThunk('author/authorFetch',
         return authors.json()
     }
 )
-export const authorCreate = createAsyncThunk('author/authorPost',
+export const authorCreate = createAsyncThunk('author/authorCreate',
     async (content) => {
         const newAuthor = await fetch(BASE_URL, {
             method: 'POST',
@@ -54,9 +54,28 @@ export const authorSlice = createSlice({
                 state.isError = true
                 state.error = action.error
             })
+            .addCase(authorCreate.pending, (state) => {
+                state.isError = false
+                state.isLoading = true
+            })
+            .addCase(authorCreate.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.authors.push(action.payload)
+            })
+            .addCase(authorCreate.rejected, (state, action) => {
+                state.isLoading = false
+                state.error = action.error
+            })
+            .addCase(authorDelete.pending, (state) => {
+                state.isError = false
+                state.isLoading = true
+            })
+            .addCase(authorDelete.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.authors = state.authors.filter(author => author.id !== action.payload)
+            });
     }
 })
 export const authorSelector = (state => state.authorReducer)
-export const { CHAGE_CAT_NAME } = authorSlice.actions
 
 export default authorSlice.reducer

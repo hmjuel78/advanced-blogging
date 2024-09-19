@@ -13,6 +13,7 @@ const Categories = () => {
         setEditableCat(cat)
         setCategoryName(cat.name)
     }
+
     return (
         <div className="grid md:grid-cols-2 gap-10 max-w-7xl mx-auto mt-10 px-4">
             <CategoryForm categoryName={categoryName} setCategoryName={setCategoryName} editableCat={editableCat} setEditableCat={setEditableCat} />

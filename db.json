@@ -17,12 +17,16 @@
       "id": 4
     },
     {
-      "name": "Cat Name",
+      "name": "Urdu",
       "id": 5
     },
     {
       "name": "hindi",
       "id": 6
+    },
+    {
+      "name": "Bangla 2",
+      "id": 7
     }
   ],
   "authors": [
@@ -45,6 +49,21 @@
       "name": "Jafor",
       "id": 4,
       "category_id": 2
+    },
+    {
+      "name": "Jafor 2",
+      "id": 5,
+      "category_id": 2
+    },
+    {
+      "name": "Abul",
+      "id": 6,
+      "category_id": "7"
+    },
+    {
+      "name": "Babul",
+      "id": 7,
+      "category_id": "3"
     }
   ],
   "tags": [

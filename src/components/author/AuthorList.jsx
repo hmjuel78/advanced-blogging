@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { authorFetch, authorSelector } from "../../features/author/authorSlice"
+import { authorDelete, authorFetch, authorSelector } from "../../features/author/authorSlice"
 import { useEffect } from "react"
 import { MdOutlineDeleteOutline, MdOutlineModeEdit } from "react-icons/md"
 import { categorySelector } from "../../features/category/categorySlice"
@@ -13,6 +13,11 @@ const AuthorList = () => {
     useEffect(() => {
         dispatch(authorFetch())
     }, [dispatch])
+
+    const authorDeleteHandle = (authorId) => {
+        console.log(authorId)
+        dispatch(authorDelete(authorId))
+    }
 
     return (
         <div>
@@ -33,24 +38,46 @@ const AuthorList = () => {
                             authors?.map((author, idx) => {
                                 const category = categories.find(cat => cat.id === author.category_id);
                                 if (category) {
-                                    return <tr key={author.id}>
-                                        <td>{idx + 1}</td>
-                                        <td>{category.name}</td>
-                                        <td>{author.name}</td>
-                                        <td>
-                                            <div className="flex gap-4 justify-end">
-                                                <button className="btn btn-circle btn-sm hover:btn-info hover:text-white">
-                                                    <MdOutlineModeEdit />
-                                                </button>
-                                                <button className="btn btn-circle btn-sm hover:btn-error hover:text-white">
-                                                    <MdOutlineDeleteOutline />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    return (
+                                        <tr key={author.id}>
+                                            <td>{idx + 1}</td>
+                                            <td>{category.name}</td>
+                                            <td>{author.name}</td>
+                                            <td>
+                                                <div className="flex gap-4 justify-end">
+                                                    <button className="btn btn-circle btn-sm hover:btn-info hover:text-white">
+                                                        <MdOutlineModeEdit />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => authorDeleteHandle(author.id)}
+                                                        className="btn btn-circle btn-sm hover:btn-error hover:text-white"
+                                                    >
+                                                        <MdOutlineDeleteOutline />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )
                                 }
                             })
                         }
+                        {/* {
+                            authors?.map(author => (
+                                <tr key={author.id}>
+                                    <td>{author.id}</td>
+                                    <td>{author.name}</td>
+                                    <td>
+                                        <button
+                                            onClick={() => authorDeleteHandle(author.id)}
+                                            className="btn btn-circle btn-sm hover:btn-error hover:text-white"
+                                        >
+                                            <MdOutlineDeleteOutline />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        } */}
+
 
                     </tbody>
                 </table>
