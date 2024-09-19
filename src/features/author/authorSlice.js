@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getAuthor } from './authorFetchAPI'
+
+const BASE_URL = 'http://localhost:3000/catagories'
 
 const initialState = {
-    authorName: '',
     authors: [],
     isLoading: false,
     isError: false,
@@ -10,19 +10,35 @@ const initialState = {
 }
 export const authorFetch = createAsyncThunk('author/authorFetch',
     async () => {
-        const authors = getAuthor()
-        return authors
+        const authors = fetch(BASE_URL)
+        return authors.json()
     }
 )
+export const authorPost = createAsyncThunk('author/authorPost',
+    async (content) => {
+        const newAuthor = await fetch(BASE_URL, {
+            method: 'POST',
+            body: JSON.stringify(content),
+            headers: {
+                'Content-type': 'application/json',
+            }
+        })
+        return newAuthor.json()
+    }
+)
+
+export const authorDelete = createAsyncThunk('author/authorDelete',
+    async (id) => {
+        const categoriesDetele = await fetch(`${BASE_URL}/${id}`, {
+            method: "DELETE"
+        })
+        return categoriesDetele.json()
+    }
+)
+
 export const authorSlice = createSlice({
     name: 'author',
     initialState,
-    reducers: {
-        CHAGE_CAT_NAME: (state, action) => {
-            state.authorName = action.payload
-        },
-
-    },
     extraReducers: (builder) => {
         builder
             .addCase(authorFetch.pending, (state) => {

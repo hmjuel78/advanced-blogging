@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux"
-import { categoryPost } from "../../features/category/categorySlice"
+import { categoryPost, categoryUpdate } from "../../features/category/categorySlice"
 
 const CategoryForm = (props) => {
-    const { categoryName, setCategoryName } = props
+    const { categoryName, setCategoryName, editableCat, setEditableCat } = props
     const dispatch = useDispatch()
 
     const changeCatName = (e) => {
@@ -15,8 +15,15 @@ const CategoryForm = (props) => {
             name: categoryName
         }
 
-        dispatch(categoryPost(newCategory))
+        editableCat === null
+            ? dispatch(categoryPost(newCategory))
+            : dispatch(categoryUpdate({
+                id: editableCat.id,
+                name: categoryName
+            }))
+
         setCategoryName('')
+        setEditableCat(null)
     }
 
     return (
@@ -24,7 +31,7 @@ const CategoryForm = (props) => {
             <h2 className="text-xl mb-4">Create Category</h2>
             <form onSubmit={catNameOnSubmit} className="space-y-4">
                 <input onChange={changeCatName} value={categoryName} type="text" placeholder="Category Name" className="input input-bordered w-full" />
-                <button className="btn btn-outline">Save</button>
+                <button className="btn btn-outline">{editableCat === null ? 'Create' : 'Update'}</button>
             </form>
         </div>
     )

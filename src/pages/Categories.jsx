@@ -7,11 +7,16 @@ import CategoryList from "../components/category/CategoryList"
 
 const Categories = () => {
     const [categoryName, setCategoryName] = useState('')
+    const [editableCat, setEditableCat] = useState(null)
 
+    const handleCatEdit = (cat) => {
+        setEditableCat(cat)
+        setCategoryName(cat.name)
+    }
     return (
         <div className="grid md:grid-cols-2 gap-10 max-w-7xl mx-auto mt-10 px-4">
-            <CategoryForm categoryName={categoryName} setCategoryName={setCategoryName} />
-            <CategoryList />
+            <CategoryForm categoryName={categoryName} setCategoryName={setCategoryName} editableCat={editableCat} setEditableCat={setEditableCat} />
+            <CategoryList handleCatEdit={handleCatEdit} />
             <AuthorForm />
             <AuthorList />
         </div>

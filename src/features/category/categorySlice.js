@@ -29,6 +29,29 @@ export const categoryPost = createAsyncThunk('category/categoryPost',
     }
 )
 
+export const categoryDelete = createAsyncThunk('category/categoryDelete',
+    async (id) => {
+        const categoriesDetele = await fetch(`${BASE_URL}/${id}`, {
+            method: "DELETE"
+        })
+        return categoriesDetele.json()
+    }
+)
+export const categoryUpdate = createAsyncThunk('category/categoryUpdate',
+    async (content) => {
+        const newCategory = await fetch(`${BASE_URL}/${content.id}`, {
+            method: 'PUT',
+            body: JSON.stringify({
+                name: content.name
+            }),
+            headers: {
+                'Content-type': 'application/json',
+            }
+        })
+        return newCategory.json()
+    }
+)
+
 export const categorySlice = createSlice({
     name: 'category',
     initialState,
@@ -49,12 +72,28 @@ export const categorySlice = createSlice({
             })
             .addCase(categoryPost.fulfilled, (state, action) => {
                 state.categories.push(action.payload)
-                // console.log(action.payload, 'action-payload')
             })
             .addCase(categoryPost.rejected, (state, action) => {
                 state.error = action.error
-                console.log(action.error)
             })
+            .addCase(categoryDelete.pending, (state) => {
+                state.isError = false
+                state.isLoading = true
+            })
+            .addCase(categoryDelete.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.categories = state.categories.filter(category => category.id !== action.payload.id)
+            })
+            .addCase(categoryUpdate.fulfilled, (state, action) => {
+                state.isLoading = false
+                console.log(action.payload)
+                state.categories = state.categories.map(category => {
+                    if (category.id === action.payload.id) {
+                        return category.name = action.payload.name
+                    }
+                    return category
+                })
+            });
 
     }
 })
