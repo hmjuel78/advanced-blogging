@@ -34,7 +34,7 @@ export const categoryDelete = createAsyncThunk('category/categoryDelete',
         const categoriesDetele = await fetch(`${BASE_URL}/${id}`, {
             method: "DELETE"
         })
-        return categoriesDetele.json()
+        return id
     }
 )
 export const categoryUpdate = createAsyncThunk('category/categoryUpdate',
@@ -82,17 +82,12 @@ export const categorySlice = createSlice({
             })
             .addCase(categoryDelete.fulfilled, (state, action) => {
                 state.isLoading = false
-                state.categories = state.categories.filter(category => category.id !== action.payload.id)
+                state.categories = state.categories.filter(category => category.id !== action.payload)
             })
             .addCase(categoryUpdate.fulfilled, (state, action) => {
                 state.isLoading = false
-                console.log(action.payload)
-                state.categories = state.categories.map(category => {
-                    if (category.id === action.payload.id) {
-                        return category.name = action.payload.name
-                    }
-                    return category
-                })
+                const index = state.categories.findIndex(category => category.id === action.payload.id)
+                state.categories[index].name = action.payload.name
             });
 
     }
@@ -100,7 +95,5 @@ export const categorySlice = createSlice({
 
 
 export const categorySelector = (state => state.categoryReducer)
-
-export const { CHAGE_CAT_NAME } = categorySlice.actions
 
 export default categorySlice.reducer
