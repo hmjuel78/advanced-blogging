@@ -31,6 +31,10 @@
     {
       "name": "Technology",
       "id": 8
+    },
+    {
+      "name": "dsfa",
+      "id": 9
     }
   ],
   "authors": [
@@ -89,6 +93,10 @@
     {
       "name": "Cold Email",
       "id": 5
+    },
+    {
+      "name": "Technology",
+      "id": 6
     }
   ],
   "blogs": [

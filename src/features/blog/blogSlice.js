@@ -1,22 +1,22 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-const BASE_URL = 'http://localhost:3000/tags'
+const BASE_URL = 'http://localhost:3000/blogs'
 
 const initialState = {
     isLoading: true,
     isError: false,
     error: false,
-    tags: []
+    blogs: []
 }
 
-export const tagFetch = createAsyncThunk('tag/tagFetch',
+export const blogFetch = createAsyncThunk('blog/blogFetch',
     async () => {
-        const tags = await fetch(BASE_URL)
-        return tags.json()
+        const blogs = await fetch(BASE_URL)
+        return blogs.json()
     }
 )
 
-export const tagCreate = createAsyncThunk('tag/tagCreate',
+export const blogCreate = createAsyncThunk('blog/blogCreate',
     async (content) => {
         console.log(content)
         const newTag = await fetch(BASE_URL, {
@@ -30,7 +30,7 @@ export const tagCreate = createAsyncThunk('tag/tagCreate',
     }
 )
 
-export const tagDelete = createAsyncThunk('tag/tagDelete',
+export const blogDelete = createAsyncThunk('blog/blogDelete',
     async (id) => {
         await fetch(`${BASE_URL}/${id}`, {
             method: "DELETE"
@@ -38,9 +38,9 @@ export const tagDelete = createAsyncThunk('tag/tagDelete',
         return id
     }
 )
-export const tagUpdate = createAsyncThunk('tag/tagUpdate',
+export const blogUpdate = createAsyncThunk('blog/blogUpdate',
     async (content) => {
-        const newTag = await fetch(`${BASE_URL}/${content.id}`, {
+        const newBlog = await fetch(`${BASE_URL}/${content.id}`, {
             method: 'PUT',
             body: JSON.stringify({
                 name: content.name
@@ -49,57 +49,57 @@ export const tagUpdate = createAsyncThunk('tag/tagUpdate',
                 'Content-type': 'application/json',
             }
         })
-        return newTag.json()
+        return newBlog.json()
     }
 )
 
-export const tagSlice = createSlice({
-    name: 'tag',
+export const blogSlice = createSlice({
+    name: 'blog',
     initialState,
     extraReducers: (builder) => {
         builder
-            .addCase(tagFetch.pending, (state) => {
+            .addCase(blogFetch.pending, (state) => {
                 state.isError = false
                 state.isLoading = true
             })
-            .addCase(tagFetch.fulfilled, (state, action) => {
+            .addCase(blogFetch.fulfilled, (state, action) => {
                 state.isLoading = false
-                state.tags = action.payload
+                state.blogs = action.payload
             })
-            .addCase(tagFetch.rejected, (state, action) => {
+            .addCase(blogFetch.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.error = action.error
             })
-            .addCase(tagCreate.pending, (state) => {
+            .addCase(blogCreate.pending, (state) => {
                 state.isError = false
                 state.isLoading = true
             })
-            .addCase(tagCreate.fulfilled, (state, action) => {
+            .addCase(blogCreate.fulfilled, (state, action) => {
                 state.isLoading = false
-                state.tags.push(action.payload)
+                state.blogs.push(action.payload)
             })
-            .addCase(tagCreate.rejected, (state, action) => {
+            .addCase(blogCreate.rejected, (state, action) => {
                 state.error = action.error
             })
-            .addCase(tagDelete.pending, (state) => {
+            .addCase(blogDelete.pending, (state) => {
                 state.isError = false
                 state.isLoading = true
             })
-            .addCase(tagDelete.fulfilled, (state, action) => {
+            .addCase(blogDelete.fulfilled, (state, action) => {
                 state.isLoading = false
-                state.tags = state.tags.filter(tag => tag.id !== action.payload)
+                state.blogs = state.blogs.filter(blog => blog.id !== action.payload)
             })
-            .addCase(tagUpdate.fulfilled, (state, action) => {
+            .addCase(blogUpdate.fulfilled, (state, action) => {
                 state.isLoading = false
-                const index = state.tags.findIndex(tag => tag.id === action.payload.id)
-                state.tags[index].name = action.payload.name
+                const index = state.blogs.findIndex(blog => blog.id === action.payload.id)
+                state.blogs[index].name = action.payload.name
             });
 
     }
 })
 
 
-export const tagSelector = (state => state.tagReducer)
+export const blogSelector = (state => state.blogReducer)
 
-export default tagSlice.reducer
+export default blogSlice.reducer

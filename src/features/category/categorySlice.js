@@ -3,19 +3,21 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 const BASE_URL = 'http://localhost:3000/catagories'
 
 const initialState = {
-    isLoading: false,
+    isLoading: true,
     isError: false,
     error: false,
     categories: []
 }
 
 export const categoryFetch = createAsyncThunk('category/categoryFetch',
-    async ({ rejectWithValue, signal }) => {
+    async (signal) => {
         try {
-            const categories = await fetch(`BASE_URL`, { signal })
+            const categories = await fetch(BASE_URL, { signal })
             return categories.json()
+            // return categories
         } catch (error) {
-            rejectWithValue(error)
+            // rejectWithValue(error)
+            console.log(error)
         }
     }
 )

@@ -67,24 +67,6 @@ const AuthorList = (props) => {
                                 }
                             })
                         }
-                        {/* {
-                            authors?.map(author => (
-                                <tr key={author.id}>
-                                    <td>{author.id}</td>
-                                    <td>{author.name}</td>
-                                    <td>
-                                        <button
-                                            onClick={() => authorDeleteHandle(author.id)}
-                                            className="btn btn-circle btn-sm hover:btn-error hover:text-white"
-                                        >
-                                            <MdOutlineDeleteOutline />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                        } */}
-
-
                     </tbody>
                 </table>
             </div>
