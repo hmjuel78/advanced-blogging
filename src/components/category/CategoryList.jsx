@@ -33,7 +33,9 @@ const CategoryList = (props) => {
                         <li key={category.id} className="flex gap-4 w-full justify-between border border-black p-3 rounded">
                             <span>{category.name}</span>
                             <div className="flex gap-4">
-                                <button onClick={() => handleCatEdit(category)} className="btn btn-circle btn-sm hover:btn-info hover:text-white">
+                                <button
+                                    onClick={() => handleCatEdit(category)}
+                                    className="btn btn-circle btn-sm hover:btn-info hover:text-white">
                                     <MdOutlineModeEdit />
                                 </button>
                                 <button

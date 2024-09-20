@@ -1,16 +1,19 @@
-import { useSelector } from "react-redux"
-import { categorySelector } from "../features/category/categorySlice"
+import { useState } from "react"
+import BlogFrom from "../components/blog/BlogFrom"
+import Tags from "../components/tags/Tags"
 
 
 const Blogs = () => {
-    const { categories } = useSelector(categorySelector)
+    const [editableBlog, setEditableBlog] = useState(null)
 
     return (
-        <div>
-            <h2 className="text-xl">Blogs Page</h2>
-            {
-                categories.map(cat => <li key={cat.id}>{cat.name}</li>)
-            }
+        <div className="max-w-7xl mx-auto mt-10 px-4">
+            <h2 className="text-xl mb-3">Blogs Page</h2>
+
+            <div className="grid md:grid-cols-2 gap-10">
+                <BlogFrom editableBlog={editableBlog} />
+                <Tags />
+            </div>
         </div>
     )
 }
