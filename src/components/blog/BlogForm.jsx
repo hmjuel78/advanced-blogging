@@ -40,6 +40,19 @@ const BlogFrom = (props) => {
                         ))
                     }
                 </select>
+                <select
+                    onChange={changeHandleBlog}
+                    value={selectAuthor}
+                    name="selectAuthor"
+                    className="select select-bordered w-full"
+                >
+                    {
+                        categories &&
+                        categories?.map(category => (
+                            <option key={category.id} value={category.id}>{category.name}</option>
+                        ))
+                    }
+                </select>
                 <input
                     onChange={changeHandleBlog}
                     value={blogTitle}

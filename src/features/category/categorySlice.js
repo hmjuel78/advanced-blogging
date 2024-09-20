@@ -10,9 +10,13 @@ const initialState = {
 }
 
 export const categoryFetch = createAsyncThunk('category/categoryFetch',
-    async () => {
-        const categories = await fetch(BASE_URL)
-        return categories.json()
+    async ({ rejectWithValue, signal }) => {
+        try {
+            const categories = await fetch(`BASE_URL`, { signal })
+            return categories.json()
+        } catch (error) {
+            rejectWithValue(error)
+        }
     }
 )
 

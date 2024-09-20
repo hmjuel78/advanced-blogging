@@ -1,5 +1,5 @@
 import { useState } from "react"
-import BlogFrom from "../components/blog/BlogFrom"
+import BlogFrom from "../components/blog/BlogForm"
 import Tags from "../components/tags/Tags"
 
 
