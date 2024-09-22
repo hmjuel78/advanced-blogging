@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 const BASE_URL = 'http://localhost:3000/blogs'
 
 const initialState = {
-    isLoading: true,
+    isLoading: false,
     isError: false,
     error: false,
     blogs: []
@@ -18,7 +18,6 @@ export const blogFetch = createAsyncThunk('blog/blogFetch',
 
 export const blogCreate = createAsyncThunk('blog/blogCreate',
     async (content) => {
-        console.log(content)
         const newTag = await fetch(BASE_URL, {
             method: 'POST',
             body: JSON.stringify(content),
@@ -52,7 +51,12 @@ export const blogUpdate = createAsyncThunk('blog/blogUpdate',
         return newBlog.json()
     }
 )
-
+export const singleBlog = createAsyncThunk('blog/singleBlog',
+    async (id) => {
+        const single = await fetch(`${BASE_URL}/${id}`)
+        return single.json()
+    }
+)
 export const blogSlice = createSlice({
     name: 'blog',
     initialState,
@@ -94,6 +98,10 @@ export const blogSlice = createSlice({
                 state.isLoading = false
                 const index = state.blogs.findIndex(blog => blog.id === action.payload.id)
                 state.blogs[index].name = action.payload.name
+            })
+            .addCase(singleBlog.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.blogs = action.payload
             });
 
     }

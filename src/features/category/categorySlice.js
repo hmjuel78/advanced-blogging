@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 const BASE_URL = 'http://localhost:3000/catagories'
 
 const initialState = {
-    isLoading: true,
+    isLoading: false,
     isError: false,
     error: false,
     categories: []

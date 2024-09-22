@@ -40,6 +40,7 @@ const Tags = () => {
     }
     const handleTagDelete = (tagId) => {
         dispatch(tagDelete(tagId))
+        toast.success('Tag delete successfully !!!')
     }
     useEffect(() => {
         dispatch(tagFetch())

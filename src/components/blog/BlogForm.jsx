@@ -2,8 +2,9 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { categoryFetch, categorySelector } from "../../features/category/categorySlice"
 import { authorFetch, authorSelector } from "../../features/author/authorSlice"
-import Tag from "../tag/Tag"
+
 import toast from "react-hot-toast"
+import TagInput from "../tag-input/TagInput"
 
 const BlogFrom = (props) => {
     const { editableBlog } = props
@@ -30,15 +31,15 @@ const BlogFrom = (props) => {
     }
     const blogOnSubmit = (e) => {
         e.preventDefault()
-        if (blogTitle.trim() === '' || blogBody.trim() === '') {
-            return toast.error('Type all Field properly!!!')
-        }
+        // if (blogTitle.trim() === '' || blogBody.trim() === '') {
+        //     return toast.error('Type all Field properly!!!')
+        // }
         const newBlog = {
             author_id: selectAuthor,
             category_id: selectCategory,
             title: blogTitle,
             desc: blogBody,
-            dateTime: new Date.now(),
+            dateTime: Date.now() + '',
             tags: tags,
         }
         console.log(newBlog)
@@ -57,6 +58,7 @@ const BlogFrom = (props) => {
 
     return (
         <div>
+            <h2 className="text-xl mb-3">Create Blog</h2>
             <form onSubmit={blogOnSubmit} className="space-y-4">
 
                 <select
@@ -88,15 +90,15 @@ const BlogFrom = (props) => {
                         <option>Author unavailable</option>
                     }
                 </select>
-                {/* <input
+                <input
                     onChange={changeHandleBlog}
                     value={blogTitle}
                     name="blogTitle"
                     type="text"
-                    placeholder="Tag Name"
+                    placeholder="Blog Title"
                     className="input input-bordered w-full"
-                /> */}
-                <Tag tags={tags} setTags={setTags} />
+                />
+                <TagInput tags={tags} setTags={setTags} />
                 <textarea
                     onChange={changeHandleBlog}
                     value={blogBody}
@@ -105,7 +107,7 @@ const BlogFrom = (props) => {
                     placeholder="Blog Description"
                 >
                 </textarea>
-                <button className="btn btn-outline">{editableBlog === null ? 'Create' : 'Update'}</button>
+                <button type="submit" className="btn btn-outline">{editableBlog === null ? 'Create' : 'Update'}</button>
             </form>
         </div>
     )

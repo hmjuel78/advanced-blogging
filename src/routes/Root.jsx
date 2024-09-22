@@ -31,6 +31,9 @@ const Root = () => {
                                     <Link to="/">Categories</Link>
                                 </li>
                                 <li>
+                                    <Link to="/create-blog">Create Blog</Link>
+                                </li>
+                                <li>
                                     <Link to="/blogs">Blogs</Link>
                                 </li>
                             </ul>
@@ -44,6 +47,9 @@ const Root = () => {
                             <Link to="/">Categories</Link>
                         </li>
                         <li>
+                            <Link to="/create-blog">Create Blog</Link>
+                        </li>
+                        <li>
                             <Link to="/blogs">Blogs</Link>
                         </li>
                     </ul>
@@ -51,7 +57,6 @@ const Root = () => {
             </div>
             <div id="detail">
                 <Outlet />
-
             </div>
         </>
     )

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { IoCloseOutline } from "react-icons/io5"
 
-const Tag = (props) => {
+const TagInput = (props) => {
     const { tags, setTags } = props
 
     const [text, setText] = useState("")
@@ -42,7 +42,7 @@ const Tag = (props) => {
                 className="bg-transparent outline-none input input-bordered w-full"
                 placeholder="Input tags"
             />
-            <ul className={`border border-white rounded flex gap-1 p-2 w-full ${tags.length > 0 ? 'block' : 'hidden'}`}>
+            <ul className={`border border-white rounded flex gap-1 p-2 w-full flex-wrap mt-2 ${tags.length > 0 ? 'block' : 'hidden'}`}>
                 {tags.map((t) => (
                     <li
                         key={t.id}
@@ -55,7 +55,7 @@ const Tag = (props) => {
             </ul>
 
         </div>
-    );
-};
+    )
+}
 
-export default Tag
+export default TagInput

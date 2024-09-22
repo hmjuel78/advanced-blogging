@@ -106,7 +106,7 @@
       "category_id": 1,
       "title": "somethinmg",
       "desc": "long text",
-      "dateTime": "2nd Feb,2024 12:30 AM",
+      "dateTime": "2024-01-24T07:00",
       "like": 234,
       "tags": [
         1,
@@ -120,6 +120,7 @@
       "category_id": 2,
       "title": "somethinmg2",
       "desc": "long text",
+      "dateTime": "2024-09-22T12:00",
       "like": 234,
       "tags": [
         1,

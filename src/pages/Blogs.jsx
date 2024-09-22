@@ -1,18 +1,28 @@
-import { useState } from "react"
-import BlogFrom from "../components/blog/BlogForm"
-import Tags from "../components/tags/Tags"
-
+import { useDispatch, useSelector } from "react-redux"
+import { blogFetch, blogSelector } from "../features/blog/blogSlice"
+import { useEffect } from "react"
+import BlogCard from "../components/blog/BlogCard"
 
 const Blogs = () => {
-    const [editableBlog, setEditableBlog] = useState(null)
+    const { blogs } = useSelector(blogSelector)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(blogFetch())
+    }, [dispatch])
 
     return (
-        <div className="max-w-7xl mx-auto mt-10 px-4">
-            <h2 className="text-xl mb-3">Blogs Page</h2>
+        <div className="max-w-7xl mx-auto m-10 px-6">
+            <h2 className="mb-3">Blogs</h2>
 
-            <div className="grid md:grid-cols-2 gap-10">
-                <BlogFrom editableBlog={editableBlog} />
-                <Tags />
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3  gap-4">
+                {
+                    blogs && blogs.length > 0 ?
+                        blogs?.map(blog => (
+                            <BlogCard key={blog.id} blog={blog} />
+                        ))
+                        : <h2 className="text-xl text-center">Blogs Not Found !!!</h2>
+                }
             </div>
         </div>
     )
