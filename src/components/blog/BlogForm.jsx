@@ -2,20 +2,19 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { categoryFetch, categorySelector } from "../../features/category/categorySlice"
 import { authorFetch, authorSelector } from "../../features/author/authorSlice"
-import TagsInput from "react-tagsinput"
-import 'react-tagsinput/react-tagsinput.css'
 import Tag from "../tag/Tag"
+import toast from "react-hot-toast"
 
 const BlogFrom = (props) => {
     const { editableBlog } = props
     const [blogTitle, setBlogTitle] = useState('')
     const [blogBody, setBlogBody] = useState('')
     const [selectCategory, setSelectCategory] = useState('')
-    // eslint-disable-next-line no-unused-vars
     const [selectAuthor, setSelectAuthor] = useState('')
-    const [selectTag, setSelectTag] = useState('')
+    // const [selectTag, setSelectTag] = useState('')
     const { categories } = useSelector(categorySelector)
     const { authors } = useSelector(authorSelector)
+    const [tags, setTags] = useState([])
     const dispatch = useDispatch()
 
     const changeHandleBlog = (e) => {
@@ -31,8 +30,16 @@ const BlogFrom = (props) => {
     }
     const blogOnSubmit = (e) => {
         e.preventDefault()
+        if (blogTitle.trim() === '' || blogBody.trim() === '') {
+            return toast.error('Type all Field properly!!!')
+        }
         const newBlog = {
+            author_id: selectAuthor,
+            category_id: selectCategory,
             title: blogTitle,
+            desc: blogBody,
+            dateTime: new Date.now(),
+            tags: tags,
         }
         console.log(newBlog)
     }
@@ -42,9 +49,9 @@ const BlogFrom = (props) => {
         dispatch(authorFetch())
     }, [dispatch])
 
-    const handleTagChnage = (tags) => {
-        setSelectTag(tags)
-    }
+    // const handleTagChnage = (tags) => {
+    //     setSelectTag(tags)
+    // }
 
     const categoryByAuthors = authors?.filter(item => item.category_id == selectCategory)
 
@@ -81,15 +88,15 @@ const BlogFrom = (props) => {
                         <option>Author unavailable</option>
                     }
                 </select>
-                <input
+                {/* <input
                     onChange={changeHandleBlog}
                     value={blogTitle}
                     name="blogTitle"
                     type="text"
                     placeholder="Tag Name"
-                    className="input input-bordered w-full" />
-                {/* <TagsInput value={selectTag} onChange={handleTagChnage} /> */}
-                <Tag />
+                    className="input input-bordered w-full"
+                /> */}
+                <Tag tags={tags} setTags={setTags} />
                 <textarea
                     onChange={changeHandleBlog}
                     value={blogBody}
