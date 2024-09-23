@@ -7,10 +7,17 @@ const initialState = {
     isLoading: false,
     isError: false,
     error: false,
+    authorsByCat: [],
 }
 export const authorFetch = createAsyncThunk('author/authorFetch',
     async () => {
         const authors = await fetch(BASE_URL)
+        return authors.json()
+    }
+)
+export const authorByCatId = createAsyncThunk('author/authorByCatId',
+    async (id) => {
+        const authors = await fetch(`${BASE_URL}?category_id=${id}`)
         return authors.json()
     }
 )
@@ -99,6 +106,14 @@ export const authorSlice = createSlice({
                 const index = state.authors.findIndex(author => author.id === action.payload.id)
                 state.authors[index].name = action.payload.name
                 state.authors[index].category_id = action.payload.category_id
+            })
+            .addCase(authorByCatId.pending, (state) => {
+                state.isError = false
+                state.isLoading = true
+            })
+            .addCase(authorByCatId.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.authorsByCat = action.payload
             });
     }
 })

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { categoryFetch, categorySelector } from "../../features/category/categorySlice"
-import { authorFetch, authorSelector } from "../../features/author/authorSlice"
-
+import { authorByCatId, authorSelector } from "../../features/author/authorSlice"
 import toast from "react-hot-toast"
 import TagInput from "../tag-input/TagInput"
+import DropdownWithSearch from "../custom-dropdown-with-search/DropdownWithSearch"
+import { tagFetch, tagSelector } from "../../features/tags/tagSlice"
 
 const BlogFrom = (props) => {
     const { editableBlog } = props
@@ -14,7 +15,8 @@ const BlogFrom = (props) => {
     const [selectAuthor, setSelectAuthor] = useState('')
     // const [selectTag, setSelectTag] = useState('')
     const { categories } = useSelector(categorySelector)
-    const { authors } = useSelector(authorSelector)
+    const { authorsByCat } = useSelector(authorSelector)
+    const { tags: taglist } = useSelector(tagSelector)
     const [tags, setTags] = useState([])
     const dispatch = useDispatch()
 
@@ -25,15 +27,16 @@ const BlogFrom = (props) => {
             setBlogBody(e.target.value)
         } else if (e.target.name === 'selectCategory') {
             setSelectCategory(e.target.value)
+            dispatch(authorByCatId(e.target.value))
         } else if (e.target.name === 'selectAuthor') {
             setSelectAuthor(e.target.value)
         }
     }
     const blogOnSubmit = (e) => {
         e.preventDefault()
-        // if (blogTitle.trim() === '' || blogBody.trim() === '') {
-        //     return toast.error('Type all Field properly!!!')
-        // }
+        if (blogTitle.trim() === '' || blogBody.trim() === '') {
+            return toast.error('Type all Field properly!!!')
+        }
         const newBlog = {
             author_id: selectAuthor,
             category_id: selectCategory,
@@ -47,14 +50,12 @@ const BlogFrom = (props) => {
 
     useEffect(() => {
         dispatch(categoryFetch())
-        dispatch(authorFetch())
+        dispatch(tagFetch())
     }, [dispatch])
 
     // const handleTagChnage = (tags) => {
     //     setSelectTag(tags)
     // }
-
-    const categoryByAuthors = authors?.filter(item => item.category_id == selectCategory)
 
     return (
         <div>
@@ -79,15 +80,14 @@ const BlogFrom = (props) => {
                     onChange={changeHandleBlog}
                     defaultValue={"DEFAULT"}
                     name="selectAuthor"
-                    className="select select-bordered w-full"
+                    className={`select select-bordered w-full`}
+                    disabled={!selectCategory || selectCategory === 'DEFAULT' && true}
                 >
                     <option value="DEFAULT">Select a author</option>
-                    {categoryByAuthors && categoryByAuthors.length > 0 ?
-                        categoryByAuthors?.map(author => (
+                    {authorsByCat && authorsByCat.length > 0 &&
+                        authorsByCat?.map(author => (
                             <option key={author.id} value={author.id}>{author.name}</option>
                         ))
-                        :
-                        <option>Author unavailable</option>
                     }
                 </select>
                 <input
@@ -98,6 +98,7 @@ const BlogFrom = (props) => {
                     placeholder="Blog Title"
                     className="input input-bordered w-full"
                 />
+                <DropdownWithSearch isSearch={true} dropDatas={taglist} />
                 <TagInput tags={tags} setTags={setTags} />
                 <textarea
                     onChange={changeHandleBlog}
