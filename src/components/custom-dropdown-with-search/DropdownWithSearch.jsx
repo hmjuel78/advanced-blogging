@@ -5,20 +5,20 @@ import useOutsideClick from '../../hooks/useOutsiteClick'
 const DropdownWithSearch = (props) => {
     const { selectDropData, setSelectDropData, isSearch, dropDatas, mapKey } = props
     const [searchValue, setSearchValue] = useState('')
-    // const [selectDropData, setSelectDropData] = useState(null)
     const [open, setOpen] = useState(false)
     const ref = useRef()
 
-
-    useOutsideClick(ref, () => {
-        setOpen(false)
-    })
+    console.log(setSelectDropData)
 
     const dropDownhandler = (dropData) => {
         setSelectDropData(dropData)
         setOpen(false)
         setSearchValue("")
     }
+
+    useOutsideClick(ref, () => {
+        setOpen(false)
+    })
 
     return (
         <>
@@ -42,7 +42,6 @@ const DropdownWithSearch = (props) => {
                                 onChange={(e) => setSearchValue(e.target.value)}
                                 placeholder="Search.."
                                 className="placeholder:text-gray-700 text-white py-2 px-3 outline-none w-full"
-
                             />
                         </div>
                     }

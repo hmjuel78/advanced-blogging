@@ -89,7 +89,15 @@ const BlogFrom = (props) => {
                         ))
                     }
                 </select>
-                {/* <DropdownWithSearch isSearch={true} dropDatas={categories} mapKey='name' /> */}
+
+                <DropdownWithSearch
+                    selectDropData={blogData.selectCategory}
+                    setSelectDropData={setBlogData.selectCategory}
+                    isSearch={true}
+                    dropDatas={categories}
+                    mapKey='name'
+                />
+
                 <select
                     onChange={changeHandleBlog}
                     defaultValue={"DEFAULT"}
