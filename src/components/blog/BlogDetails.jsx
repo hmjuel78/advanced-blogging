@@ -22,7 +22,6 @@ const BlogDetails = () => {
         dispatch(commentFetch())
     }, [dispatch])
 
-    console.log(blogs)
     return (
         <div className="max-w-7xl  mx-auto mt-6 space-y-4">
             <h2 className="text-2xl font-bold">Blog Details</h2>

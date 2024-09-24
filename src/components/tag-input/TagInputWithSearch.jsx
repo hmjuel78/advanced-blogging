@@ -15,10 +15,6 @@ const TagInputWithSearch = (props) => {
     const { tagsByName: dropDatas } = useSelector(tagSelector)
 
 
-    useOutsideClick(ref, () => {
-        setOpen(false)
-    })
-
     const dropDownhandler = (dropData) => {
 
         const isExistTag = selectDropData.find((selectdata) => parseInt(selectdata.id) === parseInt(dropData.id))
@@ -66,6 +62,9 @@ const TagInputWithSearch = (props) => {
         setSelectDropData(newSelectedData)
     }
 
+    useOutsideClick(ref, () => {
+        setOpen(false)
+    })
 
     return (
         <>

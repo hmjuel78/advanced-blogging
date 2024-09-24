@@ -12,10 +12,6 @@ dayjs.extend(utc)
 
 const BlogFrom = (props) => {
     const { editableBlog } = props
-    const [blogTitle, setBlogTitle] = useState('')
-    const [blogBody, setBlogBody] = useState('')
-    const [selectCategory, setSelectCategory] = useState('')
-    const [selectAuthor, setSelectAuthor] = useState('')
     const { categories } = useSelector(categorySelector)
     const { authorsByCat } = useSelector(authorSelector)
     const [selectDropData, setSelectDropData] = useState([])
@@ -23,8 +19,9 @@ const BlogFrom = (props) => {
         blogTitle: '',
         blogBody: '',
         selectCategory: '',
-        selectAuthor: '',
+        selectAuthor: ''
     })
+
     const dispatch = useDispatch()
 
     const changeHandleBlog = (e) => {
@@ -33,36 +30,23 @@ const BlogFrom = (props) => {
 
             return { ...blogData, [e.target.name]: value }
         })
-        if (e.target.name === 'blogTitle') {
-            setBlogTitle(e.target.value)
-        } else if (e.target.name === 'blogBody') {
-            setBlogBody(e.target.value)
-        } else if (e.target.name === 'selectCategory') {
-            setSelectCategory(e.target.value)
-
-        } else if (e.target.name === 'selectAuthor') {
-            setSelectAuthor(e.target.value)
-        }
     }
     const resetField = () => {
-        setBlogTitle('')
-        setBlogBody('')
-        setSelectCategory('')
-        setSelectAuthor('')
         setSelectDropData([])
     }
+
     const blogOnSubmit = (e) => {
         e.preventDefault()
-        if (blogTitle.trim() === '' || blogBody.trim() === '') {
+        if (blogData.blogTitle.trim() === '' || blogData.blogBody.trim() === '') {
             return toast.error('Type all Field properly!!!')
         }
         const tagArray = selectDropData.map(select => select.id)
 
         const newBlog = {
-            author_id: selectAuthor,
-            category_id: selectCategory,
-            title: blogTitle,
-            desc: blogBody,
+            author_id: blogData.selectAuthor,
+            category_id: blogData.selectCategory,
+            title: blogData.blogTitle,
+            desc: blogData.blogBody,
             dateTime: dayjs().utc(),
             tags: tagArray,
         }
@@ -82,8 +66,8 @@ const BlogFrom = (props) => {
     }, [dispatch])
 
     useEffect(() => {
-        dispatch(authorByCatId(selectCategory))
-    }, [dispatch, selectCategory])
+        dispatch(authorByCatId(blogData.selectCategory))
+    }, [dispatch, blogData.selectCategory])
 
     return (
         <div>
@@ -109,7 +93,7 @@ const BlogFrom = (props) => {
                     defaultValue={"DEFAULT"}
                     name="selectAuthor"
                     className={`select select-bordered w-full`}
-                    disabled={!selectCategory || selectCategory === 'DEFAULT' && true}
+                    disabled={!blogData.selectCategory || blogData.selectCategory === 'DEFAULT' && true}
                 >
                     <option value="DEFAULT">Select a author</option>
                     {authorsByCat && authorsByCat.length > 0 &&
@@ -120,7 +104,7 @@ const BlogFrom = (props) => {
                 </select>
                 <input
                     onChange={changeHandleBlog}
-                    value={blogTitle}
+                    value={blogData.blogTitle}
                     name="blogTitle"
                     type="text"
                     placeholder="Blog Title"
@@ -134,7 +118,7 @@ const BlogFrom = (props) => {
                 />
                 <textarea
                     onChange={changeHandleBlog}
-                    value={blogBody}
+                    value={blogData.blogBody}
                     name="blogBody"
                     className="textarea textarea-bordered w-full min-h-28"
                     placeholder="Blog Description"

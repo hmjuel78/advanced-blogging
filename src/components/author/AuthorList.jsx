@@ -11,11 +11,6 @@ const AuthorList = (props) => {
     const { categories } = useSelector(categorySelector)
     const dispatch = useDispatch()
 
-
-    useEffect(() => {
-        dispatch(authorFetch())
-    }, [dispatch])
-
     const authorEditHandle = (author) => {
         setEditableAuthor(author)
     }
@@ -23,6 +18,10 @@ const AuthorList = (props) => {
         dispatch(authorDelete(authorId))
         toast.success('Author Successfully Delete !!!')
     }
+    useEffect(() => {
+        dispatch(authorFetch())
+    }, [dispatch])
+
 
     return (
         <div>
@@ -70,7 +69,6 @@ const AuthorList = (props) => {
                     </tbody>
                 </table>
             </div>
-
         </div>
     )
 }

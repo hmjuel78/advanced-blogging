@@ -12,12 +12,6 @@ const CategoryForm = (props) => {
         setCategoryName(e.target.value)
     }
 
-    useEffect(() => {
-        if (editableCat !== null) {
-            setCategoryName(editableCat.name)
-        }
-    }, [editableCat])
-
     const catNameOnSubmit = (e) => {
         e.preventDefault()
         if (categoryName.trim() === '') {
@@ -41,6 +35,11 @@ const CategoryForm = (props) => {
         setEditableCat(null)
     }
 
+    useEffect(() => {
+        if (editableCat !== null) {
+            setCategoryName(editableCat.name)
+        }
+    }, [editableCat])
 
     return (
         <div>
