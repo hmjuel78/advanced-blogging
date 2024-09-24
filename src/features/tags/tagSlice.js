@@ -6,7 +6,8 @@ const initialState = {
     isLoading: true,
     isError: false,
     error: false,
-    tags: []
+    tags: [],
+    tagsByName: []
 }
 
 export const tagFetch = createAsyncThunk('tag/tagFetch',
@@ -52,6 +53,12 @@ export const tagUpdate = createAsyncThunk('tag/tagUpdate',
         return newTag.json()
     }
 )
+export const tagSearchByName = createAsyncThunk('tag/tagSearchByName',
+    async (content) => {
+        const newTag = await fetch(`${BASE_URL}?name=${content}`)
+        return newTag.json()
+    }
+)
 
 export const tagSlice = createSlice({
     name: 'tag',
@@ -94,6 +101,10 @@ export const tagSlice = createSlice({
                 state.isLoading = false
                 const index = state.tags.findIndex(tag => tag.id === action.payload.id)
                 state.tags[index].name = action.payload.name
+            })
+            .addCase(tagSearchByName.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.tagsByName = action.payload
             });
 
     }

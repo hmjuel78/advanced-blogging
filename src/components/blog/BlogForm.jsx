@@ -3,9 +3,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { categoryFetch, categorySelector } from "../../features/category/categorySlice"
 import { authorByCatId, authorSelector } from "../../features/author/authorSlice"
 import toast from "react-hot-toast"
-import TagInput from "../tag-input/TagInput"
-import DropdownWithSearch from "../custom-dropdown-with-search/DropdownWithSearch"
 import { tagFetch, tagSelector } from "../../features/tags/tagSlice"
+import TagInputWithSearch from "../tag-input/TagInputWithSearch"
 
 const BlogFrom = (props) => {
     const { editableBlog } = props
@@ -98,8 +97,8 @@ const BlogFrom = (props) => {
                     placeholder="Blog Title"
                     className="input input-bordered w-full"
                 />
-                <DropdownWithSearch isSearch={true} dropDatas={taglist} />
-                <TagInput tags={tags} setTags={setTags} />
+
+                <TagInputWithSearch isSearch={true} dropDatas={taglist} />
                 <textarea
                     onChange={changeHandleBlog}
                     value={blogBody}
