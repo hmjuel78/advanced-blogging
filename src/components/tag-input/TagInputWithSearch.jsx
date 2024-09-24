@@ -6,9 +6,9 @@ import { IoCloseOutline } from "react-icons/io5"
 
 
 const TagInputWithSearch = (props) => {
-    const { isSearch } = props
+    const { isSearch, selectDropData, setSelectDropData } = props
     const [searchValue, setSearchValue] = useState('')
-    const [selectDropData, setSelectDropData] = useState([])
+
     const [open, setOpen] = useState(false)
     const ref = useRef()
     const dispatch = useDispatch()
@@ -61,16 +61,18 @@ const TagInputWithSearch = (props) => {
                     className={`w-full p-2 flex h-full items-center rounded`}
                 >
                     {
-                        selectDropData &&
-                        selectDropData?.map((selectData, idx) =>
-                            <span
-                                key={idx}
-                                className="bg-slate-800 rounded px-2 py-1 flex items-center gap-1 hover:cursor-pointer"
-                            >
-                                {selectData}
-                                <IoCloseOutline onClick={() => selectDataDelete(idx)} className="hover:text-error" />
-                            </span>
-                        )
+                        selectDropData && selectDropData.length > 0 ?
+                            selectDropData?.map((selectData, idx) =>
+                                <span
+                                    key={idx}
+                                    className="bg-slate-800 rounded px-2 py-1 flex items-center gap-1 hover:cursor-pointer"
+                                >
+                                    {selectData}
+                                    <IoCloseOutline onClick={() => selectDataDelete(idx)} className="hover:text-error" />
+                                </span>
+                            )
+                            :
+                            <span>select tags</span>
                     }
                     {/* <span className="space-x-2"> {selectDropData ? selectDropData.length > 25 ? selectDropData.substring(0, 25) + "..." : selectDropData : "Select Tag"}</span> */}
                 </div>

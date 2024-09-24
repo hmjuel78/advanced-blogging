@@ -5,6 +5,7 @@ import { authorByCatId, authorSelector } from "../../features/author/authorSlice
 import toast from "react-hot-toast"
 import { tagFetch, tagSelector } from "../../features/tags/tagSlice"
 import TagInputWithSearch from "../tag-input/TagInputWithSearch"
+import dayjs from "dayjs"
 
 const BlogFrom = (props) => {
     const { editableBlog } = props
@@ -16,7 +17,7 @@ const BlogFrom = (props) => {
     const { categories } = useSelector(categorySelector)
     const { authorsByCat } = useSelector(authorSelector)
     const { tags: taglist } = useSelector(tagSelector)
-    const [tags, setTags] = useState([])
+    const [selectDropData, setSelectDropData] = useState([])
     const dispatch = useDispatch()
 
     const changeHandleBlog = (e) => {
@@ -41,8 +42,8 @@ const BlogFrom = (props) => {
             category_id: selectCategory,
             title: blogTitle,
             desc: blogBody,
-            dateTime: Date.now() + '',
-            tags: tags,
+            dateTime: dayjs(),
+            tags: selectDropData,
         }
         console.log(newBlog)
     }
@@ -98,7 +99,11 @@ const BlogFrom = (props) => {
                     className="input input-bordered w-full"
                 />
 
-                <TagInputWithSearch isSearch={true} dropDatas={taglist} />
+                <TagInputWithSearch
+                    isSearch={true}
+                    selectDropData={selectDropData}
+                    setSelectDropData={setSelectDropData}
+                />
                 <textarea
                     onChange={changeHandleBlog}
                     value={blogBody}
