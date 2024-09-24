@@ -4,9 +4,9 @@ const Root = () => {
 
     return (
         <>
-            <div className="drawer">
+            <div className="drawer sticky top-0">
                 <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
-                <div className="drawer-content flex flex-col">
+                <div className="drawer-content flex flex-col ">
                     {/* Navbar */}
                     <div className="navbar bg-base-300 w-full">
                         <div className="flex-none md:hidden">

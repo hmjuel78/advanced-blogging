@@ -16,7 +16,6 @@ const BlogFrom = (props) => {
     const [blogBody, setBlogBody] = useState('')
     const [selectCategory, setSelectCategory] = useState('')
     const [selectAuthor, setSelectAuthor] = useState('')
-    // const [selectTag, setSelectTag] = useState('')
     const { categories } = useSelector(categorySelector)
     const { authorsByCat } = useSelector(authorSelector)
     const [selectDropData, setSelectDropData] = useState([])
@@ -34,25 +33,31 @@ const BlogFrom = (props) => {
             setSelectAuthor(e.target.value)
         }
     }
+    const resetField = () => {
+        setBlogTitle('')
+        setBlogBody('')
+        setSelectCategory('')
+        setSelectAuthor('')
+        setSelectDropData([])
+    }
     const blogOnSubmit = (e) => {
         e.preventDefault()
         if (blogTitle.trim() === '' || blogBody.trim() === '') {
             return toast.error('Type all Field properly!!!')
         }
+        const tagArray = selectDropData.map(select => select.id)
         const newBlog = {
             author_id: selectAuthor,
             category_id: selectCategory,
             title: blogTitle,
             desc: blogBody,
             dateTime: dayjs().utc(),
-            tags: selectDropData,
+            tags: tagArray,
         }
 
         if (editableBlog) {
-            console.log("update function here")
             toast.success("Blog update Successfully !!!")
         } else {
-            console.log("new create function")
             dispatch(blogCreate(newBlog))
             toast.success("Blog Create Successfully !!!")
         }
@@ -64,23 +69,11 @@ const BlogFrom = (props) => {
         dispatch(categoryFetch())
     }, [dispatch])
 
-    // const handleTagChnage = (tags) => {
-    //     setSelectTag(tags)
-    // }
-
-    const resetField = () => {
-        setBlogTitle('')
-        setBlogBody('')
-        setSelectCategory('')
-        setSelectAuthor('')
-        setSelectDropData([])
-    }
-
     return (
         <div>
             <h2 className="text-xl mb-3">Create Blog</h2>
-            <form onSubmit={blogOnSubmit} className="space-y-4">
 
+            <form onSubmit={blogOnSubmit} className="space-y-4">
                 <select
                     onChange={changeHandleBlog}
                     defaultValue={'DEFAULT'}

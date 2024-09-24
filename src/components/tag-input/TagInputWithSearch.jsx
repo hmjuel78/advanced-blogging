@@ -22,21 +22,10 @@ const TagInputWithSearch = (props) => {
     const dropDownhandler = (dropData) => {
 
         const isExistTag = selectDropData.find((selectdata) => parseInt(selectdata.id) === parseInt(dropData.id))
-
         const newTag = {
             id: dropData.id,
             name: dropData.name
         }
-
-        // if (isExistTag) {
-        //     return console.log('already ache')
-        // } else {
-        //     setSelectDropData([...selectDropData, newTag])
-        //     setOpen(false)
-        //     setSearchValue("")
-        // }
-        console.log(isExistTag, dropData.id)
-
 
         if (isExistTag) {
             setOpen(false)
@@ -48,7 +37,7 @@ const TagInputWithSearch = (props) => {
             setSearchValue("")
         }
     }
-    console.log(selectDropData)
+
     const searchOnchageHandle = (e) => {
         setSearchValue(e.target.value)
 
@@ -82,7 +71,6 @@ const TagInputWithSearch = (props) => {
                 <div
                     onClick={() => setOpen(!open)}
                     className={`w-full p-2 flex gap-2 h-full items-center rounded`}
-                    htmlFor='searchInput'
                 >
                     {
                         selectDropData && selectDropData.length > 0 ?
@@ -105,7 +93,6 @@ const TagInputWithSearch = (props) => {
                         isSearch === true &&
                         <div className="flex items-center sticky top-0 w-full">
                             <input
-                                id="searchInput"
                                 type="text"
                                 value={searchValue}
                                 onChange={searchOnchageHandle}
@@ -120,9 +107,7 @@ const TagInputWithSearch = (props) => {
                         <li key={dropData.id} className={`p-2 text-sm hover:bg-sky-600 hover:text-white
                             ${dropData.name.toLowerCase() === selectDropData && "bg-sky-600 text-white"}
                             ${dropData?.name?.toLowerCase().includes(searchValue.toLowerCase()) ? "block" : "hidden"} `}
-
                             onClick={() => dropDownhandler(dropData)}
-                            value={dropData.id}
                         >
                             {dropData?.name}
                         </li>

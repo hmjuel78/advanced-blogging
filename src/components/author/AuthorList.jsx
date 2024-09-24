@@ -28,7 +28,7 @@ const AuthorList = (props) => {
         <div>
             <h2 className='text-xl mb-4'>Author List</h2>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto max-h-96 overflow-y-auto">
                 <table className="table">
                     <thead>
                         <tr>

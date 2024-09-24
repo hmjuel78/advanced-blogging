@@ -26,7 +26,7 @@ const CategoryList = (props) => {
     return (
         <div>
             <h2 className="text-xl mb-3">Category list</h2>
-            <ul className="space-y-4">
+            <ul className="space-y-4 max-h-96 overflow-y-auto">
                 {
                     categories &&
                     categories.map(category => (
