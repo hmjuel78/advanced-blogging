@@ -20,13 +20,35 @@ const TagInputWithSearch = (props) => {
     })
 
     const dropDownhandler = (dropData) => {
-        if (dropData.name.toLowerCase() !== selectDropData) {
-            setSelectDropData([...selectDropData, dropData.name])
+
+        const isExistTag = selectDropData.find((selectdata) => parseInt(selectdata.id) === parseInt(dropData.id))
+
+        const newTag = {
+            id: dropData.id,
+            name: dropData.name
+        }
+
+        // if (isExistTag) {
+        //     return console.log('already ache')
+        // } else {
+        //     setSelectDropData([...selectDropData, newTag])
+        //     setOpen(false)
+        //     setSearchValue("")
+        // }
+        console.log(isExistTag, dropData.id)
+
+
+        if (isExistTag) {
+            setOpen(false)
+            setSearchValue("")
+            return;
+        } else {
+            setSelectDropData([...selectDropData, newTag])
             setOpen(false)
             setSearchValue("")
         }
     }
-
+    console.log(selectDropData)
     const searchOnchageHandle = (e) => {
         setSearchValue(e.target.value)
 
@@ -49,32 +71,33 @@ const TagInputWithSearch = (props) => {
     }
 
     const selectDataDelete = (idx) => {
-        const newSelectedData = selectDropData.filter((seletedData, i) => i !== idx)
+        const newSelectedData = selectDropData.filter((seletedData) => seletedData.id !== idx)
         setSelectDropData(newSelectedData)
     }
+
 
     return (
         <>
             <div ref={ref} className="border border-gray-600 h-12 w-full font-medium relative rounded-md">
                 <div
                     onClick={() => setOpen(!open)}
-                    className={`w-full p-2 flex h-full items-center rounded`}
+                    className={`w-full p-2 flex gap-2 h-full items-center rounded`}
+                    htmlFor='searchInput'
                 >
                     {
                         selectDropData && selectDropData.length > 0 ?
-                            selectDropData?.map((selectData, idx) =>
+                            selectDropData?.map((selectData) =>
                                 <span
-                                    key={idx}
+                                    key={selectData.id}
                                     className="bg-slate-800 rounded px-2 py-1 flex items-center gap-1 hover:cursor-pointer"
                                 >
-                                    {selectData}
-                                    <IoCloseOutline onClick={() => selectDataDelete(idx)} className="hover:text-error" />
+                                    {selectData.name}
+                                    <IoCloseOutline onClick={() => selectDataDelete(selectData.id)} className="hover:text-error" />
                                 </span>
                             )
                             :
-                            <span>select tags</span>
+                            <span>Select tags</span>
                     }
-                    {/* <span className="space-x-2"> {selectDropData ? selectDropData.length > 25 ? selectDropData.substring(0, 25) + "..." : selectDropData : "Select Tag"}</span> */}
                 </div>
 
                 <ul className={`w-full mt-2 overflow-y-auto absolute border rounded-md bg-slate-700 ${open ? "max-h-60" : "max-h-0 hidden"} `} >
@@ -82,6 +105,7 @@ const TagInputWithSearch = (props) => {
                         isSearch === true &&
                         <div className="flex items-center sticky top-0 w-full">
                             <input
+                                id="searchInput"
                                 type="text"
                                 value={searchValue}
                                 onChange={searchOnchageHandle}
@@ -91,7 +115,6 @@ const TagInputWithSearch = (props) => {
                             />
                         </div>
                     }
-
 
                     {dropDatas?.map((dropData) => (
                         <li key={dropData.id} className={`p-2 text-sm hover:bg-sky-600 hover:text-white
@@ -104,33 +127,9 @@ const TagInputWithSearch = (props) => {
                             {dropData?.name}
                         </li>
                     ))}
-                    {/* {suppliers?.map((supplier) => (
-                        <li key={supplier.id} className={`p-2 text-sm hover:bg-sky-600 hover:text-white
-                        ${supplier?.company_name?.toLowerCase() === selectSupplier?.toLowerCase() && "bg-sky-600 text-white"}
-                        ${supplier?.company_name?.toLowerCase().includes(searchValue) ? "block" : "hidden"} `}
-                        
-                            onClick={() => {
-                                if (supplier?.company_name.toLowerCase() !== selectSupplier.toLowerCase()) {
-                                    setSelectSupplier(supplier.company_name); setOpen(false); setSearchValue("");
-                                }
-                                supplierChangehand()
-                            }}
-                            value={supplier?.id}
-                        >
-                            {supplier?.company_name}
-                        </li>
-                    ))} */}
 
                 </ul>
             </div>
-
-            {/* <p>{selectSupplier}</p>
-
-            {suppliersContacts.length &&
-                suppliersContacts.map(suppliersContact => (
-                    <p key={suppliersContact.id}>{suppliersContact.id}</p>
-                ))
-            } */}
         </>
     )
 }

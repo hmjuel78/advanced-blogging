@@ -46,9 +46,7 @@ const BlogCard = (props) => {
                     }
                 </ul>
                 <div className="card-actions justify-end mt-3">
-                    <button className="btn btn-sm btn-info">
-                        <Link to={`${blog.id}`} state={blog}>Read More</Link>
-                    </button>
+                    <Link to={`${blog.id}`} state={blog} className="btn btn-sm btn-info">Read More</Link>
                 </div>
             </div>
         </div>

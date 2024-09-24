@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from "react-redux"
 import { categoryFetch, categorySelector } from "../../features/category/categorySlice"
 import { authorByCatId, authorSelector } from "../../features/author/authorSlice"
 import toast from "react-hot-toast"
-import { tagFetch, tagSelector } from "../../features/tags/tagSlice"
 import TagInputWithSearch from "../tag-input/TagInputWithSearch"
 import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc"
+import { blogCreate } from "../../features/blog/blogSlice"
+
+dayjs.extend(utc)
 
 const BlogFrom = (props) => {
     const { editableBlog } = props
@@ -16,7 +19,6 @@ const BlogFrom = (props) => {
     // const [selectTag, setSelectTag] = useState('')
     const { categories } = useSelector(categorySelector)
     const { authorsByCat } = useSelector(authorSelector)
-    const { tags: taglist } = useSelector(tagSelector)
     const [selectDropData, setSelectDropData] = useState([])
     const dispatch = useDispatch()
 
@@ -42,20 +44,37 @@ const BlogFrom = (props) => {
             category_id: selectCategory,
             title: blogTitle,
             desc: blogBody,
-            dateTime: dayjs(),
+            dateTime: dayjs().utc(),
             tags: selectDropData,
         }
-        console.log(newBlog)
+
+        if (editableBlog) {
+            console.log("update function here")
+            toast.success("Blog update Successfully !!!")
+        } else {
+            console.log("new create function")
+            dispatch(blogCreate(newBlog))
+            toast.success("Blog Create Successfully !!!")
+        }
+
+        resetField()
     }
 
     useEffect(() => {
         dispatch(categoryFetch())
-        dispatch(tagFetch())
     }, [dispatch])
 
     // const handleTagChnage = (tags) => {
     //     setSelectTag(tags)
     // }
+
+    const resetField = () => {
+        setBlogTitle('')
+        setBlogBody('')
+        setSelectCategory('')
+        setSelectAuthor('')
+        setSelectDropData([])
+    }
 
     return (
         <div>
