@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { blogFetch, blogSelector } from "../features/blog/blogSlice"
 import { useEffect } from "react"
 import BlogCard from "../components/blog/BlogCard"
+import DropdownWithSearch from "../components/custom-dropdown-with-search/DropdownWithSearch"
 
 const Blogs = () => {
     const { blogs } = useSelector(blogSelector)
@@ -14,7 +15,9 @@ const Blogs = () => {
     return (
         <div className="max-w-7xl mx-auto m-10 px-6">
             <h2 className="mb-3">Blogs</h2>
-
+            {/* <div>
+                <DropdownWithSearch isSearch={true} dropDatas={blogs} mapKey="title" />
+            </div> */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-3  gap-4">
                 {
                     blogs && blogs.length > 0 ?

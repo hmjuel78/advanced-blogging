@@ -50,7 +50,7 @@ const AuthorList = (props) => {
                                             <td>{author.name}</td>
                                             <td>
                                                 <div className="flex gap-4 justify-end">
-                                                    <button onClick={() => authorEditHandle(author)} className="btn btn-circle btn-sm hover:btn-info hover:text-white">
+                                                    <button onClick={() => authorEditHandle({ author: author, category: category })} className="btn btn-circle btn-sm hover:btn-info hover:text-white">
                                                         <MdOutlineModeEdit />
                                                     </button>
                                                     <button

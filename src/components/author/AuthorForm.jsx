@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { categorySelector } from "../../features/category/categorySlice"
 import { authorCreate, authorUpdate } from "../../features/author/authorSlice"
 import toast from "react-hot-toast"
+import DropdownWithSearch from "../custom-dropdown-with-search/DropdownWithSearch"
 
 
 const AuthorForm = (props) => {
@@ -26,13 +27,13 @@ const AuthorForm = (props) => {
 
         const newAuthor = {
             name: authorName,
-            category_id: selectCategory
+            category_id: selectCategory.id
         }
         if (editableAuthor !== null) {
             dispatch(authorUpdate({
-                id: editableAuthor.id,
+                id: editableAuthor.author.id,
                 name: authorName,
-                category_id: selectCategory
+                category_id: selectCategory.id
             }))
             toast.success('Author update successfully!!')
         } else {
@@ -50,8 +51,8 @@ const AuthorForm = (props) => {
 
     useEffect(() => {
         if (editableAuthor !== null) {
-            setAuthorName(editableAuthor.name)
-            setSelectCategory(editableAuthor.category_id)
+            setSelectCategory(editableAuthor.category)
+            setAuthorName(editableAuthor.author.name)
         }
     }, [editableAuthor])
 
@@ -59,7 +60,15 @@ const AuthorForm = (props) => {
         <div>
             <h2 className='text-xl mb-4'>Create Author</h2>
             <form onSubmit={authOnSubmit} className="space-y-4">
-                <select
+                <DropdownWithSearch
+                    selectDropData={selectCategory}
+                    setSelectDropData={setSelectCategory}
+                    isSearch={false}
+                    dropDatas={categories}
+                    mapKey="name"
+                />
+
+                {/* <select
                     onChange={changeHandle}
                     value={selectCategory}
                     name="selectCategory"
@@ -71,7 +80,8 @@ const AuthorForm = (props) => {
                             <option key={category.id} value={category.id}>{category.name}</option>
                         ))
                     }
-                </select>
+                </select> */}
+
                 <input
                     onChange={changeHandle}
                     value={authorName}

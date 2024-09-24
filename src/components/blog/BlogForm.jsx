@@ -7,6 +7,7 @@ import TagInputWithSearch from "../tag-input/TagInputWithSearch"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import { blogCreate } from "../../features/blog/blogSlice"
+import DropdownWithSearch from "../custom-dropdown-with-search/DropdownWithSearch"
 
 dayjs.extend(utc)
 
@@ -88,6 +89,7 @@ const BlogFrom = (props) => {
                         ))
                     }
                 </select>
+                {/* <DropdownWithSearch isSearch={true} dropDatas={categories} mapKey='name' /> */}
                 <select
                     onChange={changeHandleBlog}
                     defaultValue={"DEFAULT"}
