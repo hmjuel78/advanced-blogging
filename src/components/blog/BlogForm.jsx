@@ -19,16 +19,27 @@ const BlogFrom = (props) => {
     const { categories } = useSelector(categorySelector)
     const { authorsByCat } = useSelector(authorSelector)
     const [selectDropData, setSelectDropData] = useState([])
+    const [blogData, setBlogData] = useState({
+        blogTitle: '',
+        blogBody: '',
+        selectCategory: '',
+        selectAuthor: '',
+    })
     const dispatch = useDispatch()
 
     const changeHandleBlog = (e) => {
+        setBlogData(blogData => {
+            let value = e.target.value
+
+            return { ...blogData, [e.target.name]: value }
+        })
         if (e.target.name === 'blogTitle') {
             setBlogTitle(e.target.value)
         } else if (e.target.name === 'blogBody') {
             setBlogBody(e.target.value)
         } else if (e.target.name === 'selectCategory') {
             setSelectCategory(e.target.value)
-            dispatch(authorByCatId(e.target.value))
+
         } else if (e.target.name === 'selectAuthor') {
             setSelectAuthor(e.target.value)
         }
@@ -46,6 +57,7 @@ const BlogFrom = (props) => {
             return toast.error('Type all Field properly!!!')
         }
         const tagArray = selectDropData.map(select => select.id)
+
         const newBlog = {
             author_id: selectAuthor,
             category_id: selectCategory,
@@ -68,6 +80,10 @@ const BlogFrom = (props) => {
     useEffect(() => {
         dispatch(categoryFetch())
     }, [dispatch])
+
+    useEffect(() => {
+        dispatch(authorByCatId(selectCategory))
+    }, [dispatch, selectCategory])
 
     return (
         <div>

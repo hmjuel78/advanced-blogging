@@ -44,6 +44,8 @@ const TagInputWithSearch = (props) => {
         setTimeout(() => {
             dispatch(tagSearchByName(e.target.value.toLowerCase()))
         }, 2000)
+
+        clearTimeout()
     }
 
     const handleInput = () => {
