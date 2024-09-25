@@ -91,6 +91,11 @@
       "name": "Aslam",
       "category_id": "5",
       "id": 12
+    },
+    {
+      "name": "JuelHW",
+      "category_id": 7,
+      "id": 13
     }
   ],
   "tags": [
@@ -188,6 +193,7 @@
       "id": 6
     },
     {
+<<<<<<< HEAD
       "author_id": "3",
       "category_id": "3",
       "title": "dsaf",
@@ -196,6 +202,16 @@
       "tags": [
         2,
         4
+=======
+      "author_id": 1,
+      "category_id": 1,
+      "title": "dsaf",
+      "desc": "fdasfdsaf",
+      "dateTime": "2024-09-25T09:15:39.096Z",
+      "tags": [
+        2,
+        7
+>>>>>>> blog-update
       ],
       "id": 7
     }

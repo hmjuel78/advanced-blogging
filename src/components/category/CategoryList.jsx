@@ -9,10 +9,6 @@ const CategoryList = (props) => {
     const { categories } = useSelector(categorySelector)
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        dispatch(categoryFetch())
-    }, [dispatch])
-
     const handleCatDelete = (catId) => {
         dispatch(categoryDelete(catId))
         toast.success('Category delete successfully!!')
@@ -21,7 +17,9 @@ const CategoryList = (props) => {
     const handleCatEdit = (cat) => {
         setEditableCat(cat)
     }
-
+    useEffect(() => {
+        dispatch(categoryFetch())
+    }, [dispatch])
 
     return (
         <div>

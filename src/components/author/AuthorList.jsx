@@ -11,11 +11,6 @@ const AuthorList = (props) => {
     const { categories } = useSelector(categorySelector)
     const dispatch = useDispatch()
 
-
-    useEffect(() => {
-        dispatch(authorFetch())
-    }, [dispatch])
-
     const authorEditHandle = (author) => {
         setEditableAuthor(author)
     }
@@ -23,6 +18,10 @@ const AuthorList = (props) => {
         dispatch(authorDelete(authorId))
         toast.success('Author Successfully Delete !!!')
     }
+    useEffect(() => {
+        dispatch(authorFetch())
+    }, [dispatch])
+
 
     return (
         <div>
@@ -51,7 +50,7 @@ const AuthorList = (props) => {
                                             <td>{author.name}</td>
                                             <td>
                                                 <div className="flex gap-4 justify-end">
-                                                    <button onClick={() => authorEditHandle(author)} className="btn btn-circle btn-sm hover:btn-info hover:text-white">
+                                                    <button onClick={() => authorEditHandle({ author: author, category: category })} className="btn btn-circle btn-sm hover:btn-info hover:text-white">
                                                         <MdOutlineModeEdit />
                                                     </button>
                                                     <button
@@ -70,7 +69,6 @@ const AuthorList = (props) => {
                     </tbody>
                 </table>
             </div>
-
         </div>
     )
 }

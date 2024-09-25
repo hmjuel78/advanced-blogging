@@ -6,51 +6,51 @@ import toast from "react-hot-toast"
 import TagInputWithSearch from "../tag-input/TagInputWithSearch"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
-import { blogCreate } from "../../features/blog/blogSlice"
+import { blogCreate, blogSelector } from "../../features/blog/blogSlice"
+import DropdownWithSearch from "../custom-dropdown-with-search/DropdownWithSearch"
 
 dayjs.extend(utc)
 
-const BlogFrom = (props) => {
-    const { editableBlog } = props
-    const [blogTitle, setBlogTitle] = useState('')
-    const [blogBody, setBlogBody] = useState('')
-    const [selectCategory, setSelectCategory] = useState('')
-    const [selectAuthor, setSelectAuthor] = useState('')
+const BlogFrom = () => {
+    const initState = {
+        blogTitle: '',
+        blogBody: '',
+        selectCategory: '',
+        selectAuthor: ''
+    }
+
+    const [blogData, setBlogData] = useState(initState)
+    const [selectDropData, setSelectDropData] = useState([])
     const { categories } = useSelector(categorySelector)
     const { authorsByCat } = useSelector(authorSelector)
-    const [selectDropData, setSelectDropData] = useState([])
+    const { editableBlog } = useSelector(blogSelector)
+
     const dispatch = useDispatch()
 
     const changeHandleBlog = (e) => {
-        if (e.target.name === 'blogTitle') {
-            setBlogTitle(e.target.value)
-        } else if (e.target.name === 'blogBody') {
-            setBlogBody(e.target.value)
-        } else if (e.target.name === 'selectCategory') {
-            setSelectCategory(e.target.value)
-            dispatch(authorByCatId(e.target.value))
-        } else if (e.target.name === 'selectAuthor') {
-            setSelectAuthor(e.target.value)
-        }
+        setBlogData(blogData => {
+            let value = e.target.value
+
+            return { ...blogData, [e.target.name]: value }
+        })
     }
     const resetField = () => {
-        setBlogTitle('')
-        setBlogBody('')
-        setSelectCategory('')
-        setSelectAuthor('')
         setSelectDropData([])
+        setBlogData(initState)
     }
+
     const blogOnSubmit = (e) => {
         e.preventDefault()
-        if (blogTitle.trim() === '' || blogBody.trim() === '') {
+        if (blogData.blogTitle.trim() === '' || blogData.blogBody.trim() === '') {
             return toast.error('Type all Field properly!!!')
         }
         const tagArray = selectDropData.map(select => select.id)
+
         const newBlog = {
-            author_id: selectAuthor,
-            category_id: selectCategory,
-            title: blogTitle,
-            desc: blogBody,
+            author_id: blogData.selectAuthor.id,
+            category_id: blogData.selectCategory.id,
+            title: blogData.blogTitle,
+            desc: blogData.blogBody,
             dateTime: dayjs().utc(),
             tags: tagArray,
         }
@@ -64,47 +64,65 @@ const BlogFrom = (props) => {
 
         resetField()
     }
+    const handleSelectUpdate = (selectCat) => {
+        setBlogData((restData) => ({
+            ...restData,
+            selectCategory: selectCat
+        }))
+    }
+    const handleSelectAuth = (selectAuth) => {
+        setBlogData((restData) => ({
+            ...restData,
+            selectAuthor: selectAuth
+        }))
+    }
+
+    useEffect(() => {
+        console.log(editableBlog)
+        if (editableBlog) {
+            setBlogData((prevData) => ({
+                ...prevData,
+                blogTitle: editableBlog.title || prevData.blogTitle,
+                blogBody: editableBlog.body || prevData.blogBody,
+                selectCategory: editableBlog.category || prevData.selectCategory,
+                selectAuthor: editableBlog.author || prevData.selectAuthor
+            }));
+        }
+    }, [editableBlog])
 
     useEffect(() => {
         dispatch(categoryFetch())
     }, [dispatch])
+
+    useEffect(() => {
+        dispatch(authorByCatId(blogData.selectCategory.id))
+    }, [dispatch, blogData.selectCategory])
 
     return (
         <div>
             <h2 className="text-xl mb-3">Create Blog</h2>
 
             <form onSubmit={blogOnSubmit} className="space-y-4">
-                <select
-                    onChange={changeHandleBlog}
-                    defaultValue={'DEFAULT'}
-                    name="selectCategory"
-                    className="select select-bordered w-full"
-                >
-                    <option value="DEFAULT">Select a category</option>
-                    {
-                        categories &&
-                        categories?.map(category => (
-                            <option key={category.id} value={category.id}>{category.name}</option>
-                        ))
-                    }
-                </select>
-                <select
-                    onChange={changeHandleBlog}
-                    defaultValue={"DEFAULT"}
-                    name="selectAuthor"
-                    className={`select select-bordered w-full`}
-                    disabled={!selectCategory || selectCategory === 'DEFAULT' && true}
-                >
-                    <option value="DEFAULT">Select a author</option>
-                    {authorsByCat && authorsByCat.length > 0 &&
-                        authorsByCat?.map(author => (
-                            <option key={author.id} value={author.id}>{author.name}</option>
-                        ))
-                    }
-                </select>
+                <DropdownWithSearch
+                    selectDropData={blogData.selectCategory}
+                    setSelectDropData={handleSelectUpdate}
+                    isSearch={true}
+                    dropDatas={categories}
+                    mapKey='name'
+                />
+
+                <DropdownWithSearch
+                    selectDropData={blogData.selectAuthor}
+                    setSelectDropData={handleSelectAuth}
+                    isSearch={false}
+                    dropDatas={authorsByCat}
+                    mapKey='name'
+                    disable={!blogData.selectCategory && true}
+                />
+
                 <input
                     onChange={changeHandleBlog}
-                    value={blogTitle}
+                    value={blogData.blogTitle}
                     name="blogTitle"
                     type="text"
                     placeholder="Blog Title"
@@ -118,7 +136,7 @@ const BlogFrom = (props) => {
                 />
                 <textarea
                     onChange={changeHandleBlog}
-                    value={blogBody}
+                    value={blogData.blogBody}
                     name="blogBody"
                     className="textarea textarea-bordered w-full min-h-28"
                     placeholder="Blog Description"

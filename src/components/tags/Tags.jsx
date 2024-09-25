@@ -62,7 +62,7 @@ const Tags = () => {
 
             <h2 className="text-xl my-3">All Tags</h2>
 
-            <ul className="space-y-4">
+            <ul className="space-y-4 max-h-72 overflow-y-auto">
                 {tags && tags.length > 0 ?
                     tags?.map(tag => (
                         <li
