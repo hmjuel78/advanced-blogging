@@ -56,7 +56,6 @@ export const categoryUpdate = createAsyncThunk('category/categoryUpdate',
 )
 export const categoryFetchById = createAsyncThunk('category/categoryFetchById',
     async (id) => {
-        console.log(id)
         try {
             const categories = await fetch(`${BASE_URL}?id=${id}`)
             return categories.json()

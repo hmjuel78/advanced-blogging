@@ -87,22 +87,24 @@ const BlogFrom = () => {
 
     useEffect(() => {
         // console.log(editableBlog)
-        if (editableBlog) {
+        if (editableBlog !== null) {
             dispatch(categoryFetchById(editableBlog.category_id))
-            dispatch(authorByCatId(editableBlog.author_id))
+            // dispatch(authorByCatId(editableBlog.author_id))
+
             setBlogData(() => ({
+
                 blogTitle: editableBlog.title || '',
                 blogBody: editableBlog.desc || '',
                 selectCategory: categoryById || '',
                 selectAuthor: authorsByCat || ''
             }))
-            setSelectTags(editableBlog.tags)
+            // setSelectTags(editableBlog.tags)
         }
     }, [editableBlog])
 
-    // console.log(blogData)
-    // console.log(selectTags)
-    console.log(blogData.selectAuthor)
+    console.log(blogData.selectCategory, 'select cat')
+    // console.log(categoryById)
+    // console.log(blogData.selectAuthor)
 
 
     return (
