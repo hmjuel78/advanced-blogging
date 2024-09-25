@@ -6,7 +6,8 @@ const initialState = {
     isLoading: false,
     isError: false,
     error: false,
-    categories: []
+    categories: [],
+    categoryById: []
 }
 
 export const categoryFetch = createAsyncThunk('category/categoryFetch',
@@ -19,7 +20,6 @@ export const categoryFetch = createAsyncThunk('category/categoryFetch',
         }
     }
 )
-
 export const categoryCreate = createAsyncThunk('category/categoryCreate',
     async (content) => {
         const newCategory = await fetch(BASE_URL, {
@@ -32,7 +32,6 @@ export const categoryCreate = createAsyncThunk('category/categoryCreate',
         return newCategory.json()
     }
 )
-
 export const categoryDelete = createAsyncThunk('category/categoryDelete',
     async (id) => {
         await fetch(`${BASE_URL}/${id}`, {
@@ -53,6 +52,17 @@ export const categoryUpdate = createAsyncThunk('category/categoryUpdate',
             }
         })
         return newCategory.json()
+    }
+)
+export const categoryFetchById = createAsyncThunk('category/categoryFetchById',
+    async (id) => {
+        console.log(id)
+        try {
+            const categories = await fetch(`${BASE_URL}?id=${id}`)
+            return categories.json()
+        } catch (error) {
+            console.log(error)
+        }
     }
 )
 
@@ -97,6 +107,10 @@ export const categorySlice = createSlice({
                 state.isLoading = false
                 const index = state.categories.findIndex(category => category.id === action.payload.id)
                 state.categories[index].name = action.payload.name
+            })
+            .addCase(categoryFetchById.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.categoryById = action.payload
             });
 
     }

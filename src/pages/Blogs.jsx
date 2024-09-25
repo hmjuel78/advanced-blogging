@@ -18,13 +18,13 @@ const Blogs = () => {
             <h2 className="mb-3">Blogs</h2>
             <div className="my-10 grid grid-cols-5">
 
-                <DropdownWithSearch
+                {/* <DropdownWithSearch
                     isSearch={true}
                     dropDatas={blogs}
                     selectDropData={selectCat}
                     setSelectDropData={setSelectCat}
                     mapKey="title"
-                />
+                /> */}
 
             </div>
 

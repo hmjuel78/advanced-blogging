@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { categoryFetch, categorySelector } from "../../features/category/categorySlice"
+import { categoryFetch, categoryFetchById, categorySelector } from "../../features/category/categorySlice"
 import { authorByCatId, authorSelector } from "../../features/author/authorSlice"
 import toast from "react-hot-toast"
 import TagInputWithSearch from "../tag-input/TagInputWithSearch"
@@ -20,8 +20,8 @@ const BlogFrom = () => {
     }
 
     const [blogData, setBlogData] = useState(initState)
-    const [selectDropData, setSelectDropData] = useState([])
-    const { categories } = useSelector(categorySelector)
+    const [selectTags, setSelectTags] = useState([])
+    const { categories, categoryById } = useSelector(categorySelector)
     const { authorsByCat } = useSelector(authorSelector)
     const { editableBlog } = useSelector(blogSelector)
 
@@ -35,7 +35,7 @@ const BlogFrom = () => {
         })
     }
     const resetField = () => {
-        setSelectDropData([])
+        setSelectTags([])
         setBlogData(initState)
     }
 
@@ -44,7 +44,7 @@ const BlogFrom = () => {
         if (blogData.blogTitle.trim() === '' || blogData.blogBody.trim() === '') {
             return toast.error('Type all Field properly!!!')
         }
-        const tagArray = selectDropData.map(select => select.id)
+        const tagArray = selectTags.map(select => select.id)
 
         const newBlog = {
             author_id: blogData.selectAuthor.id,
@@ -78,25 +78,32 @@ const BlogFrom = () => {
     }
 
     useEffect(() => {
-        console.log(editableBlog)
-        if (editableBlog) {
-            setBlogData((prevData) => ({
-                ...prevData,
-                blogTitle: editableBlog.title || prevData.blogTitle,
-                blogBody: editableBlog.body || prevData.blogBody,
-                selectCategory: editableBlog.category || prevData.selectCategory,
-                selectAuthor: editableBlog.author || prevData.selectAuthor
-            }));
-        }
-    }, [editableBlog])
-
-    useEffect(() => {
         dispatch(categoryFetch())
     }, [dispatch])
 
     useEffect(() => {
         dispatch(authorByCatId(blogData.selectCategory.id))
     }, [dispatch, blogData.selectCategory])
+
+    useEffect(() => {
+        // console.log(editableBlog)
+        if (editableBlog) {
+            dispatch(categoryFetchById(editableBlog.category_id))
+            dispatch(authorByCatId(editableBlog.author_id))
+            setBlogData(() => ({
+                blogTitle: editableBlog.title || '',
+                blogBody: editableBlog.desc || '',
+                selectCategory: categoryById || '',
+                selectAuthor: authorsByCat || ''
+            }))
+            setSelectTags(editableBlog.tags)
+        }
+    }, [editableBlog])
+
+    // console.log(blogData)
+    // console.log(selectTags)
+    console.log(blogData.selectAuthor)
+
 
     return (
         <div>
@@ -128,11 +135,11 @@ const BlogFrom = () => {
                     placeholder="Blog Title"
                     className="input input-bordered w-full"
                 />
-
+                {/* Tag inpt */}
                 <TagInputWithSearch
                     isSearch={true}
-                    selectDropData={selectDropData}
-                    setSelectDropData={setSelectDropData}
+                    selectDropData={selectTags}
+                    setSelectDropData={setSelectTags}
                 />
                 <textarea
                     onChange={changeHandleBlog}

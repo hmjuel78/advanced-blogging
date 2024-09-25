@@ -29,7 +29,7 @@ const BlogDetails = () => {
             <p>Description: {blogs.desc} </p>
             <p>Likes: {blogs.like} </p>
             <p>Comments</p>
-            {comments &&
+            {/* {comments &&
                 comments.length > 0 ?
                 comments?.map(comment => (
                     <div key={comment.id}>
@@ -37,7 +37,7 @@ const BlogDetails = () => {
                     </div>
                 ))
                 : <p>No Comments yet!!</p>
-            }
+            } */}
 
         </div>
     )
