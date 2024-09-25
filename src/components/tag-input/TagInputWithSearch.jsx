@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import useOutsideClick from '../../hooks/useOutsiteClick'
 import { useDispatch, useSelector } from "react-redux"
 import { tagSearchByName, tagSelector } from "../../features/tags/tagSlice"
@@ -36,12 +36,6 @@ const TagInputWithSearch = (props) => {
 
     const searchOnchageHandle = (e) => {
         setSearchValue(e.target.value)
-
-        setTimeout(() => {
-            dispatch(tagSearchByName(e.target.value.toLowerCase()))
-        }, 2000)
-
-        clearTimeout()
     }
 
     const handleInput = () => {
@@ -65,6 +59,18 @@ const TagInputWithSearch = (props) => {
     useOutsideClick(ref, () => {
         setOpen(false)
     })
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (searchValue) {
+                dispatch(tagSearchByName(searchValue))
+            } else {
+                dispatch(tagSearchByName())
+            }
+            // setSearch(tempSearch);
+        }, 1000);
+        return () => clearTimeout(timeoutId);
+    }, [searchValue, dispatch]);
 
     return (
         <>
@@ -91,7 +97,7 @@ const TagInputWithSearch = (props) => {
 
                 <ul className={`w-full mt-2 overflow-y-auto absolute border rounded-md bg-slate-700 ${open ? "max-h-60" : "max-h-0 hidden"} `} >
                     {
-                        isSearch === true &&
+                        isSearch &&
                         <div className="flex items-center sticky top-0 w-full">
                             <input
                                 type="text"

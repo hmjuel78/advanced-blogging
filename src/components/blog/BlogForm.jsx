@@ -6,22 +6,24 @@ import toast from "react-hot-toast"
 import TagInputWithSearch from "../tag-input/TagInputWithSearch"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
-import { blogCreate } from "../../features/blog/blogSlice"
+import { blogCreate, blogSelector } from "../../features/blog/blogSlice"
 import DropdownWithSearch from "../custom-dropdown-with-search/DropdownWithSearch"
 
 dayjs.extend(utc)
 
-const BlogFrom = (props) => {
-    const { editableBlog } = props
-    const { categories } = useSelector(categorySelector)
-    const { authorsByCat } = useSelector(authorSelector)
-    const [selectDropData, setSelectDropData] = useState([])
-    const [blogData, setBlogData] = useState({
+const BlogFrom = () => {
+    const initState = {
         blogTitle: '',
         blogBody: '',
         selectCategory: '',
         selectAuthor: ''
-    })
+    }
+
+    const [blogData, setBlogData] = useState(initState)
+    const [selectDropData, setSelectDropData] = useState([])
+    const { categories } = useSelector(categorySelector)
+    const { authorsByCat } = useSelector(authorSelector)
+    const { editableBlog } = useSelector(blogSelector)
 
     const dispatch = useDispatch()
 
@@ -34,6 +36,7 @@ const BlogFrom = (props) => {
     }
     const resetField = () => {
         setSelectDropData([])
+        setBlogData(initState)
     }
 
     const blogOnSubmit = (e) => {
@@ -44,8 +47,8 @@ const BlogFrom = (props) => {
         const tagArray = selectDropData.map(select => select.id)
 
         const newBlog = {
-            author_id: blogData.selectAuthor,
-            category_id: blogData.selectCategory,
+            author_id: blogData.selectAuthor.id,
+            category_id: blogData.selectCategory.id,
             title: blogData.blogTitle,
             desc: blogData.blogBody,
             dateTime: dayjs().utc(),
@@ -61,13 +64,38 @@ const BlogFrom = (props) => {
 
         resetField()
     }
+    const handleSelectUpdate = (selectCat) => {
+        setBlogData((restData) => ({
+            ...restData,
+            selectCategory: selectCat
+        }))
+    }
+    const handleSelectAuth = (selectAuth) => {
+        setBlogData((restData) => ({
+            ...restData,
+            selectAuthor: selectAuth
+        }))
+    }
+
+    useEffect(() => {
+        console.log(editableBlog)
+        if (editableBlog) {
+            setBlogData((prevData) => ({
+                ...prevData,
+                blogTitle: editableBlog.title || prevData.blogTitle,
+                blogBody: editableBlog.body || prevData.blogBody,
+                selectCategory: editableBlog.category || prevData.selectCategory,
+                selectAuthor: editableBlog.author || prevData.selectAuthor
+            }));
+        }
+    }, [editableBlog])
 
     useEffect(() => {
         dispatch(categoryFetch())
     }, [dispatch])
 
     useEffect(() => {
-        dispatch(authorByCatId(blogData.selectCategory))
+        dispatch(authorByCatId(blogData.selectCategory.id))
     }, [dispatch, blogData.selectCategory])
 
     return (
@@ -75,43 +103,23 @@ const BlogFrom = (props) => {
             <h2 className="text-xl mb-3">Create Blog</h2>
 
             <form onSubmit={blogOnSubmit} className="space-y-4">
-                <select
-                    onChange={changeHandleBlog}
-                    defaultValue={'DEFAULT'}
-                    name="selectCategory"
-                    className="select select-bordered w-full"
-                >
-                    <option value="DEFAULT">Select a category</option>
-                    {
-                        categories &&
-                        categories?.map(category => (
-                            <option key={category.id} value={category.id}>{category.name}</option>
-                        ))
-                    }
-                </select>
-
                 <DropdownWithSearch
                     selectDropData={blogData.selectCategory}
-                    setSelectDropData={setBlogData.selectCategory}
+                    setSelectDropData={handleSelectUpdate}
                     isSearch={true}
                     dropDatas={categories}
                     mapKey='name'
                 />
 
-                <select
-                    onChange={changeHandleBlog}
-                    defaultValue={"DEFAULT"}
-                    name="selectAuthor"
-                    className={`select select-bordered w-full`}
-                    disabled={!blogData.selectCategory || blogData.selectCategory === 'DEFAULT' && true}
-                >
-                    <option value="DEFAULT">Select a author</option>
-                    {authorsByCat && authorsByCat.length > 0 &&
-                        authorsByCat?.map(author => (
-                            <option key={author.id} value={author.id}>{author.name}</option>
-                        ))
-                    }
-                </select>
+                <DropdownWithSearch
+                    selectDropData={blogData.selectAuthor}
+                    setSelectDropData={handleSelectAuth}
+                    isSearch={false}
+                    dropDatas={authorsByCat}
+                    mapKey='name'
+                    disable={!blogData.selectCategory && true}
+                />
+
                 <input
                     onChange={changeHandleBlog}
                     value={blogData.blogTitle}

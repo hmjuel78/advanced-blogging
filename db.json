@@ -191,6 +191,18 @@
         2
       ],
       "id": 6
+    },
+    {
+      "author_id": 1,
+      "category_id": 1,
+      "title": "dsaf",
+      "desc": "fdasfdsaf",
+      "dateTime": "2024-09-25T09:15:39.096Z",
+      "tags": [
+        2,
+        7
+      ],
+      "id": 7
     }
   ],
   "comments": [

@@ -6,7 +6,8 @@ const initialState = {
     isLoading: false,
     isError: false,
     error: false,
-    blogs: []
+    blogs: [],
+    editableBlog: null
 }
 
 export const blogFetch = createAsyncThunk('blog/blogFetch',
@@ -60,6 +61,11 @@ export const singleBlog = createAsyncThunk('blog/singleBlog',
 export const blogSlice = createSlice({
     name: 'blog',
     initialState,
+    reducers: {
+        _EDITABLEBLOG: (state, action) => {
+            state.editableBlog = action.payload
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(blogFetch.pending, (state) => {
@@ -107,7 +113,7 @@ export const blogSlice = createSlice({
     }
 })
 
-
+export const { _EDITABLEBLOG } = blogSlice.actions
 export const blogSelector = (state => state.blogReducer)
 
 export default blogSlice.reducer
