@@ -6,8 +6,9 @@ import toast from "react-hot-toast"
 import TagInputWithSearch from "../tag-input/TagInputWithSearch"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
-import { blogCreate, blogSelector } from "../../features/blog/blogSlice"
+import { _EDITABLEBLOG, blogCreate, blogSelector } from "../../features/blog/blogSlice"
 import DropdownWithSearch from "../custom-dropdown-with-search/DropdownWithSearch"
+import { tagFetch, tagSelector } from "../../features/tags/tagSlice"
 
 dayjs.extend(utc)
 
@@ -15,15 +16,16 @@ const BlogFrom = () => {
     const initState = {
         blogTitle: '',
         blogBody: '',
-        selectCategory: '',
-        selectAuthor: ''
+        selectCategory: null,
+        selectAuthor: null
     }
 
     const [blogData, setBlogData] = useState(initState)
-    const [selectDropData, setSelectDropData] = useState([])
+    const [selectTags, setSelectTags] = useState([])
     const { categories } = useSelector(categorySelector)
     const { authorsByCat } = useSelector(authorSelector)
     const { editableBlog } = useSelector(blogSelector)
+    const { tags } = useSelector(tagSelector)
 
     const dispatch = useDispatch()
 
@@ -35,8 +37,9 @@ const BlogFrom = () => {
         })
     }
     const resetField = () => {
-        setSelectDropData([])
+        setSelectTags([])
         setBlogData(initState)
+        dispatch(_EDITABLEBLOG(null))
     }
 
     const blogOnSubmit = (e) => {
@@ -44,7 +47,7 @@ const BlogFrom = () => {
         if (blogData.blogTitle.trim() === '' || blogData.blogBody.trim() === '') {
             return toast.error('Type all Field properly!!!')
         }
-        const tagArray = selectDropData.map(select => select.id)
+        const tagArray = selectTags.map(select => select.id)
 
         const newBlog = {
             author_id: blogData.selectAuthor.id,
@@ -59,6 +62,7 @@ const BlogFrom = () => {
             toast.success("Blog update Successfully !!!")
         } else {
             dispatch(blogCreate(newBlog))
+            // console.log(newBlog, 'newBlog')
             toast.success("Blog Create Successfully !!!")
         }
 
@@ -77,32 +81,51 @@ const BlogFrom = () => {
         }))
     }
 
-    useEffect(() => {
-        console.log(editableBlog)
-        if (editableBlog) {
-            setBlogData((prevData) => ({
-                ...prevData,
-                blogTitle: editableBlog.title || prevData.blogTitle,
-                blogBody: editableBlog.body || prevData.blogBody,
-                selectCategory: editableBlog.category || prevData.selectCategory,
-                selectAuthor: editableBlog.author || prevData.selectAuthor
-            }));
+    const updateDataFromBlog = () => {
+        if (editableBlog !== null) {
+            // console.log(authorsByCat.find(auth => auth.id === editableBlog.author_id), 'map')
+            setBlogData(() => ({
+                blogTitle: editableBlog.title || '',
+                blogBody: editableBlog.desc || '',
+                selectCategory: categories.find(cat => cat.id === editableBlog.category_id) || null,
+                selectAuthor: authorsByCat.find(auth => auth.id === editableBlog.author_id) || null
+            }))
+
+            // setSelectTags(editableBlog.tags.map(tagId => tags.find(tag => tag.id === tagId)));
         }
-    }, [editableBlog])
+    }
+
 
     useEffect(() => {
         dispatch(categoryFetch())
-    }, [dispatch])
+        dispatch(tagFetch())
+    }, [])
 
     useEffect(() => {
-        dispatch(authorByCatId(blogData.selectCategory.id))
+        if (editableBlog) {
+            dispatch(authorByCatId(editableBlog.category_id))
+        }
+    }, [])
+
+    useEffect(() => {
+        if (blogData?.selectCategory?.id) {
+            dispatch(authorByCatId(blogData.selectCategory.id))
+        }
     }, [dispatch, blogData.selectCategory])
+
+    useEffect(() => {
+        if (editableBlog) {
+            updateDataFromBlog()
+            console.log("Form updated with authorsByCat data")
+        }
+    }, [])
+
 
     return (
         <div>
             <h2 className="text-xl mb-3">Create Blog</h2>
 
-            <form onSubmit={blogOnSubmit} className="space-y-4">
+            <div className="space-y-4">
                 <DropdownWithSearch
                     selectDropData={blogData.selectCategory}
                     setSelectDropData={handleSelectUpdate}
@@ -128,11 +151,11 @@ const BlogFrom = () => {
                     placeholder="Blog Title"
                     className="input input-bordered w-full"
                 />
-
+                {/* Tag inpt */}
                 <TagInputWithSearch
                     isSearch={true}
-                    selectDropData={selectDropData}
-                    setSelectDropData={setSelectDropData}
+                    selectDropData={selectTags}
+                    setSelectDropData={setSelectTags}
                 />
                 <textarea
                     onChange={changeHandleBlog}
@@ -142,8 +165,8 @@ const BlogFrom = () => {
                     placeholder="Blog Description"
                 >
                 </textarea>
-                <button type="submit" className="btn btn-outline">{editableBlog === null ? 'Create' : 'Update'}</button>
-            </form>
+                <button onClick={blogOnSubmit} className="btn btn-outline">{editableBlog === null ? 'Create' : 'Update'}</button>
+            </div>
         </div>
     )
 }

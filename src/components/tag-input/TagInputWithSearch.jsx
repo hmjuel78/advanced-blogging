@@ -1,38 +1,18 @@
 import { useEffect, useRef, useState } from "react"
 import useOutsideClick from '../../hooks/useOutsiteClick'
 import { useDispatch, useSelector } from "react-redux"
-import { tagSearchByName, tagSelector } from "../../features/tags/tagSlice"
+import { tagCreate, tagFetch, tagSelector, updateSearchTags } from "../../features/tags/tagSlice"
 import { IoCloseOutline } from "react-icons/io5"
 
 
 const TagInputWithSearch = (props) => {
     const { isSearch, selectDropData, setSelectDropData } = props
     const [searchValue, setSearchValue] = useState('')
-
     const [open, setOpen] = useState(false)
     const ref = useRef()
     const dispatch = useDispatch()
     const { tagsByName: dropDatas } = useSelector(tagSelector)
 
-
-    const dropDownhandler = (dropData) => {
-
-        const isExistTag = selectDropData.find((selectdata) => parseInt(selectdata.id) === parseInt(dropData.id))
-        const newTag = {
-            id: dropData.id,
-            name: dropData.name
-        }
-
-        if (isExistTag) {
-            setOpen(false)
-            setSearchValue("")
-            return;
-        } else {
-            setSelectDropData([...selectDropData, newTag])
-            setOpen(false)
-            setSearchValue("")
-        }
-    }
 
     const searchOnchageHandle = (e) => {
         setSearchValue(e.target.value)
@@ -42,8 +22,25 @@ const TagInputWithSearch = (props) => {
         const t = searchValue.trim()
         if (!t.length) return
 
+        const availableTag = dropDatas.find(dropdata => dropdata.name === searchValue)
+
+        if (availableTag) {
+            addTag(availableTag)
+        } else {
+            const newTag = {
+                name: searchValue,
+                id: Date.now()
+            }
+            addTag(newTag)
+            dispatch(tagCreate(newTag))
+        }
+    }
+
+    const addTag = (newTag) => {
+        if (selectDropData.filter(selectdata => selectdata.id === newTag.id).length === 0) {
+            setSelectDropData([...selectDropData, newTag])
+        }
         setSearchValue("")
-        setSelectDropData([...selectDropData, searchValue])
     }
 
     const handleKeyUp = (e) => {
@@ -58,19 +55,20 @@ const TagInputWithSearch = (props) => {
 
     useOutsideClick(ref, () => {
         setOpen(false)
+        setSearchValue('')
     })
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             if (searchValue) {
-                dispatch(tagSearchByName(searchValue))
+                dispatch(tagFetch(searchValue))
             } else {
-                dispatch(tagSearchByName())
+                dispatch(updateSearchTags())
             }
-            // setSearch(tempSearch);
-        }, 1000);
-        return () => clearTimeout(timeoutId);
-    }, [searchValue, dispatch]);
+        }, 1000)
+        return () => clearTimeout(timeoutId)
+    }, [searchValue])
+
 
     return (
         <>
@@ -114,7 +112,7 @@ const TagInputWithSearch = (props) => {
                         <li key={dropData.id} className={`p-2 text-sm hover:bg-sky-600 hover:text-white
                             ${dropData.name.toLowerCase() === selectDropData && "bg-sky-600 text-white"}
                             ${dropData?.name?.toLowerCase().includes(searchValue.toLowerCase()) ? "block" : "hidden"} `}
-                            onClick={() => dropDownhandler(dropData)}
+                            onClick={() => addTag(dropData)}
                         >
                             {dropData?.name}
                         </li>

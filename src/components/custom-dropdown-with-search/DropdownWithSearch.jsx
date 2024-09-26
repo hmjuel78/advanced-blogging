@@ -3,7 +3,7 @@ import useOutsideClick from '../../hooks/useOutsiteClick'
 
 
 const DropdownWithSearch = (props) => {
-    const { selectDropData, setSelectDropData, isSearch = false, disable = false, dropDatas, mapKey = 'name' } = props
+    const { selectDropData, setSelectDropData, isSearch = false, disable = false, dropDatas = [], mapKey = 'name', selectPlaceholder = "select ...." } = props
     const [searchValue, setSearchValue] = useState('')
     const [open, setOpen] = useState(false)
     const ref = useRef()
@@ -20,13 +20,20 @@ const DropdownWithSearch = (props) => {
 
     return (
         <>
-            <div ref={ref} className={`border border-gray-600 h-12 w-full font-medium relative rounded-md ${disable && 'opacity-50 pointer-events-none'}`}>
+            <div
+                ref={ref}
+                className={`border border-gray-600 h-12 w-full font-medium relative rounded-md 
+                    ${disable && 'opacity-50 pointer-events-none'}`}
+            >
                 <div
                     onClick={() => setOpen(!open)}
                     className={`w-full p-2 flex h-full items-center justify-between rounded`}
                 >
                     <span className="space-x-2 capitalize">
-                        {selectDropData ? selectDropData.length > 25 ? selectDropData.substring(0, 25) + "..." : selectDropData[mapKey] : "Select"}
+                        {selectDropData ? selectDropData.length > 25 ? selectDropData.substring(0, 25) + "..."
+                            : selectDropData[mapKey]
+                            : selectPlaceholder
+                        }
                     </span>
                 </div>
 
@@ -44,18 +51,19 @@ const DropdownWithSearch = (props) => {
                         </div>
                     }
 
-                    {dropDatas?.map((dropData) => (
-                        <li key={dropData.id} className={`p-2 text-sm hover:bg-sky-600 hover:text-white capitalize
+                    {dropDatas &&
+                        dropDatas?.map((dropData) => (
+                            <li key={dropData.id} className={`p-2 text-sm hover:bg-sky-600 hover:text-white capitalize
                             ${dropData?.[mapKey]?.toLowerCase() === selectDropData && "bg-sky-600 text-white"}
                             ${dropData?.[mapKey]?.toLowerCase().includes(searchValue.toLowerCase()) ? "block" : "hidden"} `}
 
-                            onClick={() => dropDownhandler(dropData)}
-                        >
-                            {dropData?.[mapKey]}
+                                onClick={() => dropDownhandler(dropData)}
+                            >
+                                {dropData?.[mapKey]}
 
-                        </li>
-                    ))}
-
+                            </li>
+                        ))
+                    }
                 </ul>
             </div>
         </>
