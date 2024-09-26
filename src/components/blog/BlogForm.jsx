@@ -102,7 +102,7 @@ const BlogFrom = () => {
         }
     }, [editableBlog])
 
-    console.log(blogData.selectCategory, 'select cat')
+    // console.log(blogData.selectCategory, 'select cat')
     // console.log(categoryById)
     // console.log(blogData.selectAuthor)
 
@@ -111,7 +111,7 @@ const BlogFrom = () => {
         <div>
             <h2 className="text-xl mb-3">Create Blog</h2>
 
-            <form onSubmit={blogOnSubmit} className="space-y-4">
+            <div className="space-y-4">
                 <DropdownWithSearch
                     selectDropData={blogData.selectCategory}
                     setSelectDropData={handleSelectUpdate}
@@ -151,8 +151,8 @@ const BlogFrom = () => {
                     placeholder="Blog Description"
                 >
                 </textarea>
-                <button type="submit" className="btn btn-outline">{editableBlog === null ? 'Create' : 'Update'}</button>
-            </form>
+                <button onClick={blogOnSubmit} className="btn btn-outline">{editableBlog === null ? 'Create' : 'Update'}</button>
+            </div>
         </div>
     )
 }

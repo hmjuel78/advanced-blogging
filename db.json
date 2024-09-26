@@ -139,6 +139,22 @@
     {
       "name": "clean",
       "id": 8
+    },
+    {
+      "name": "romantic",
+      "id": 9
+    },
+    {
+      "name": "hot",
+      "id": 10
+    },
+    {
+      "name": "history",
+      "id": 11
+    },
+    {
+      "name": "top",
+      "id": 12
     }
   ],
   "blogs": [
@@ -229,6 +245,19 @@
         8
       ],
       "id": 8
+    },
+    {
+      "author_id": 3,
+      "category_id": 3,
+      "title": "Top 10 Historical Place",
+      "desc": "Explore top 10 historical place",
+      "dateTime": "2024-09-25T23:12:04.377Z",
+      "tags": [
+        null,
+        null,
+        null
+      ],
+      "id": 9
     }
   ],
   "comments": [

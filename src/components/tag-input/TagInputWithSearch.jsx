@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import useOutsideClick from '../../hooks/useOutsiteClick'
 import { useDispatch, useSelector } from "react-redux"
-import { tagSearchByName, tagSelector } from "../../features/tags/tagSlice"
+import { tagCreate, tagSearchByName, tagSelector } from "../../features/tags/tagSlice"
 import { IoCloseOutline } from "react-icons/io5"
 
 
@@ -15,14 +15,10 @@ const TagInputWithSearch = (props) => {
     const { tagsByName: dropDatas } = useSelector(tagSelector)
 
 
-    const dropDownhandler = (dropData) => {
+    const addTag = (newTag) => {
 
-        const isExistTag = selectDropData.find((selectdata) => parseInt(selectdata.id) === parseInt(dropData.id))
-        const newTag = {
-            id: dropData.id,
-            name: dropData.name
-        }
-
+        const isExistTag = selectDropData.find((selectdata) => parseInt(selectdata.id) === parseInt(newTag.id))
+        console.log(isExistTag)
         if (isExistTag) {
             setOpen(false)
             setSearchValue("")
@@ -42,8 +38,18 @@ const TagInputWithSearch = (props) => {
         const t = searchValue.trim()
         if (!t.length) return
 
-        setSearchValue("")
-        setSelectDropData([...selectDropData, searchValue])
+        const availableTag = dropDatas?.find(dropdata => dropdata.name === searchValue.toLowerCase())
+
+        if (availableTag) {
+            addTag(availableTag)
+        } else {
+            const newTag = {
+                name: searchValue.toLowerCase()
+            }
+            addTag(newTag)
+            dispatch(tagCreate(newTag))
+        }
+
     }
 
     const handleKeyUp = (e) => {
@@ -67,10 +73,10 @@ const TagInputWithSearch = (props) => {
             } else {
                 dispatch(tagSearchByName())
             }
-            // setSearch(tempSearch);
-        }, 1000);
-        return () => clearTimeout(timeoutId);
-    }, [searchValue, dispatch]);
+        }, 1000)
+        return () => clearTimeout(timeoutId)
+    }, [searchValue, dispatch])
+
 
     return (
         <>
@@ -114,7 +120,7 @@ const TagInputWithSearch = (props) => {
                         <li key={dropData.id} className={`p-2 text-sm hover:bg-sky-600 hover:text-white
                             ${dropData.name.toLowerCase() === selectDropData && "bg-sky-600 text-white"}
                             ${dropData?.name?.toLowerCase().includes(searchValue.toLowerCase()) ? "block" : "hidden"} `}
-                            onClick={() => dropDownhandler(dropData)}
+                            onClick={() => addTag(dropData)}
                         >
                             {dropData?.name}
                         </li>
