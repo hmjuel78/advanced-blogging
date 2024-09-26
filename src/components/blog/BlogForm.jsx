@@ -78,6 +78,22 @@ const BlogFrom = () => {
         }))
     }
 
+    const blogEditOptions = () => {
+
+        dispatch(categoryFetchById(editableBlog.category_id))
+        dispatch(authorByCatId(editableBlog.author_id))
+
+        setBlogData(() => ({
+            blogTitle: editableBlog.title || '',
+            blogBody: editableBlog.desc || '',
+            selectCategory: categoryById.length ? categoryById[0] : null,
+            selectAuthor: authorsByCat.length ? authorsByCat[0] : ''
+        }))
+
+        // setSelectTags(editableBlog.tags)
+
+    }
+
     useEffect(() => {
         dispatch(categoryFetch())
     }, [dispatch])
@@ -87,24 +103,14 @@ const BlogFrom = () => {
     }, [dispatch, blogData.selectCategory])
 
     useEffect(() => {
-        if (editableBlog !== null) {
-            dispatch(categoryFetchById(editableBlog.category_id))
-            // dispatch(authorByCatId(editableBlog.author_id))
-
-            setBlogData(() => ({
-                blogTitle: editableBlog.title || '',
-                blogBody: editableBlog.desc || '',
-                selectCategory: categoryById[0] || '',
-                selectAuthor: authorsByCat || ''
-            }))
-            // setSelectTags(editableBlog.tags)
+        if (editableBlog === null) {
+            return
+        } else {
+            blogEditOptions()
         }
-
-        dispatch(_EDITABLEBLOG(null))
     }, [])
 
-    console.log(blogData.selectCategory, 'select cat')
-    console.log(categoryById[0], 'cat by id')
+    console.log(editableBlog)
 
 
     return (
