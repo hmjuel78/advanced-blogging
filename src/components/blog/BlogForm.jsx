@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { categoryFetch, categoryFetchById, categorySelector } from "../../features/category/categorySlice"
+import { categoryFetch, categorySelector } from "../../features/category/categorySlice"
 import { authorByCatId, authorSelector } from "../../features/author/authorSlice"
 import toast from "react-hot-toast"
 import TagInputWithSearch from "../tag-input/TagInputWithSearch"
@@ -8,6 +8,7 @@ import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import { _EDITABLEBLOG, blogCreate, blogSelector } from "../../features/blog/blogSlice"
 import DropdownWithSearch from "../custom-dropdown-with-search/DropdownWithSearch"
+import { tagFetch, tagSelector } from "../../features/tags/tagSlice"
 
 dayjs.extend(utc)
 
@@ -16,14 +17,15 @@ const BlogFrom = () => {
         blogTitle: '',
         blogBody: '',
         selectCategory: null,
-        selectAuthor: ''
+        selectAuthor: null
     }
 
     const [blogData, setBlogData] = useState(initState)
     const [selectTags, setSelectTags] = useState([])
-    const { categories, categoryById } = useSelector(categorySelector)
+    const { categories } = useSelector(categorySelector)
     const { authorsByCat } = useSelector(authorSelector)
     const { editableBlog } = useSelector(blogSelector)
+    const { tags } = useSelector(tagSelector)
 
     const dispatch = useDispatch()
 
@@ -37,6 +39,7 @@ const BlogFrom = () => {
     const resetField = () => {
         setSelectTags([])
         setBlogData(initState)
+        dispatch(_EDITABLEBLOG(null))
     }
 
     const blogOnSubmit = (e) => {
@@ -78,39 +81,44 @@ const BlogFrom = () => {
         }))
     }
 
-    const blogEditOptions = () => {
+    const updateDataFromBlog = () => {
+        if (editableBlog !== null) {
+            console.log(authorsByCat.find(auth => auth.id === editableBlog.author_id), 'map')
+            setBlogData(() => ({
+                blogTitle: editableBlog.title || '',
+                blogBody: editableBlog.desc || '',
+                selectCategory: categories.find(cat => cat.id === editableBlog.category_id) || null,
+                selectAuthor: authorsByCat.find(auth => auth.id === editableBlog.author_id) || null
+            }))
 
-        dispatch(categoryFetchById(editableBlog.category_id))
-        dispatch(authorByCatId(editableBlog.author_id))
-
-        setBlogData(() => ({
-            blogTitle: editableBlog.title || '',
-            blogBody: editableBlog.desc || '',
-            selectCategory: categoryById.length ? categoryById[0] : null,
-            selectAuthor: authorsByCat.length ? authorsByCat[0] : ''
-        }))
-
-        // setSelectTags(editableBlog.tags)
-
+            // setSelectTags(editableBlog.tags.map(tagId => tags.find(tag => tag.id === tagId)));
+        }
     }
+
 
     useEffect(() => {
         dispatch(categoryFetch())
-    }, [dispatch])
+        dispatch(tagFetch())
+    }, [])
 
     useEffect(() => {
-        dispatch(authorByCatId(blogData?.selectCategory?.id))
-    }, [dispatch, blogData.selectCategory])
-
-    useEffect(() => {
-        if (editableBlog === null) {
-            return
-        } else {
-            blogEditOptions()
+        if (editableBlog) {
+            dispatch(authorByCatId(editableBlog.category_id))
         }
     }, [])
 
-    console.log(editableBlog)
+    useEffect(() => {
+        if (blogData?.selectCategory?.id) {
+            dispatch(authorByCatId(blogData.selectCategory.id))
+        }
+    }, [dispatch, blogData.selectCategory])
+
+    useEffect(() => {
+        if (editableBlog) {
+            updateDataFromBlog()
+            console.log("Form updated with authorsByCat data")
+        }
+    }, [])
 
 
     return (
