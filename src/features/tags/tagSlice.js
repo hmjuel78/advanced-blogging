@@ -11,15 +11,19 @@ const initialState = {
 }
 
 export const tagFetch = createAsyncThunk('tag/tagFetch',
-    async () => {
-        const tags = await fetch(BASE_URL)
-        return tags.json()
+    // eslint-disable-next-line no-unused-vars
+    async (keyword = null) => {
+        let url = BASE_URL;
+        // if(keyword){
+        //     url = BASE_URL + "?name="+keyword
+        // }
+        const tags = (await fetch(url)).json()
+        return tags;
     }
 )
 
 export const tagCreate = createAsyncThunk('tag/tagCreate',
     async (content) => {
-        console.log(content)
         const newTag = await fetch(BASE_URL, {
             method: 'POST',
             body: JSON.stringify(content),
@@ -53,16 +57,21 @@ export const tagUpdate = createAsyncThunk('tag/tagUpdate',
         return newTag.json()
     }
 )
-export const tagSearchByName = createAsyncThunk('tag/tagSearchByName',
-    async (content) => {
-        const newTag = await fetch(`${BASE_URL}?name=${content}`)
-        return newTag.json()
-    }
-)
+// export const tagSearchByName = createAsyncThunk('tag/tagSearchByName',
+//     async (content) => {
+//         const newTag = await fetch(`${BASE_URL}?name=${content}`)
+//         return newTag.json()
+//     }
+// )
 
 export const tagSlice = createSlice({
     name: 'tag',
     initialState,
+    reducers: {
+        updateSearchTags: state => {
+            state.tagsByName = []
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(tagFetch.pending, (state) => {
@@ -71,7 +80,14 @@ export const tagSlice = createSlice({
             })
             .addCase(tagFetch.fulfilled, (state, action) => {
                 state.isLoading = false
-                state.tags = action.payload
+                // state.tags = action.payload
+
+                if (action.meta.arg) {
+                    state.tagsByName = action.payload.filter(item => item.name.toLowerCase().includes(action.meta.arg))
+                    // state.searchTags = action.payload
+                } else {
+                    state.tags = action.payload
+                }
             })
             .addCase(tagFetch.rejected, (state, action) => {
                 state.isLoading = false
@@ -102,15 +118,15 @@ export const tagSlice = createSlice({
                 const index = state.tags.findIndex(tag => tag.id === action.payload.id)
                 state.tags[index].name = action.payload.name
             })
-            .addCase(tagSearchByName.fulfilled, (state, action) => {
-                state.isLoading = false
-                state.tagsByName = action.payload
-            });
+        // .addCase(tagSearchByName.fulfilled, (state, action) => {
+        //     state.isLoading = false
+        //     state.tagsByName = action.payload
+        // });
 
     }
 })
 
 
 export const tagSelector = (state => state.tagReducer)
-
+export const { updateSearchTags } = tagSlice.actions
 export default tagSlice.reducer

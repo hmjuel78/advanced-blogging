@@ -6,7 +6,7 @@ import toast from "react-hot-toast"
 import TagInputWithSearch from "../tag-input/TagInputWithSearch"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
-import { blogCreate, blogSelector } from "../../features/blog/blogSlice"
+import { _EDITABLEBLOG, blogCreate, blogSelector } from "../../features/blog/blogSlice"
 import DropdownWithSearch from "../custom-dropdown-with-search/DropdownWithSearch"
 
 dayjs.extend(utc)
@@ -15,7 +15,7 @@ const BlogFrom = () => {
     const initState = {
         blogTitle: '',
         blogBody: '',
-        selectCategory: '',
+        selectCategory: null,
         selectAuthor: ''
     }
 
@@ -59,6 +59,7 @@ const BlogFrom = () => {
             toast.success("Blog update Successfully !!!")
         } else {
             dispatch(blogCreate(newBlog))
+            // console.log(newBlog, 'newBlog')
             toast.success("Blog Create Successfully !!!")
         }
 
@@ -82,29 +83,28 @@ const BlogFrom = () => {
     }, [dispatch])
 
     useEffect(() => {
-        dispatch(authorByCatId(blogData.selectCategory.id))
+        dispatch(authorByCatId(blogData?.selectCategory?.id))
     }, [dispatch, blogData.selectCategory])
 
     useEffect(() => {
-        // console.log(editableBlog)
         if (editableBlog !== null) {
             dispatch(categoryFetchById(editableBlog.category_id))
             // dispatch(authorByCatId(editableBlog.author_id))
 
             setBlogData(() => ({
-
                 blogTitle: editableBlog.title || '',
                 blogBody: editableBlog.desc || '',
-                selectCategory: categoryById || '',
+                selectCategory: categoryById[0] || '',
                 selectAuthor: authorsByCat || ''
             }))
             // setSelectTags(editableBlog.tags)
         }
-    }, [editableBlog])
 
-    // console.log(blogData.selectCategory, 'select cat')
-    // console.log(categoryById)
-    // console.log(blogData.selectAuthor)
+        dispatch(_EDITABLEBLOG(null))
+    }, [])
+
+    console.log(blogData.selectCategory, 'select cat')
+    console.log(categoryById[0], 'cat by id')
 
 
     return (
