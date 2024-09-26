@@ -83,7 +83,7 @@ const BlogFrom = () => {
 
     const updateDataFromBlog = () => {
         if (editableBlog !== null) {
-            console.log(authorsByCat.find(auth => auth.id === editableBlog.author_id), 'map')
+            // console.log(authorsByCat.find(auth => auth.id === editableBlog.author_id), 'map')
             setBlogData(() => ({
                 blogTitle: editableBlog.title || '',
                 blogBody: editableBlog.desc || '',

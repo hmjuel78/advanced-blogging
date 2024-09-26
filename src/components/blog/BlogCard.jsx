@@ -10,7 +10,9 @@ import { authorFetch, authorSelector } from "../../features/author/authorSlice"
 import { _EDITABLEBLOG } from "../../features/blog/blogSlice"
 
 const BlogCard = (props) => {
-    const { blog } = props
+    const { blog, filterOptions = null } = props
+    const { categorySelect, authorSelect } = filterOptions
+
     const dispatch = useDispatch()
     const { tags } = useSelector(tagSelector)
     const { categories } = useSelector(categorySelector)
@@ -29,8 +31,14 @@ const BlogCard = (props) => {
         dispatch(authorFetch())
     }, [dispatch])
 
+    useEffect(() => {
+        console.log(categorySelect, authorSelect)
+    }, [filterOptions])
+
     return (
-        <div className="card bg-base-100 w-full shadow-xl border border-white">
+        <div className={`card bg-base-100 w-full shadow-xl border border-white
+            ${filterOptions !== blog.category_id ? "block" : "hidden"}
+        `}>
             <div className="card-body">
                 <h2 className="card-title">{blog.title}</h2>
                 <p>{blog.desc}</p>
