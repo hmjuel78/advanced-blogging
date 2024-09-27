@@ -242,16 +242,6 @@
       "id": 6
     },
     {
-<<<<<<< HEAD
-      "author_id": "3",
-      "category_id": "3",
-      "title": "dsaf",
-      "desc": "dsaf",
-      "dateTime": "2024-09-24T10:39:21.392Z",
-      "tags": [
-        2,
-        4
-=======
       "author_id": 1,
       "category_id": 1,
       "title": "dsaf",
@@ -260,7 +250,6 @@
       "tags": [
         2,
         7
->>>>>>> blog-update
       ],
       "id": 7
     },
