@@ -1,21 +1,29 @@
 {
   "blogs": [
     {
-      "id": 1,
       "authorId": 1,
-      "catagoryId": 1,
-      "title": "somethinmg",
-      "desc": "long text",
-      "dateTime": "2024-01-24T07:00",
-      "like": 234,
+      "categoryId": 1,
+      "title": "English Blog",
+      "desc": "fdasfdas",
+      "dateTime": "2024-09-27T09:37:26.733Z",
       "tags": [
-        1,
-        3,
-        4
-      ]
+        1
+      ],
+      "id": 1
+    },
+    {
+      "authorId": 2,
+      "categoryId": 2,
+      "title": "Bangla Kobita",
+      "desc": "fdasfda",
+      "dateTime": "2024-09-27T09:38:47.772Z",
+      "tags": [
+        2
+      ],
+      "id": 2
     }
   ],
-  "catagories": [
+  "categories": [
     {
       "name": "English",
       "id": 1
@@ -27,23 +35,23 @@
   ],
   "authors": [
     {
-      "name": "lemon",
-      "id": 1,
-      "categoryId": 1
+      "name": "Alax",
+      "categoryId": 1,
+      "id": 1
     },
     {
-      "name": "alax",
-      "id": 2,
-      "categoryId": 1
+      "name": "Abul",
+      "categoryId": 2,
+      "id": 2
     }
   ],
   "tags": [
     {
-      "name": "trending",
+      "name": "Trending",
       "id": 1
     },
     {
-      "name": "top",
+      "name": "HTML",
       "id": 2
     }
   ],

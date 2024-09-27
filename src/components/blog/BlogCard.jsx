@@ -48,14 +48,14 @@ const BlogCard = (props) => {
 
                 <div className="flex items-center gap-2 justify-between">
                     <div className="flex items-center gap-2">
-                        <p className="text-base max-w-max">Category:</p>
+                        <p className={`text-base max-w-max `}>Category:</p>
 
                         <ul className="flex flex-wrap gap-2">
                             {categories &&
                                 categories.length > 0 &&
 
                                 categories?.map((cat) => {
-                                    if (parseInt(cat.id) === parseInt(blog.category_id)) {
+                                    if (parseInt(cat.id) === parseInt(blog.categoryId)) {
                                         return (
                                             <li key={cat.id} className="bg-yellow-700 px-3 rounded text-sm">{cat.name}</li>
                                         )
@@ -72,7 +72,7 @@ const BlogCard = (props) => {
                                 authors.length > 0 &&
 
                                 authors?.map((author) => {
-                                    if (parseInt(author.id) === parseInt(blog.author_id)) {
+                                    if (parseInt(author.id) === parseInt(blog.authorId)) {
                                         return (
                                             <li key={author.id} className="border border-blue-700 px-3 rounded text-sm">{author.name}</li>
                                         )

@@ -17,7 +17,7 @@ export const authorFetch = createAsyncThunk('author/authorFetch',
 )
 export const authorByCatId = createAsyncThunk('author/authorByCatId',
     async (id) => {
-        const authors = await fetch(`${BASE_URL}?category_id=${id}`)
+        const authors = await fetch(`${BASE_URL}?categoryId=${id}`)
         return authors.json()
     }
 )
@@ -114,7 +114,6 @@ export const authorSlice = createSlice({
             .addCase(authorByCatId.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.authorsByCat = action.payload
-                console.log(132)
             });
     }
 })

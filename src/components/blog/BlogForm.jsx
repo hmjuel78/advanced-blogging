@@ -8,7 +8,7 @@ import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import { _EDITABLEBLOG, blogCreate, blogSelector, blogUpdate } from "../../features/blog/blogSlice"
 import DropdownWithSearch from "../custom-dropdown-with-search/DropdownWithSearch"
-import { tagFetch, tagSelector } from "../../features/tags/tagSlice"
+import { tagSelector } from "../../features/tags/tagSlice"
 
 dayjs.extend(utc)
 
@@ -65,8 +65,8 @@ const BlogFrom = () => {
             console.log(newBlog, 'update blog')
             toast.success("Blog update Successfully !!!")
         } else {
-            // dispatch(blogCreate(newBlog))
-            console.log(newBlog, 'newBlog')
+            dispatch(blogCreate(newBlog))
+            // console.log(newBlog, 'newBlog')
             toast.success("Blog Create Successfully !!!")
         }
 
@@ -88,11 +88,12 @@ const BlogFrom = () => {
 
     const updateDataFromBlog = () => {
         if (editableBlog !== null) {
+            console.log(categories.find(cat => cat.id == editableBlog.categoryId))
             setBlogData(() => ({
                 blogTitle: editableBlog.title || '',
                 blogBody: editableBlog.desc || '',
-                selectCategory: categories.find(cat => cat.id === editableBlog.category_id) || null,
-                selectAuthor: authorsByCat.find(auth => auth.id === editableBlog.author_id) || null
+                selectCategory: categories.find(cat => cat.id == editableBlog.categoryId) || null,
+                selectAuthor: authorsByCat.find(auth => auth.id === editableBlog.authorId) || null
             }))
 
             const tagUpdate = editableBlog.tags.map(tagId => {
@@ -110,12 +111,11 @@ const BlogFrom = () => {
 
     useEffect(() => {
         dispatch(categoryFetch())
-        dispatch(tagFetch())
     }, [])
 
     useEffect(() => {
         if (editableBlog) {
-            dispatch(authorByCatId(editableBlog.category_id))
+            dispatch(authorByCatId(editableBlog.categoryId))
         }
     }, [])
 
@@ -130,7 +130,6 @@ const BlogFrom = () => {
             updateDataFromBlog()
         }
     }, [])
-
 
 
     return (

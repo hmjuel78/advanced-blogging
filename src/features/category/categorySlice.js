@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-const BASE_URL = 'http://localhost:3000/catagories'
+const BASE_URL = 'http://localhost:3000/categories'
 
 const initialState = {
     isLoading: false,
