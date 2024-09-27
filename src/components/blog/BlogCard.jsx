@@ -24,7 +24,9 @@ const BlogCard = (props) => {
     }
 
     return (
-        <div className={`card bg-base-100 w-full shadow-xl border border-white`}>
+        <div className={`card bg-base-100 w-full shadow-xl border border-white
+            
+        `}>
             <div className="card-body">
                 <h2 className="card-title">{blog.title}</h2>
                 <p>{blog.desc}</p>
