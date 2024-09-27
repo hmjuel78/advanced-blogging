@@ -27,13 +27,13 @@ const AuthorForm = (props) => {
 
         const newAuthor = {
             name: authorName,
-            category_id: selectCategory.id
+            categoryId: selectCategory.id
         }
         if (editableAuthor !== null) {
             dispatch(authorUpdate({
                 id: editableAuthor.author.id,
                 name: authorName,
-                category_id: selectCategory.id
+                categoryId: selectCategory.id
             }))
             toast.success('Author update successfully!!')
         } else {

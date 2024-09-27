@@ -40,16 +40,22 @@ export const blogDelete = createAsyncThunk('blog/blogDelete',
 )
 export const blogUpdate = createAsyncThunk('blog/blogUpdate',
     async (content) => {
-        const newBlog = await fetch(`${BASE_URL}/${content.id}`, {
-            method: 'PUT',
-            body: JSON.stringify({
-                name: content.name
-            }),
-            headers: {
-                'Content-type': 'application/json',
-            }
-        })
-        return newBlog.json()
+        console.log(content, 'dispatch content')
+        // const newBlog = await fetch(`${BASE_URL}/${content.id}`, {
+        //     method: 'PUT',
+        //     body: JSON.stringify({
+        //         author_id: content.author_id,
+        //         category_id: content.category_id,
+        //         title: content.blogTitle,
+        //         desc: content.desc,
+        //         modified_data: content.dateTime,
+        //         tags: content.tags,
+        //     }),
+        //     headers: {
+        //         'Content-type': 'application/json',
+        //     }
+        // })
+        // return newBlog.json()
     }
 )
 export const singleBlog = createAsyncThunk('blog/singleBlog',
@@ -102,8 +108,8 @@ export const blogSlice = createSlice({
             })
             .addCase(blogUpdate.fulfilled, (state, action) => {
                 state.isLoading = false
-                const index = state.blogs.findIndex(blog => blog.id === action.payload.id)
-                state.blogs[index].name = action.payload.name
+                // const index = state.blogs.findIndex(blog => blog.id === action.payload.id)
+                // state.blogs[index].name = action.payload.name
             })
             .addCase(singleBlog.fulfilled, (state, action) => {
                 state.isLoading = false

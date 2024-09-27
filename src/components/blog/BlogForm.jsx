@@ -6,7 +6,7 @@ import toast from "react-hot-toast"
 import TagInputWithSearch from "../tag-input/TagInputWithSearch"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
-import { _EDITABLEBLOG, blogCreate, blogSelector } from "../../features/blog/blogSlice"
+import { _EDITABLEBLOG, blogCreate, blogSelector, blogUpdate } from "../../features/blog/blogSlice"
 import DropdownWithSearch from "../custom-dropdown-with-search/DropdownWithSearch"
 import { tagFetch, tagSelector } from "../../features/tags/tagSlice"
 
@@ -50,8 +50,8 @@ const BlogFrom = () => {
         const tagArray = selectTags.map(select => select.id)
 
         const newBlog = {
-            author_id: blogData.selectAuthor.id,
-            category_id: blogData.selectCategory.id,
+            authorId: blogData.selectAuthor.id,
+            categoryId: blogData.selectCategory.id,
             title: blogData.blogTitle,
             desc: blogData.blogBody,
             dateTime: dayjs().utc(),
@@ -59,10 +59,14 @@ const BlogFrom = () => {
         }
 
         if (editableBlog) {
+            dispatch(blogUpdate({
+                id: editableBlog.id
+            }))
+            console.log(newBlog, 'update blog')
             toast.success("Blog update Successfully !!!")
         } else {
-            dispatch(blogCreate(newBlog))
-            // console.log(newBlog, 'newBlog')
+            // dispatch(blogCreate(newBlog))
+            console.log(newBlog, 'newBlog')
             toast.success("Blog Create Successfully !!!")
         }
 
@@ -71,7 +75,8 @@ const BlogFrom = () => {
     const handleSelectUpdate = (selectCat) => {
         setBlogData((restData) => ({
             ...restData,
-            selectCategory: selectCat
+            selectCategory: selectCat,
+            selectAuthor: ''
         }))
     }
     const handleSelectAuth = (selectAuth) => {
@@ -83,7 +88,6 @@ const BlogFrom = () => {
 
     const updateDataFromBlog = () => {
         if (editableBlog !== null) {
-            // console.log(authorsByCat.find(auth => auth.id === editableBlog.author_id), 'map')
             setBlogData(() => ({
                 blogTitle: editableBlog.title || '',
                 blogBody: editableBlog.desc || '',
@@ -91,10 +95,18 @@ const BlogFrom = () => {
                 selectAuthor: authorsByCat.find(auth => auth.id === editableBlog.author_id) || null
             }))
 
-            // setSelectTags(editableBlog.tags.map(tagId => tags.find(tag => tag.id === tagId)));
+            const tagUpdate = editableBlog.tags.map(tagId => {
+                const matchedTag = tags.find(tag => parseInt(tag.id) === parseInt(tagId));
+
+                if (!matchedTag) {
+                    return null
+                }
+                return matchedTag
+            }).filter(tag => tag !== null)
+
+            setSelectTags(tagUpdate)
         }
     }
-
 
     useEffect(() => {
         dispatch(categoryFetch())
@@ -116,9 +128,9 @@ const BlogFrom = () => {
     useEffect(() => {
         if (editableBlog) {
             updateDataFromBlog()
-            console.log("Form updated with authorsByCat data")
         }
     }, [])
+
 
 
     return (

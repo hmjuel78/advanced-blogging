@@ -114,6 +114,7 @@ export const authorSlice = createSlice({
             .addCase(authorByCatId.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.authorsByCat = action.payload
+                console.log(132)
             });
     }
 })

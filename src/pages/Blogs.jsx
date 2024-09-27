@@ -75,7 +75,7 @@ const Blogs = () => {
                 {
                     blogs && blogs.length > 0 ?
                         blogs?.map(blog => (
-                            <BlogCard key={blog.id} blog={blog} filterOptions={selectFilter} />
+                            <BlogCard key={blog.id} blog={blog} />
                         ))
                         : <h2 className="text-xl text-center">Blogs Not Found !!!</h2>
                 }
