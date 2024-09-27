@@ -2,11 +2,10 @@ import { MdOutlineWatchLater } from "react-icons/md"
 import dayjs from 'dayjs'
 import { SlLike } from "react-icons/sl"
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
-import { tagFetch, tagSelector } from "../../features/tags/tagSlice"
+import { tagSelector } from "../../features/tags/tagSlice"
 import { Link, useNavigate } from "react-router-dom"
-import { categoryFetch, categorySelector } from "../../features/category/categorySlice"
-import { authorFetch, authorSelector } from "../../features/author/authorSlice"
+import { categorySelector } from "../../features/category/categorySlice"
+import { authorSelector } from "../../features/author/authorSlice"
 import { _EDITABLEBLOG } from "../../features/blog/blogSlice"
 
 const BlogCard = (props) => {
@@ -23,12 +22,6 @@ const BlogCard = (props) => {
         dispatch(_EDITABLEBLOG(blog))
         navigate('/create-blog')
     }
-
-    useEffect(() => {
-        dispatch(tagFetch())
-        dispatch(categoryFetch())
-        dispatch(authorFetch())
-    }, [dispatch])
 
     return (
         <div className={`card bg-base-100 w-full shadow-xl border border-white`}>

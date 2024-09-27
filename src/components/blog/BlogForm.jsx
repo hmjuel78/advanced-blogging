@@ -44,7 +44,7 @@ const BlogFrom = () => {
 
     const blogOnSubmit = (e) => {
         e.preventDefault()
-        if (blogData.blogTitle.trim() === '' || blogData.blogBody.trim() === '') {
+        if (blogData.blogTitle.trim() === '' || blogData.blogBody.trim() === '' || blogData.selectCategory === null || blogData.selectAuthor === null) {
             return toast.error('Type all Field properly!!!')
         }
         const tagArray = selectTags.map(select => select.id)
@@ -60,13 +60,12 @@ const BlogFrom = () => {
 
         if (editableBlog) {
             dispatch(blogUpdate({
-                id: editableBlog.id
+                id: editableBlog.id,
+                content: newBlog
             }))
-            console.log(newBlog, 'update blog')
             toast.success("Blog update Successfully !!!")
         } else {
             dispatch(blogCreate(newBlog))
-            // console.log(newBlog, 'newBlog')
             toast.success("Blog Create Successfully !!!")
         }
 
