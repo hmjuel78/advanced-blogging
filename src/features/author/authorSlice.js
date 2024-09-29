@@ -49,7 +49,7 @@ export const authorUpdate = createAsyncThunk('author/authorUpdate',
             method: 'PUT',
             body: JSON.stringify({
                 name: content.name,
-                category_id: content.category_id
+                categoryId: content.categoryId
             }),
             headers: {
                 'Content-type': 'application/json',
@@ -105,7 +105,7 @@ export const authorSlice = createSlice({
                 state.isLoading = false
                 const index = state.authors.findIndex(author => author.id === action.payload.id)
                 state.authors[index].name = action.payload.name
-                state.authors[index].category_id = action.payload.category_id
+                state.authors[index].categoryId = action.payload.categoryId
             })
             .addCase(authorByCatId.pending, (state) => {
                 state.isError = false

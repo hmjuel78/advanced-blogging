@@ -13,7 +13,7 @@ const initialState = {
 export const blogFetch = createAsyncThunk('blog/blogFetch',
     async (filter) => {
         let url = BASE_URL
-        console.log(filter)
+
         if (filter) {
             url = `${BASE_URL}?`
             if (filter.categoryId && filter.authorId && filter.tagId) {
@@ -31,6 +31,10 @@ export const blogFetch = createAsyncThunk('blog/blogFetch',
             } else if (filter.title) {
                 url = `${url}title=${filter.title}`
             }
+
+            // else if (filter.startDate && filter.endDate) {
+            // url = `${url}dateTime_gte=${filter.startDate.startDate}&dateTime_lte=${filter.endDate.endDate}`
+            // }
         }
 
         const blogs = await fetch(url)

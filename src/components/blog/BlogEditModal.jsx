@@ -19,4 +19,4 @@ const BlogEditModal = () => {
     );
 };
 
-export default BlogEditModal;
+export default BlogEditModal

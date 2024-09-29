@@ -13,7 +13,9 @@ const Blogs = () => {
         categorySelect: '',
         authorSelect: '',
         tagSelect: '',
-        searchKeyword: ''
+        searchKeyword: '',
+        startDate: '',
+        endDate: ''
 
     }
     const [selectFilter, setSelectFilter] = useState(initSelect)
@@ -25,15 +27,16 @@ const Blogs = () => {
 
     const archiveSearchFilter = (e) => {
         e.preventDefault()
-        if (selectFilter.categorySelect === '' && selectFilter.authorSelect === '' && selectFilter.tagSelect === '' && selectFilter.searchKeyword === '') {
+        if (selectFilter.categorySelect === '' && selectFilter.authorSelect === '' && selectFilter.tagSelect === '' && selectFilter.searchKeyword === '' && selectFilter.startDate === '' && selectFilter.endDate === '') {
             return toast.error('Minium select one item for search!!!')
         }
         dispatch(blogFetch({
             categoryId: selectFilter?.categorySelect || null,
             authorId: selectFilter?.authorSelect || null,
             tagId: selectFilter?.tagSelect?.id || null,
-            title: selectFilter?.searchKeyword || ''
-
+            title: selectFilter?.searchKeyword || '',
+            // startDate: selectFilter?.startDate || null,
+            // endDate: selectFilter?.endDate || null
         }))
     }
 
@@ -94,7 +97,6 @@ const Blogs = () => {
         }))
     }
     const tagFilterByClick = (tagId) => {
-        console.log(tagId)
         setSelectFilter((selectFilter) => ({
             ...selectFilter,
             tagSelect: tagId
@@ -103,6 +105,19 @@ const Blogs = () => {
             tagId: tagId || null
         }))
     }
+
+    const dateFilterHandle = (startDate, endDate) => {
+        setSelectFilter((selectFilter) => ({
+            ...selectFilter,
+            startDate: startDate,
+            endDate: endDate
+        }))
+        // dispatch(blogFetch({
+        //     tagId: tagId || null
+        // }))
+    }
+    // console.log(selectFilter.startDate, selectFilter.endDate)
+
 
     useEffect(() => {
         dispatch(blogFetch())
@@ -148,6 +163,7 @@ const Blogs = () => {
                     mapKey="name"
                     selectPlaceholder="Select Tag"
                 />
+
 
                 <input onChange={searchKeywordHandle} value={selectFilter.searchKeyword} type="text" placeholder="Search Blog" className="input input-bordered w-full max-w-xs" />
 

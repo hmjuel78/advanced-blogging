@@ -73,10 +73,12 @@
     },
     {
       "name": "John",
+      "categoryId": 3,
       "id": 3
     },
     {
-      "name": "Bravo",
+      "name": "Dj",
+      "categoryId": 3,
       "id": 4
     }
   ],

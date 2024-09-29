@@ -29,9 +29,9 @@ const AuthorForm = (props) => {
             name: authorName,
             categoryId: selectCategory
         }
-        if (editableAuthor !== null) {
+        if (editableAuthor) {
             dispatch(authorUpdate({
-                id: editableAuthor.author.id,
+                id: editableAuthor.id,
                 name: authorName,
                 categoryId: selectCategory
             }))
@@ -50,13 +50,11 @@ const AuthorForm = (props) => {
     }
 
     useEffect(() => {
-        if (editableAuthor !== null) {
-            setSelectCategory(editableAuthor.category)
-            setAuthorName(editableAuthor.author.name)
+        if (editableAuthor) {
+            setSelectCategory(editableAuthor?.categoryId)
+            setAuthorName(editableAuthor?.name)
         }
     }, [editableAuthor])
-
-    console.log(editableAuthor)
 
     return (
         <div>
