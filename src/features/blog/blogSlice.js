@@ -11,8 +11,29 @@ const initialState = {
 }
 
 export const blogFetch = createAsyncThunk('blog/blogFetch',
-    async () => {
-        const blogs = await fetch(BASE_URL)
+    async (filter) => {
+        let url = BASE_URL
+
+        if (filter) {
+            url = `${BASE_URL}?`
+            if (filter.categoryId !== null && filter.authorId !== null && filter.tagId !== null) {
+                url = `${url}categoryId=${filter.categoryId}&authorId=${filter.authorId}&tags=${filter.tagId}`
+            } else if (filter.categoryId !== null && filter.authorId !== null) {
+                url = `${url}categoryId=${filter.categoryId}&authorId=${filter.authorId}`
+            } else if (filter.categoryId !== null && filter.tagId !== null) {
+                url = `${url}categoryId=${filter.categoryId}&tags=${filter.tagId}`
+            } else if (filter.categoryId !== null) {
+                url = `${url}categoryId=${filter.categoryId}`
+            } else if (filter.authorId !== null) {
+                url = `${url}authorId=${filter.authorId}`
+            } else if (filter.tagId !== null) {
+                url = `${url}tags=${filter.tagId}`
+            } else if (filter.title !== '') {
+                url = `${url}title=${filter.title}`
+            }
+        }
+
+        const blogs = await fetch(url)
         return blogs.json()
     }
 )
@@ -39,11 +60,16 @@ export const blogDelete = createAsyncThunk('blog/blogDelete',
     }
 )
 export const blogUpdate = createAsyncThunk('blog/blogUpdate',
-    async (content) => {
-        const newBlog = await fetch(`${BASE_URL}/${content.id}`, {
+    async ({ content, id }) => {
+        const newBlog = await fetch(`${BASE_URL}/${id}`, {
             method: 'PUT',
             body: JSON.stringify({
-                name: content.name
+                authorId: content.authorId,
+                categoryId: content.categoryId,
+                title: content.title,
+                desc: content.desc,
+                lastModified: content.dateTime,
+                tags: content.tags,
             }),
             headers: {
                 'Content-type': 'application/json',
@@ -102,8 +128,9 @@ export const blogSlice = createSlice({
             })
             .addCase(blogUpdate.fulfilled, (state, action) => {
                 state.isLoading = false
+                // console.log(action.payload, 'action payload')
                 const index = state.blogs.findIndex(blog => blog.id === action.payload.id)
-                state.blogs[index].name = action.payload.name
+                state.blogs[index] = action.payload
             })
             .addCase(singleBlog.fulfilled, (state, action) => {
                 state.isLoading = false

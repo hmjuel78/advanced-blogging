@@ -81,10 +81,10 @@ const TagInputWithSearch = (props) => {
                         selectDropData && selectDropData.length > 0 ?
                             selectDropData?.map((selectData) =>
                                 <span
-                                    key={selectData.id}
+                                    key={selectData?.id}
                                     className="bg-slate-800 rounded px-2 py-1 flex items-center gap-1 hover:cursor-pointer"
                                 >
-                                    {selectData.name}
+                                    {selectData?.name}
                                     <IoCloseOutline onClick={() => selectDataDelete(selectData.id)} className="hover:text-error" />
                                 </span>
                             )

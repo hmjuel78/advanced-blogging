@@ -27,13 +27,13 @@ const AuthorForm = (props) => {
 
         const newAuthor = {
             name: authorName,
-            category_id: selectCategory.id
+            categoryId: selectCategory
         }
         if (editableAuthor !== null) {
             dispatch(authorUpdate({
                 id: editableAuthor.author.id,
                 name: authorName,
-                category_id: selectCategory.id
+                categoryId: selectCategory
             }))
             toast.success('Author update successfully!!')
         } else {
@@ -56,6 +56,7 @@ const AuthorForm = (props) => {
         }
     }, [editableAuthor])
 
+
     return (
         <div>
             <h2 className='text-xl mb-4'>Create Author</h2>
@@ -67,20 +68,6 @@ const AuthorForm = (props) => {
                     dropDatas={categories}
                     mapKey="name"
                 />
-
-                {/* <select
-                    onChange={changeHandle}
-                    value={selectCategory}
-                    name="selectCategory"
-                    className="select select-bordered w-full"
-                >
-                    {
-                        categories &&
-                        categories?.map(category => (
-                            <option key={category.id} value={category.id}>{category.name}</option>
-                        ))
-                    }
-                </select> */}
 
                 <input
                     onChange={changeHandle}

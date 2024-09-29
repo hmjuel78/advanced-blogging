@@ -6,9 +6,9 @@ import toast from "react-hot-toast"
 import TagInputWithSearch from "../tag-input/TagInputWithSearch"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
-import { _EDITABLEBLOG, blogCreate, blogSelector } from "../../features/blog/blogSlice"
+import { _EDITABLEBLOG, blogCreate, blogSelector, blogUpdate } from "../../features/blog/blogSlice"
 import DropdownWithSearch from "../custom-dropdown-with-search/DropdownWithSearch"
-import { tagFetch, tagSelector } from "../../features/tags/tagSlice"
+import { tagSelector } from "../../features/tags/tagSlice"
 
 dayjs.extend(utc)
 
@@ -16,8 +16,8 @@ const BlogFrom = () => {
     const initState = {
         blogTitle: '',
         blogBody: '',
-        selectCategory: null,
-        selectAuthor: null
+        selectCategory: '',
+        selectAuthor: ''
     }
 
     const [blogData, setBlogData] = useState(initState)
@@ -44,14 +44,14 @@ const BlogFrom = () => {
 
     const blogOnSubmit = (e) => {
         e.preventDefault()
-        if (blogData.blogTitle.trim() === '' || blogData.blogBody.trim() === '') {
+        if (blogData.blogTitle.trim() === '' || blogData.blogBody.trim() === '' || blogData.selectCategory === null || blogData.selectAuthor === null) {
             return toast.error('Type all Field properly!!!')
         }
         const tagArray = selectTags.map(select => select.id)
 
         const newBlog = {
-            author_id: blogData.selectAuthor.id,
-            category_id: blogData.selectCategory.id,
+            authorId: blogData.selectAuthor,
+            categoryId: blogData.selectCategory,
             title: blogData.blogTitle,
             desc: blogData.blogBody,
             dateTime: dayjs().utc(),
@@ -59,10 +59,13 @@ const BlogFrom = () => {
         }
 
         if (editableBlog) {
+            dispatch(blogUpdate({
+                id: editableBlog.id,
+                content: newBlog
+            }))
             toast.success("Blog update Successfully !!!")
         } else {
             dispatch(blogCreate(newBlog))
-            // console.log(newBlog, 'newBlog')
             toast.success("Blog Create Successfully !!!")
         }
 
@@ -71,7 +74,8 @@ const BlogFrom = () => {
     const handleSelectUpdate = (selectCat) => {
         setBlogData((restData) => ({
             ...restData,
-            selectCategory: selectCat
+            selectCategory: selectCat,
+            selectAuthor: ''
         }))
     }
     const handleSelectAuth = (selectAuth) => {
@@ -83,40 +87,46 @@ const BlogFrom = () => {
 
     const updateDataFromBlog = () => {
         if (editableBlog !== null) {
-            // console.log(authorsByCat.find(auth => auth.id === editableBlog.author_id), 'map')
+
             setBlogData(() => ({
                 blogTitle: editableBlog.title || '',
                 blogBody: editableBlog.desc || '',
-                selectCategory: categories.find(cat => cat.id === editableBlog.category_id) || null,
-                selectAuthor: authorsByCat.find(auth => auth.id === editableBlog.author_id) || null
+                selectCategory: editableBlog.categoryId || null,
+                selectAuthor: editableBlog.authorId || null
             }))
 
-            // setSelectTags(editableBlog.tags.map(tagId => tags.find(tag => tag.id === tagId)));
+            const tagUpdate = editableBlog.tags.map(tagId => {
+                const matchedTag = tags.find(tag => parseInt(tag.id) === parseInt(tagId));
+
+                if (!matchedTag) {
+                    return null
+                }
+                return matchedTag
+            }).filter(tag => tag !== null)
+
+            setSelectTags(tagUpdate)
         }
     }
 
-
     useEffect(() => {
         dispatch(categoryFetch())
-        dispatch(tagFetch())
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         if (editableBlog) {
-            dispatch(authorByCatId(editableBlog.category_id))
+            dispatch(authorByCatId(editableBlog.categoryId))
         }
-    }, [])
+    }, [dispatch, editableBlog])
 
     useEffect(() => {
-        if (blogData?.selectCategory?.id) {
-            dispatch(authorByCatId(blogData.selectCategory.id))
+        if (blogData?.selectCategory) {
+            dispatch(authorByCatId(blogData.selectCategory))
         }
     }, [dispatch, blogData.selectCategory])
 
     useEffect(() => {
         if (editableBlog) {
             updateDataFromBlog()
-            console.log("Form updated with authorsByCat data")
         }
     }, [])
 

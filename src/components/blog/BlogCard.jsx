@@ -2,16 +2,14 @@ import { MdOutlineWatchLater } from "react-icons/md"
 import dayjs from 'dayjs'
 import { SlLike } from "react-icons/sl"
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
-import { tagFetch, tagSelector } from "../../features/tags/tagSlice"
+import { tagSelector } from "../../features/tags/tagSlice"
 import { Link, useNavigate } from "react-router-dom"
-import { categoryFetch, categorySelector } from "../../features/category/categorySlice"
-import { authorFetch, authorSelector } from "../../features/author/authorSlice"
+import { categorySelector } from "../../features/category/categorySlice"
+import { authorSelector } from "../../features/author/authorSlice"
 import { _EDITABLEBLOG } from "../../features/blog/blogSlice"
 
 const BlogCard = (props) => {
-    const { blog, filterOptions = null } = props
-    const { categorySelect, authorSelect } = filterOptions
+    const { blog } = props
 
     const dispatch = useDispatch()
     const { tags } = useSelector(tagSelector)
@@ -25,19 +23,9 @@ const BlogCard = (props) => {
         navigate('/create-blog')
     }
 
-    useEffect(() => {
-        dispatch(tagFetch())
-        dispatch(categoryFetch())
-        dispatch(authorFetch())
-    }, [dispatch])
-
-    useEffect(() => {
-        console.log(categorySelect, authorSelect)
-    }, [filterOptions])
-
     return (
         <div className={`card bg-base-100 w-full shadow-xl border border-white
-            ${filterOptions !== blog.category_id ? "block" : "hidden"}
+            
         `}>
             <div className="card-body">
                 <h2 className="card-title">{blog.title}</h2>
@@ -55,14 +43,14 @@ const BlogCard = (props) => {
 
                 <div className="flex items-center gap-2 justify-between">
                     <div className="flex items-center gap-2">
-                        <p className="text-base max-w-max">Category:</p>
+                        <p className={`text-base max-w-max `}>Category:</p>
 
                         <ul className="flex flex-wrap gap-2">
                             {categories &&
                                 categories.length > 0 &&
 
                                 categories?.map((cat) => {
-                                    if (parseInt(cat.id) === parseInt(blog.category_id)) {
+                                    if (parseInt(cat.id) === parseInt(blog.categoryId)) {
                                         return (
                                             <li key={cat.id} className="bg-yellow-700 px-3 rounded text-sm">{cat.name}</li>
                                         )
@@ -79,7 +67,7 @@ const BlogCard = (props) => {
                                 authors.length > 0 &&
 
                                 authors?.map((author) => {
-                                    if (parseInt(author.id) === parseInt(blog.author_id)) {
+                                    if (parseInt(author.id) === parseInt(blog.authorId)) {
                                         return (
                                             <li key={author.id} className="border border-blue-700 px-3 rounded text-sm">{author.name}</li>
                                         )
@@ -89,7 +77,6 @@ const BlogCard = (props) => {
                         </ul>
                     </div>
                 </div>
-
 
                 <div className="flex items-center gap-2">
                     <p className="max-w-max">Tags:</p>
@@ -109,7 +96,6 @@ const BlogCard = (props) => {
                         }
                     </ul>
                 </div>
-
 
                 <div className="card-actions justify-between mt-3">
                     <button

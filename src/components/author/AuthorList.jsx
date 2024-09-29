@@ -40,7 +40,7 @@ const AuthorList = (props) => {
                     <tbody>
                         {
                             authors?.map((author, idx) => {
-                                const category = categories.find(cat => parseInt(cat.id) === parseInt(author.category_id))
+                                const category = categories.find(cat => parseInt(cat.id) === parseInt(author.categoryId))
 
                                 if (category) {
                                     return (
@@ -50,7 +50,10 @@ const AuthorList = (props) => {
                                             <td>{author.name}</td>
                                             <td>
                                                 <div className="flex gap-4 justify-end">
-                                                    <button onClick={() => authorEditHandle({ author: author, category: category })} className="btn btn-circle btn-sm hover:btn-info hover:text-white">
+                                                    <button
+                                                        onClick={() => authorEditHandle({ author: author, category: category })}
+                                                        className="btn btn-circle btn-sm hover:btn-info hover:text-white"
+                                                    >
                                                         <MdOutlineModeEdit />
                                                     </button>
                                                     <button
