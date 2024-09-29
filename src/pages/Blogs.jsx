@@ -32,7 +32,7 @@ const Blogs = () => {
             categoryId: selectFilter?.categorySelect || null,
             authorId: selectFilter?.authorSelect || null,
             tagId: selectFilter?.tagSelect?.id || null,
-            title: selectFilter?.searchKeyword.toLowerCase() || null
+            title: selectFilter?.searchKeyword || ''
 
         }))
     }
@@ -91,7 +91,7 @@ const Blogs = () => {
         <div className="max-w-7xl mx-auto m-10 px-6">
             <h2 className="mb-3">Blogs</h2>
 
-            <div className="my-10 grid grid-cols-5 gap-3">
+            <div className="my-10 grid grid-cols-6 gap-3">
                 <DropdownWithSearch
                     isSearch={true}
                     dropDatas={categories}

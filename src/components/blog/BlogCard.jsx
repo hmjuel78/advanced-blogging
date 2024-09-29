@@ -3,10 +3,11 @@ import dayjs from 'dayjs'
 import { SlLike } from "react-icons/sl"
 import { useDispatch, useSelector } from "react-redux"
 import { tagSelector } from "../../features/tags/tagSlice"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { categorySelector } from "../../features/category/categorySlice"
 import { authorSelector } from "../../features/author/authorSlice"
 import { _EDITABLEBLOG } from "../../features/blog/blogSlice"
+import BlogEditModal from "./BlogEditModal"
 
 const BlogCard = (props) => {
     const { blog } = props
@@ -15,18 +16,15 @@ const BlogCard = (props) => {
     const { tags } = useSelector(tagSelector)
     const { categories } = useSelector(categorySelector)
     const { authors } = useSelector(authorSelector)
-    const navigate = useNavigate()
 
 
     const blogEditHandle = (blog) => {
         dispatch(_EDITABLEBLOG(blog))
-        navigate('/create-blog')
+        document.getElementById('blog_edit_form').showModal()
     }
 
     return (
-        <div className={`card bg-base-100 w-full shadow-xl border border-white
-            
-        `}>
+        <div className={`card bg-base-100 w-full shadow-xl border border-white`}>
             <div className="card-body">
                 <h2 className="card-title">{blog.title}</h2>
                 <p>{blog.desc}</p>
@@ -79,7 +77,7 @@ const BlogCard = (props) => {
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <p className="max-w-max">Tags:</p>
+                    <p className={`max-w-max`}>Tags:</p>
                     <ul className="flex flex-wrap gap-2">
                         {blog.tags &&
                             blog.tags.length > 0 &&
@@ -114,6 +112,7 @@ const BlogCard = (props) => {
                     </Link>
                 </div>
             </div>
+            <BlogEditModal />
         </div>
     )
 }

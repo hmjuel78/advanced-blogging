@@ -28,7 +28,7 @@ export const blogFetch = createAsyncThunk('blog/blogFetch',
                 url = `${url}authorId=${filter.authorId}`
             } else if (filter.tagId !== null) {
                 url = `${url}tags=${filter.tagId}`
-            } else if (filter.title !== '') {
+            } else if (filter.title !== null) {
                 url = `${url}title=${filter.title}`
             }
         }
@@ -60,7 +60,7 @@ export const blogDelete = createAsyncThunk('blog/blogDelete',
     }
 )
 export const blogUpdate = createAsyncThunk('blog/blogUpdate',
-    async ({ content, id }) => {
+    async ({ content, id, lastModifiedDate }) => {
         const newBlog = await fetch(`${BASE_URL}/${id}`, {
             method: 'PUT',
             body: JSON.stringify({
@@ -68,7 +68,8 @@ export const blogUpdate = createAsyncThunk('blog/blogUpdate',
                 categoryId: content.categoryId,
                 title: content.title,
                 desc: content.desc,
-                lastModified: content.dateTime,
+                dateTime: content.dateTime,
+                lastModified: lastModifiedDate,
                 tags: content.tags,
             }),
             headers: {
@@ -128,7 +129,6 @@ export const blogSlice = createSlice({
             })
             .addCase(blogUpdate.fulfilled, (state, action) => {
                 state.isLoading = false
-                // console.log(action.payload, 'action payload')
                 const index = state.blogs.findIndex(blog => blog.id === action.payload.id)
                 state.blogs[index] = action.payload
             })
