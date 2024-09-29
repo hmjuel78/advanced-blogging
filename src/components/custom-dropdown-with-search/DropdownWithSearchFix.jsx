@@ -2,7 +2,7 @@ import { useRef, useState } from "react"
 import useOutsideClick from '../../hooks/useOutsiteClick'
 
 
-const DropdownWithSearch = (props) => {
+const DropdownWithSearchFix = (props) => {
     const { selectDropData, setSelectDropData, isSearch = false, disable = false, dropDatas = [], mapKey = 'name', selectPlaceholder = "select ...." } = props
     const [searchValue, setSearchValue] = useState('')
     const [open, setOpen] = useState(false)
@@ -73,4 +73,4 @@ const DropdownWithSearch = (props) => {
     )
 }
 
-export default DropdownWithSearch
+export default DropdownWithSearchFix

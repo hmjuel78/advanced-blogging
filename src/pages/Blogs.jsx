@@ -6,12 +6,13 @@ import DropdownWithSearch from "../components/custom-dropdown-with-search/Dropdo
 import { categoryFetch, categorySelector } from "../features/category/categorySlice"
 import { authorByCatId, authorFetch, authorSelector } from "../features/author/authorSlice"
 import { tagFetch, tagSelector } from "../features/tags/tagSlice"
+import toast from "react-hot-toast"
 
 const Blogs = () => {
     const initSelect = {
-        categorySelect: null,
-        authorSelect: null,
-        tagSelect: null,
+        categorySelect: '',
+        authorSelect: '',
+        tagSelect: '',
         searchKeyword: ''
 
     }
@@ -24,11 +25,14 @@ const Blogs = () => {
 
     const archiveSearchFilter = (e) => {
         e.preventDefault()
+        if (selectFilter.categorySelect === '' && selectFilter.authorSelect === '' && selectFilter.tagSelect === '' && selectFilter.searchKeyword === '') {
+            return toast.error('Minium select one item for search!!!')
+        }
         dispatch(blogFetch({
-            categoryId: selectFilter?.categorySelect?.id || null,
-            authorId: selectFilter?.authorSelect?.id || null,
+            categoryId: selectFilter?.categorySelect || null,
+            authorId: selectFilter?.authorSelect || null,
             tagId: selectFilter?.tagSelect?.id || null,
-            // title: selectFilter?.searchKeyword.toLowerCase() || ''
+            title: selectFilter?.searchKeyword.toLowerCase() || null
 
         }))
     }
@@ -39,6 +43,7 @@ const Blogs = () => {
             categoryId: null,
             authorId: null,
             tagId: null,
+            title: null
 
         }))
     }
@@ -76,8 +81,10 @@ const Blogs = () => {
     }, [dispatch])
 
     useEffect(() => {
-        dispatch(authorByCatId(selectFilter?.categorySelect?.id))
-    }, [selectFilter.categorySelect])
+        if (selectFilter?.categorySelect !== '') {
+            dispatch(authorByCatId(selectFilter.categorySelect))
+        }
+    }, [dispatch, selectFilter.categorySelect])
 
 
     return (
@@ -95,7 +102,7 @@ const Blogs = () => {
                 />
                 <DropdownWithSearch
                     isSearch={true}
-                    dropDatas={authors}
+                    dropDatas={selectFilter.categorySelect !== '' ? authorsByCat : authors}
                     selectDropData={selectFilter.authorSelect}
                     setSelectDropData={authorChangeHandle}
                     mapKey="name"
@@ -107,7 +114,7 @@ const Blogs = () => {
                     selectDropData={selectFilter.tagSelect}
                     setSelectDropData={tagChangeHandle}
                     mapKey="name"
-                    selectPlaceholder="Select Author"
+                    selectPlaceholder="Select Tag"
                 />
 
                 <input onChange={searchKeywordHandle} value={selectFilter.searchKeyword} type="text" placeholder="Search Blog" className="input input-bordered w-full max-w-xs" />

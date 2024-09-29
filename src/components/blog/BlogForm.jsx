@@ -16,8 +16,8 @@ const BlogFrom = () => {
     const initState = {
         blogTitle: '',
         blogBody: '',
-        selectCategory: null,
-        selectAuthor: null
+        selectCategory: '',
+        selectAuthor: ''
     }
 
     const [blogData, setBlogData] = useState(initState)
@@ -50,8 +50,8 @@ const BlogFrom = () => {
         const tagArray = selectTags.map(select => select.id)
 
         const newBlog = {
-            authorId: blogData.selectAuthor.id,
-            categoryId: blogData.selectCategory.id,
+            authorId: blogData.selectAuthor,
+            categoryId: blogData.selectCategory,
             title: blogData.blogTitle,
             desc: blogData.blogBody,
             dateTime: dayjs().utc(),
@@ -87,12 +87,12 @@ const BlogFrom = () => {
 
     const updateDataFromBlog = () => {
         if (editableBlog !== null) {
-            console.log(categories.find(cat => cat.id == editableBlog.categoryId))
+
             setBlogData(() => ({
                 blogTitle: editableBlog.title || '',
                 blogBody: editableBlog.desc || '',
-                selectCategory: categories.find(cat => cat.id == editableBlog.categoryId) || null,
-                selectAuthor: authorsByCat.find(auth => auth.id === editableBlog.authorId) || null
+                selectCategory: editableBlog.categoryId || null,
+                selectAuthor: editableBlog.authorId || null
             }))
 
             const tagUpdate = editableBlog.tags.map(tagId => {
@@ -110,17 +110,17 @@ const BlogFrom = () => {
 
     useEffect(() => {
         dispatch(categoryFetch())
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         if (editableBlog) {
             dispatch(authorByCatId(editableBlog.categoryId))
         }
-    }, [])
+    }, [dispatch, editableBlog])
 
     useEffect(() => {
-        if (blogData?.selectCategory?.id) {
-            dispatch(authorByCatId(blogData.selectCategory.id))
+        if (blogData?.selectCategory) {
+            dispatch(authorByCatId(blogData.selectCategory))
         }
     }, [dispatch, blogData.selectCategory])
 

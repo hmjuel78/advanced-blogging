@@ -13,9 +13,9 @@ const initialState = {
 export const blogFetch = createAsyncThunk('blog/blogFetch',
     async (filter) => {
         let url = BASE_URL
+
         if (filter) {
             url = `${BASE_URL}?`
-
             if (filter.categoryId !== null && filter.authorId !== null && filter.tagId !== null) {
                 url = `${url}categoryId=${filter.categoryId}&authorId=${filter.authorId}&tags=${filter.tagId}`
             } else if (filter.categoryId !== null && filter.authorId !== null) {
@@ -28,13 +28,12 @@ export const blogFetch = createAsyncThunk('blog/blogFetch',
                 url = `${url}authorId=${filter.authorId}`
             } else if (filter.tagId !== null) {
                 url = `${url}tags=${filter.tagId}`
+            } else if (filter.title !== '') {
+                url = `${url}title=${filter.title}`
             }
-            // if (filter.searchKeyword !== '') {
-            //     url = `${url}title=${filter.searchKeyword}`
-            // }
         }
+
         const blogs = await fetch(url)
-        console.log(blogs)
         return blogs.json()
     }
 )
