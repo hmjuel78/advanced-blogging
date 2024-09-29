@@ -32,7 +32,7 @@ const Blogs = () => {
             categoryId: selectFilter?.categorySelect || null,
             authorId: selectFilter?.authorSelect || null,
             tagId: selectFilter?.tagSelect?.id || null,
-            title: selectFilter?.searchKeyword.toLowerCase() || null
+            title: selectFilter?.searchKeyword || ''
 
         }))
     }
@@ -50,7 +50,8 @@ const Blogs = () => {
     const categoryChangeHandle = (cat) => {
         setSelectFilter((selectFilter) => ({
             ...selectFilter,
-            categorySelect: cat
+            categorySelect: cat,
+            authorSelect: ''
         }))
     }
     const authorChangeHandle = (auth) => {
@@ -72,6 +73,37 @@ const Blogs = () => {
         }))
     }
 
+    const categoryFilterByClick = (catId) => {
+        console.log(catId)
+        setSelectFilter((selectFilter) => ({
+            ...selectFilter,
+            categorySelect: catId
+        }))
+        dispatch(blogFetch({
+            categoryId: catId || null
+        }))
+    }
+
+    const atuhorFilterByClick = (authId) => {
+        setSelectFilter((selectFilter) => ({
+            ...selectFilter,
+            authorSelect: authId
+        }))
+        dispatch(blogFetch({
+            authorId: authId || null
+        }))
+    }
+    const tagFilterByClick = (tagId) => {
+        console.log(tagId)
+        setSelectFilter((selectFilter) => ({
+            ...selectFilter,
+            tagSelect: tagId
+        }))
+        dispatch(blogFetch({
+            tagId: tagId || null
+        }))
+    }
+
     useEffect(() => {
         dispatch(blogFetch())
         dispatch(categoryFetch())
@@ -81,7 +113,7 @@ const Blogs = () => {
     }, [dispatch])
 
     useEffect(() => {
-        if (selectFilter?.categorySelect !== '') {
+        if (selectFilter?.categorySelect) {
             dispatch(authorByCatId(selectFilter.categorySelect))
         }
     }, [dispatch, selectFilter.categorySelect])
@@ -91,7 +123,7 @@ const Blogs = () => {
         <div className="max-w-7xl mx-auto m-10 px-6">
             <h2 className="mb-3">Blogs</h2>
 
-            <div className="my-10 grid grid-cols-5 gap-3">
+            <div className="my-10 grid grid-cols-6 gap-3">
                 <DropdownWithSearch
                     isSearch={true}
                     dropDatas={categories}
@@ -128,7 +160,13 @@ const Blogs = () => {
                 {
                     blogs && blogs.length > 0 ?
                         blogs?.map(blog => (
-                            <BlogCard key={blog.id} blog={blog} />
+                            <BlogCard
+                                key={blog.id}
+                                blog={blog}
+                                _onCategoryFilter={categoryFilterByClick}
+                                _onAuthorFilter={atuhorFilterByClick}
+                                _onTagFilter={tagFilterByClick}
+                            />
                         ))
                         : <h2 className="text-xl text-center">Blogs Not Found !!!</h2>
                 }

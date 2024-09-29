@@ -12,7 +12,7 @@ import { tagSelector } from "../../features/tags/tagSlice"
 
 dayjs.extend(utc)
 
-const BlogFrom = () => {
+const BlogForm = () => {
     const initState = {
         blogTitle: '',
         blogBody: '',
@@ -54,16 +54,18 @@ const BlogFrom = () => {
             categoryId: blogData.selectCategory,
             title: blogData.blogTitle,
             desc: blogData.blogBody,
-            dateTime: dayjs().utc(),
+            dateTime: editableBlog ? editableBlog.dateTime : dayjs().utc(),
             tags: tagArray,
         }
 
         if (editableBlog) {
             dispatch(blogUpdate({
                 id: editableBlog.id,
-                content: newBlog
+                content: newBlog,
+                lastModifiedDate: dayjs().utc()
             }))
             toast.success("Blog update Successfully !!!")
+            document.getElementById('blog_edit_form').close()
         } else {
             dispatch(blogCreate(newBlog))
             toast.success("Blog Create Successfully !!!")
@@ -125,15 +127,16 @@ const BlogFrom = () => {
     }, [dispatch, blogData.selectCategory])
 
     useEffect(() => {
-        if (editableBlog) {
+        if (editableBlog !== null) {
             updateDataFromBlog()
         }
-    }, [])
+    }, [editableBlog])
+
 
 
     return (
         <div>
-            <h2 className="text-xl mb-3">Create Blog</h2>
+            <h2 className="text-xl mb-3">{editableBlog ? 'Update' : 'Create'} Blog</h2>
 
             <div className="space-y-4">
                 <DropdownWithSearch
@@ -181,4 +184,4 @@ const BlogFrom = () => {
     )
 }
 
-export default BlogFrom
+export default BlogForm

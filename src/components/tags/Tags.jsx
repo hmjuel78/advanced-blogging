@@ -67,7 +67,7 @@ const Tags = () => {
                     tags?.map(tag => (
                         <li
                             key={tag.id}
-                            className="flex gap-4 w-full justify-between border border-black p-3 rounded"
+                            className="flex gap-4 w-full justify-between border border-black p-3 rounded items-center"
                         >
                             <span>{tag.name}</span>
                             <div className="flex gap-4">

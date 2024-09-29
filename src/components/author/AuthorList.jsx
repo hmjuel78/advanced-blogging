@@ -12,6 +12,7 @@ const AuthorList = (props) => {
     const dispatch = useDispatch()
 
     const authorEditHandle = (author) => {
+        console.log(author)
         setEditableAuthor(author)
     }
     const authorDeleteHandle = (authorId) => {
@@ -51,7 +52,7 @@ const AuthorList = (props) => {
                                             <td>
                                                 <div className="flex gap-4 justify-end">
                                                     <button
-                                                        onClick={() => authorEditHandle({ author: author, category: category })}
+                                                        onClick={() => authorEditHandle({ author: author, category: category.id })}
                                                         className="btn btn-circle btn-sm hover:btn-info hover:text-white"
                                                     >
                                                         <MdOutlineModeEdit />
