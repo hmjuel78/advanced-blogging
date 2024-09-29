@@ -1,43 +1,44 @@
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { blogSelector, singleBlog } from "../../features/blog/blogSlice"
 import { useParams } from "react-router-dom"
-import { commentFetch, commentSelector } from "../../features/comments/commentSlice"
-
+import CommentsForm from "../comments/CommentsForm"
 
 
 const BlogDetails = () => {
+    const [commentText, setCommentText] = useState('')
     const { blogs } = useSelector(blogSelector)
-    const { comments } = useSelector(commentSelector)
     const dispatch = useDispatch()
     const { id } = useParams()
-
 
     useEffect(() => {
         dispatch(singleBlog(id))
     }, [dispatch, id])
-
-    useEffect(() => {
-        dispatch(commentFetch())
-    }, [dispatch])
 
     return (
         <div className="max-w-7xl  mx-auto mt-6 space-y-4">
             <h2 className="text-2xl font-bold">Blog Details</h2>
             <h3 className="text-xl font-medium">Title: {blogs.title} </h3>
             <p>Description: {blogs.desc} </p>
-            <p>Likes: {blogs.like} </p>
-            <p>Comments</p>
-            {/* {comments &&
-                comments.length > 0 ?
-                comments?.map(comment => (
-                    <div key={comment.id}>
-                        {comment.comment}
-                    </div>
-                ))
-                : <p>No Comments yet!!</p>
-            } */}
+            <div className="flex justify-between items-center gap-3 border-b border-gray-600 pb-3">
+                <p className="">Comments: {blogs.comments && blogs?.comments?.length > 0 ? blogs?.comments?.length : '0'}</p>
+                <p>Likes: <span>{blogs.like ? blogs.like : 0}</span> </p>
+
+            </div>
+            <div className="space-y-4">
+                {blogs.comments &&
+                    blogs.comments.length > 0 ?
+                    blogs.comments?.map(comment => (
+                        <div key={comment.id}>
+                            <p className="border border-gray-600 p-3 rounded-md">{comment.comment}</p>
+                        </div>
+                    ))
+                    : <p>No Comments yet!!</p>
+                }
+            </div>
+
+            <CommentsForm _state={commentText} _setState={setCommentText} />
 
         </div>
     )

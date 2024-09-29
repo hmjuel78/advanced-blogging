@@ -85,7 +85,7 @@ export const blogUpdate = createAsyncThunk('blog/blogUpdate',
 )
 export const singleBlog = createAsyncThunk('blog/singleBlog',
     async (id) => {
-        const single = await fetch(`${BASE_URL}/${id}`)
+        const single = await fetch(`${BASE_URL}/${id}?_embed=comments`)
         return single.json()
     }
 )
