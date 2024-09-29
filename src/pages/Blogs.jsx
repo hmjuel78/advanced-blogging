@@ -50,7 +50,8 @@ const Blogs = () => {
     const categoryChangeHandle = (cat) => {
         setSelectFilter((selectFilter) => ({
             ...selectFilter,
-            categorySelect: cat
+            categorySelect: cat,
+            authorSelect: ''
         }))
     }
     const authorChangeHandle = (auth) => {
@@ -112,7 +113,7 @@ const Blogs = () => {
     }, [dispatch])
 
     useEffect(() => {
-        if (selectFilter?.categorySelect !== '') {
+        if (selectFilter?.categorySelect) {
             dispatch(authorByCatId(selectFilter.categorySelect))
         }
     }, [dispatch, selectFilter.categorySelect])

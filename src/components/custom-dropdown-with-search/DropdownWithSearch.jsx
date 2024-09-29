@@ -30,7 +30,8 @@ const DropdownWithSearch = (props) => {
                     className={`w-full p-2 flex h-full items-center justify-between rounded`}
                 >
                     <span className="space-x-2 capitalize">
-                        {selectDropData === '' ? selectPlaceholder :
+
+                        {!selectDropData ? selectPlaceholder :
                             dropDatas.map(data => {
                                 if (data.id == selectDropData) {
                                     return data[mapKey].length > 20 ? data[mapKey].substring(0, 20) + "..." : data[mapKey]
