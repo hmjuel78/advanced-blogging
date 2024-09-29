@@ -72,6 +72,37 @@ const Blogs = () => {
         }))
     }
 
+    const categoryFilterByClick = (catId) => {
+        console.log(catId)
+        setSelectFilter((selectFilter) => ({
+            ...selectFilter,
+            categorySelect: catId
+        }))
+        dispatch(blogFetch({
+            categoryId: catId || null
+        }))
+    }
+
+    const atuhorFilterByClick = (authId) => {
+        setSelectFilter((selectFilter) => ({
+            ...selectFilter,
+            authorSelect: authId
+        }))
+        dispatch(blogFetch({
+            authorId: authId || null
+        }))
+    }
+    const tagFilterByClick = (tagId) => {
+        console.log(tagId)
+        setSelectFilter((selectFilter) => ({
+            ...selectFilter,
+            tagSelect: tagId
+        }))
+        dispatch(blogFetch({
+            tagId: tagId || null
+        }))
+    }
+
     useEffect(() => {
         dispatch(blogFetch())
         dispatch(categoryFetch())
@@ -128,7 +159,13 @@ const Blogs = () => {
                 {
                     blogs && blogs.length > 0 ?
                         blogs?.map(blog => (
-                            <BlogCard key={blog.id} blog={blog} />
+                            <BlogCard
+                                key={blog.id}
+                                blog={blog}
+                                _onCategoryFilter={categoryFilterByClick}
+                                _onAuthorFilter={atuhorFilterByClick}
+                                _onTagFilter={tagFilterByClick}
+                            />
                         ))
                         : <h2 className="text-xl text-center">Blogs Not Found !!!</h2>
                 }

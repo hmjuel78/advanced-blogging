@@ -13,22 +13,22 @@ const initialState = {
 export const blogFetch = createAsyncThunk('blog/blogFetch',
     async (filter) => {
         let url = BASE_URL
-
+        console.log(filter)
         if (filter) {
             url = `${BASE_URL}?`
-            if (filter.categoryId !== null && filter.authorId !== null && filter.tagId !== null) {
+            if (filter.categoryId && filter.authorId && filter.tagId) {
                 url = `${url}categoryId=${filter.categoryId}&authorId=${filter.authorId}&tags=${filter.tagId}`
-            } else if (filter.categoryId !== null && filter.authorId !== null) {
+            } else if (filter.categoryId && filter.authorId) {
                 url = `${url}categoryId=${filter.categoryId}&authorId=${filter.authorId}`
-            } else if (filter.categoryId !== null && filter.tagId !== null) {
+            } else if (filter.categoryId && filter.tagId) {
                 url = `${url}categoryId=${filter.categoryId}&tags=${filter.tagId}`
-            } else if (filter.categoryId !== null) {
+            } else if (filter.categoryId) {
                 url = `${url}categoryId=${filter.categoryId}`
-            } else if (filter.authorId !== null) {
+            } else if (filter.authorId) {
                 url = `${url}authorId=${filter.authorId}`
-            } else if (filter.tagId !== null) {
+            } else if (filter.tagId) {
                 url = `${url}tags=${filter.tagId}`
-            } else if (filter.title !== null) {
+            } else if (filter.title) {
                 url = `${url}title=${filter.title}`
             }
         }

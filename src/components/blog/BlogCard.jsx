@@ -10,7 +10,7 @@ import { _EDITABLEBLOG } from "../../features/blog/blogSlice"
 import BlogEditModal from "./BlogEditModal"
 
 const BlogCard = (props) => {
-    const { blog } = props
+    const { blog, _onCategoryFilter, _onAuthorFilter, _onTagFilter } = props
 
     const dispatch = useDispatch()
     const { tags } = useSelector(tagSelector)
@@ -50,7 +50,13 @@ const BlogCard = (props) => {
                                 categories?.map((cat) => {
                                     if (parseInt(cat.id) === parseInt(blog.categoryId)) {
                                         return (
-                                            <li key={cat.id} className="bg-yellow-700 px-3 rounded text-sm">{cat.name}</li>
+                                            <li
+                                                key={cat.id}
+                                                onClick={() => _onCategoryFilter(cat.id)}
+                                                className="bg-yellow-700 px-3 rounded text-sm cursor-pointer"
+                                            >
+                                                {cat.name}
+                                            </li>
                                         )
                                     }
                                 })
@@ -67,7 +73,13 @@ const BlogCard = (props) => {
                                 authors?.map((author) => {
                                     if (parseInt(author.id) === parseInt(blog.authorId)) {
                                         return (
-                                            <li key={author.id} className="border border-blue-700 px-3 rounded text-sm">{author.name}</li>
+                                            <li
+                                                onClick={() => _onAuthorFilter(author.id)}
+                                                key={author.id}
+                                                className="border border-blue-700 px-3 rounded text-sm cursor-pointer cursor-pointer"
+                                            >
+                                                {author.name}
+                                            </li>
                                         )
                                     }
                                 })
@@ -87,7 +99,13 @@ const BlogCard = (props) => {
 
                                 if (blogTag) {
                                     return (
-                                        <li key={blogTag.id} className="bg-zinc-700 px-3 rounded text-sm">{blogTag.name}</li>
+                                        <li
+                                            onClick={() => _onTagFilter(tag)}
+                                            key={blogTag.id}
+                                            className="bg-zinc-700 px-3 rounded text-sm cursor-pointer"
+                                        >
+                                            {blogTag.name}
+                                        </li>
                                     )
                                 }
                             })
