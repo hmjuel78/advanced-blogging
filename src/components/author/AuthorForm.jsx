@@ -56,6 +56,7 @@ const AuthorForm = (props) => {
         }
     }, [editableAuthor])
 
+    console.log(editableAuthor)
 
     return (
         <div>

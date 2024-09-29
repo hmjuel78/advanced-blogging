@@ -28,7 +28,7 @@ const CategoryList = (props) => {
                 {
                     categories &&
                     categories.map(category => (
-                        <li key={category.id} className="flex gap-4 w-full justify-between border border-black p-3 rounded">
+                        <li key={category.id} className="flex gap-4 w-full justify-between border border-black p-3 rounded items-center">
                             <span>{category.name}</span>
                             <div className="flex gap-4">
                                 <button
