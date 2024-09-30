@@ -12,26 +12,26 @@ const initialState = {
 }
 
 export const blogFetch = createAsyncThunk("blog/blogFetch", async (payload) => {
-    console.log('payload', payload)
+    console.log(payload)
     let url = `${BASE_URL}`
 
     const params = {}
 
-    if (payload.categoryId) {
-        params.categoryId = payload.categoryId
+    if (payload.selectedCategory) {
+        params.categoryId = payload.selectedCategory
     }
-    if (payload.authorId) {
-        params.authorId = payload.authorId
+    if (payload.selectedAuthor) {
+        params.authorId = payload.selectedAuthor
     }
-    if (payload.tagId) {
-        params.tags = payload.tagId
+    if (payload.selectedTag) {
+        params.tags = payload.selectedTag
     }
-    if (payload.title) {
-        params.title = payload.title
+    if (payload.searchTitle) {
+        params.title = payload.searchTitle
     }
 
     params._page = payload.currentPage || 1
-    params._limit = 1
+    params._limit = payload.viewPerPage
 
     try {
         const response = await axios.get(url, { params })

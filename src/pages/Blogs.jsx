@@ -12,115 +12,88 @@ import Loading from "../components/Loading/Loading"
 
 const Blogs = () => {
     const initSelect = {
-        categorySelect: "",
-        authorSelect: "",
-        tagSelect: "",
-        searchKeyword: "",
+        selectedCategory: "",
+        selectedAuthor: "",
+        selectedTag: "",
+        searchTitle: "",
         startDate: "",
-        endDate: ""
+        endDate: "",
+        currentPage: 1,
+        viewPerPage: 1
     }
     const [selectFilter, setSelectFilter] = useState(initSelect)
+    const [totalPosts, setTotalPosts] = useState(4)
+    const [totalPage, setTotalPage] = useState(0)
     const { blogs, isLoading } = useSelector(blogSelector)
     const { categories } = useSelector(categorySelector)
     const { authors, authorsByCat } = useSelector(authorSelector)
     const { tags } = useSelector(tagSelector)
     const dispatch = useDispatch()
-    const [currentPage, setCurrentPage] = useState(1)
-    const [totalPosts, setTotalPosts] = useState(4)
-    const [viewPerPage, setViewPerPage] = useState(1)
-    const [totalPage, setTotalPage] = useState(0)
+    const [shouldFetch, setShouldFetch] = useState(false);
+
+    const initialBlogFetch = () => {
+        dispatch(
+            blogFetch({
+                currentPage: selectFilter.currentPage,
+                viewPerPage: selectFilter.viewPerPage
+
+            })
+        )
+    }
 
     const archiveSearchFilter = (e) => {
         e.preventDefault()
         if (
-            selectFilter.categorySelect === "" &&
-            selectFilter.authorSelect === "" &&
-            selectFilter.tagSelect === "" &&
-            selectFilter.searchKeyword === "" &&
+            selectFilter.selectedCategory === "" &&
+            selectFilter.selectedAuthor === "" &&
+            selectFilter.selectedTag === "" &&
+            selectFilter.searchTitle === "" &&
             selectFilter.startDate === "" &&
             selectFilter.endDate === ""
         ) {
             return toast.error("Minium select one item for search!!!")
         }
-        setCurrentPage(1)
+
+        setSelectFilter((selectFilter) => ({
+            ...selectFilter,
+            currentPage: 1
+        }))
+
         dispatch(
-            blogFetch({
-                categoryId: selectFilter?.categorySelect || null,
-                authorId: selectFilter?.authorSelect || null,
-                tagId: selectFilter?.tagSelect?.id || null,
-                title: selectFilter?.searchKeyword || "",
-                currentPage: currentPage
-                // startDate: selectFilter?.startDate || null,
-                // endDate: selectFilter?.endDate || null
-            })
+            blogFetch(selectFilter)
         )
     }
 
     const resetFilter = () => {
         setSelectFilter(initSelect)
-        dispatch(blogFetch())
-    }
-    const categoryChangeHandle = (cat) => {
-        setSelectFilter((selectFilter) => ({
-            ...selectFilter,
-            categorySelect: cat,
-            authorSelect: ""
-        }))
-    }
-    const authorChangeHandle = (auth) => {
-        setSelectFilter((selectFilter) => ({
-            ...selectFilter,
-            authorSelect: auth
-        }))
-    }
-    const tagChangeHandle = (tag) => {
-        setSelectFilter((selectFilter) => ({
-            ...selectFilter,
-            tagSelect: tag
-        }))
-    }
-    const searchKeywordHandle = (e) => {
-        setSelectFilter((selectFilter) => ({
-            ...selectFilter,
-            searchKeyword: e.target.value
-        }))
+        initialBlogFetch()
     }
 
-    const categoryFilterByClick = (catId) => {
-        console.log(catId)
+    const handleFilterChange = (key, value, fetch = false) => {
         setSelectFilter((selectFilter) => ({
             ...selectFilter,
-            categorySelect: catId
+            [key]: value,
+            currentPage: 1
         }))
-        dispatch(
-            blogFetch({
-                categoryId: catId || null
-            })
-        )
+
+        if (fetch) {
+            setShouldFetch(true)
+        }
     }
 
-    const atuhorFilterByClick = (authId) => {
-        setSelectFilter((selectFilter) => ({
-            ...selectFilter,
-            authorSelect: authId
-        }))
-        dispatch(
-            blogFetch({
-                authorId: authId || null
-            })
-        )
-    }
-    const tagFilterByClick = (tagId) => {
-        setSelectFilter((selectFilter) => ({
-            ...selectFilter,
-            tagSelect: tagId
-        }))
-        dispatch(
-            blogFetch({
-                tagId: tagId || null
-            })
-        )
-    }
+    const categoryChangeHandle = (cat) => handleFilterChange('selectedCategory', cat)
+
+    const authorChangeHandle = (auth) => handleFilterChange('selectedAuthor', auth)
+
+    const tagChangeHandle = (tag) => handleFilterChange('selectedTag', tag)
+
+    const searchKeywordHandle = (e) => handleFilterChange('searchTitle', e.target.value)
+
+    const categoryFilterByClick = (catId) => handleFilterChange('selectedCategory', catId, true)
+
+    const authorFilterByClick = (authId) => handleFilterChange('selectedAuthor', authId, true)
+
+    const tagFilterByClick = (tagId) => handleFilterChange('selectedTag', tagId, true)
 
     const dateFilterHandle = (startDate, endDate) => {
         setSelectFilter((selectFilter) => ({
@@ -132,23 +105,22 @@ const Blogs = () => {
         //     tagId: tagId || null
         // }))
     }
-    // console.log(selectFilter.startDate, selectFilter.endDate)
 
-    const paginationHandle = (e) => {
-        setCurrentPage(parseInt(e.target.value))
+
+    const changeCurrentPage = (e) => {
+        setSelectFilter((selectFilter) => ({
+            ...selectFilter,
+            currentPage: parseInt(e.target.value)
+        }))
     }
 
     useEffect(() => {
-        setTotalPage(Math.ceil(totalPosts / viewPerPage))
+        initialBlogFetch()
+    }, [selectFilter.currentPage])
+    useEffect(() => {
+        setTotalPage(Math.ceil(totalPosts / selectFilter.viewPerPage))
     }, [])
 
-    useEffect(() => {
-        dispatch(
-            blogFetch({
-                currentPage: currentPage
-            })
-        )
-    }, [currentPage])
     useEffect(() => {
         dispatch(categoryFetch())
         dispatch(authorFetch())
@@ -156,11 +128,17 @@ const Blogs = () => {
     }, [dispatch])
 
     useEffect(() => {
-        if (selectFilter?.categorySelect) {
-            dispatch(authorByCatId(selectFilter.categorySelect))
+        if (selectFilter?.selectedCategory) {
+            dispatch(authorByCatId(selectFilter.selectedCategory))
         }
-    }, [dispatch, selectFilter.categorySelect])
+    }, [dispatch, selectFilter.selectedCategory])
 
+    useEffect(() => {
+        if (shouldFetch) {
+            dispatch(blogFetch(selectFilter))
+            setShouldFetch(false)
+        }
+    }, [selectFilter, shouldFetch])
 
     return (
         <div className="max-w-7xl mx-auto m-10 px-6">
@@ -170,22 +148,22 @@ const Blogs = () => {
                 <DropdownWithSearch
                     isSearch={true}
                     dropDatas={categories}
-                    selectDropData={selectFilter.categorySelect}
+                    selectDropData={selectFilter.selectedCategory}
                     setSelectDropData={categoryChangeHandle}
                     mapKey="name"
                     selectPlaceholder="Select Category"
                 />
                 <DropdownWithSearch
                     isSearch={true}
-                    dropDatas={selectFilter.categorySelect !== "" ? authorsByCat : authors}
-                    selectDropData={selectFilter.authorSelect}
+                    dropDatas={selectFilter.selectedCategory !== "" ? authorsByCat : authors}
+                    selectDropData={selectFilter.selectedAuthor}
                     setSelectDropData={authorChangeHandle}
                     mapKey="name"
                     selectPlaceholder="Select Author"
                 />
-                <DropdownWithSearch isSearch={true} dropDatas={tags} selectDropData={selectFilter.tagSelect} setSelectDropData={tagChangeHandle} mapKey="name" selectPlaceholder="Select Tag" />
+                <DropdownWithSearch isSearch={true} dropDatas={tags} selectDropData={selectFilter.selectedTag} setSelectDropData={tagChangeHandle} mapKey="name" selectPlaceholder="Select Tag" />
 
-                <input onChange={searchKeywordHandle} value={selectFilter.searchKeyword} type="text" placeholder="Search Blog" className="input input-bordered w-full max-w-xs" />
+                <input onChange={searchKeywordHandle} value={selectFilter.searchTitle} type="text" placeholder="Search Blog" className="input input-bordered w-full max-w-xs" />
 
                 <button onClick={archiveSearchFilter} type="submit" className="btn btn-outline btn-accent">
                     Filter
@@ -198,16 +176,15 @@ const Blogs = () => {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3  gap-4">
                 {isLoading && <Loading />}
                 {blogs && blogs.length > 0 ? (
-                    blogs?.map((blog) => <BlogCard key={blog.id} blog={blog} _onCategoryFilter={categoryFilterByClick} _onAuthorFilter={atuhorFilterByClick} _onTagFilter={tagFilterByClick} />)
+                    blogs?.map((blog) => <BlogCard key={blog.id} blog={blog} _onCategoryFilter={categoryFilterByClick} _onAuthorFilter={authorFilterByClick} _onTagFilter={tagFilterByClick} />)
                 ) : (
                     <h2 className="text-xl text-center">Blogs Not Found !!!</h2>
                 )}
             </div>
 
             <Pagination
-                _state={currentPage}
-                _setState={setCurrentPage}
-                _onChange={paginationHandle}
+                _state={selectFilter.currentPage}
+                _onChange={changeCurrentPage}
                 _totalPage={totalPage}
             />
         </div>

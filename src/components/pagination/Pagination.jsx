@@ -1,18 +1,20 @@
 const Pagination = (props) => {
-    const { _state, _setState, _onChange, _totalPage } = props
+    const { _state, _onChange, _totalPage } = props
 
-    const handleDecrement = () => {
-        _setState((_state) => _state - 1)
-    }
-    const handleIncrement = () => {
-        _setState((_state) => _state + 1)
-    }
+    // const handleDecrement = () => {
+    //     _onChange(decrement)
+    // }
+    // const handleIncrement = () => {
+    //     const increment = (_state) => _state + 1
+
+    //     _onChange(increment)
+    // }
     // console.log(_totalPage > 1)
     return (
         <div className={`justify-center items-center my-4 ${_totalPage > 1 ? 'flex' : 'hidden'}`}>
-            <button onClick={handleDecrement} className={`join-item btn btn-md rounded-none ${_state === 1 && 'btn-disabled'}`}>
+            {/* <button onClick={handleDecrement} className={`join-item btn btn-md rounded-none ${_state === 1 && 'btn-disabled'}`}>
                 «
-            </button>
+            </button> */}
 
             {
                 Array.from({ length: _totalPage }, (_, idx) => (
@@ -21,9 +23,9 @@ const Pagination = (props) => {
                     </button>
                 ))
             }
-            <button onClick={handleIncrement} className={`join-item btn btn-md rounded-none ${_state === _totalPage && 'btn-disabled'}`}>
+            {/* <button onClick={handleIncrement} className={`join-item btn btn-md rounded-none ${_state === _totalPage && 'btn-disabled'}`}>
                 »
-            </button>
+            </button> */}
         </div>
     )
 }
