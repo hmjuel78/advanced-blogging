@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import axios from "axios"
 
 const BASE_URL = "http://localhost:3000/blogs"
 
@@ -10,35 +11,35 @@ const initialState = {
     editableBlog: null
 }
 
-export const blogFetch = createAsyncThunk("blog/blogFetch", async (filter) => {
-    console.log(filter)
-    let url = BASE_URL
+export const blogFetch = createAsyncThunk("blog/blogFetch", async (payload) => {
+    console.log('payload', payload)
+    let url = `${BASE_URL}`
 
-    if (filter) {
-        url = `${BASE_URL}?`
-        if (filter.categoryId && filter.authorId && filter.tagId) {
-            url = `${url}categoryId=${filter.categoryId}&authorId=${filter.authorId}&tags=${filter.tagId}&`
-        } else if (filter.categoryId && filter.authorId) {
-            url = `${url}categoryId=${filter.categoryId}&authorId=${filter.authorId}&`
-        } else if (filter.categoryId && filter.tagId) {
-            url = `${url}categoryId=${filter.categoryId}&tags=${filter.tagId}&`
-        } else if (filter.categoryId) {
-            url = `${url}categoryId=${filter.categoryId}&`
-        } else if (filter.authorId) {
-            url = `${url}authorId=${filter.authorId}&`
-        } else if (filter.tagId) {
-            url = `${url}tags=${filter.tagId}&`
-        } else if (filter.title) {
-            url = `${url}title=${filter.title}&`
-        }
+    const params = {}
 
-        // else if (filter.startDate && filter.endDate) {
-        // url = `${url}dateTime_gte=${filter.startDate.startDate}&dateTime_lte=${filter.endDate.endDate}`
-        // }
+    if (payload.categoryId) {
+        params.categoryId = payload.categoryId
+    }
+    if (payload.authorId) {
+        params.authorId = payload.authorId
+    }
+    if (payload.tagId) {
+        params.tags = payload.tagId
+    }
+    if (payload.title) {
+        params.title = payload.title
     }
 
-    const blogs = await fetch(url + `_page=${filter.currentPage}&_limit=${"2"}`)
-    return blogs.json()
+    params._page = payload.currentPage || 1
+    params._limit = 1
+
+    try {
+        const response = await axios.get(url, { params })
+        return response.data
+    } catch (error) {
+        console.error("Error fetching blogs:", error)
+        throw error
+    }
 })
 
 export const blogCreate = createAsyncThunk("blog/blogCreate", async (content) => {
@@ -59,6 +60,7 @@ export const blogDelete = createAsyncThunk("blog/blogDelete", async (id) => {
     return id
 })
 export const blogUpdate = createAsyncThunk("blog/blogUpdate", async ({ content, id, lastModifiedDate }) => {
+    console.log(content)
     const newBlog = await fetch(`${BASE_URL}/${id}`, {
         method: "PUT",
         body: JSON.stringify({

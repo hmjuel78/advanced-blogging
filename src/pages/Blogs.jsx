@@ -26,8 +26,8 @@ const Blogs = () => {
     const { tags } = useSelector(tagSelector)
     const dispatch = useDispatch()
     const [currentPage, setCurrentPage] = useState(1)
-    const [totalPosts, setTotalPosts] = useState(40)
-    const [viewPerPage, setViewPerPage] = useState(2)
+    const [totalPosts, setTotalPosts] = useState(4)
+    const [viewPerPage, setViewPerPage] = useState(1)
     const [totalPage, setTotalPage] = useState(0)
 
     const archiveSearchFilter = (e) => {
@@ -42,7 +42,7 @@ const Blogs = () => {
         ) {
             return toast.error("Minium select one item for search!!!")
         }
-
+        setCurrentPage(1)
         dispatch(
             blogFetch({
                 categoryId: selectFilter?.categorySelect || null,
@@ -142,13 +142,13 @@ const Blogs = () => {
         setTotalPage(Math.ceil(totalPosts / viewPerPage))
     }, [])
 
-    // useEffect(() => {
-    //     dispatch(
-    //         blogFetch({
-    //             currentPage: currentPage
-    //         })
-    //     )
-    // }, [currentPage])
+    useEffect(() => {
+        dispatch(
+            blogFetch({
+                currentPage: currentPage
+            })
+        )
+    }, [currentPage])
     useEffect(() => {
         dispatch(categoryFetch())
         dispatch(authorFetch())
@@ -160,6 +160,7 @@ const Blogs = () => {
             dispatch(authorByCatId(selectFilter.categorySelect))
         }
     }, [dispatch, selectFilter.categorySelect])
+
 
     return (
         <div className="max-w-7xl mx-auto m-10 px-6">
@@ -203,7 +204,12 @@ const Blogs = () => {
                 )}
             </div>
 
-            <Pagination _state={currentPage} _setState={setCurrentPage} _onChange={paginationHandle} />
+            <Pagination
+                _state={currentPage}
+                _setState={setCurrentPage}
+                _onChange={paginationHandle}
+                _totalPage={totalPage}
+            />
         </div>
     )
 }
