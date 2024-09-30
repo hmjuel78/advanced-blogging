@@ -110,6 +110,56 @@
       "blogId": 2,
       "comment": "goog job",
       "id": 2
+    },
+    {
+      "blogId": 4,
+      "comment": "wonderfull!\ni like it very much\nwow\n",
+      "id": 3
+    },
+    {
+      "blogId": 4,
+      "comment": "another comments",
+      "id": 4
+    },
+    {
+      "blogId": 4,
+      "comment": "previous comment not show",
+      "id": 5
+    },
+    {
+      "blogId": 4,
+      "comment": "hello guys",
+      "id": 6
+    },
+    {
+      "blogId": 4,
+      "comment": "another one blogs dependency_",
+      "id": 7
+    },
+    {
+      "blogId": 3,
+      "comment": "the cow is a domestic animal",
+      "id": 8
+    },
+    {
+      "blogId": 3,
+      "comment": "We are formal animal",
+      "id": 9
+    },
+    {
+      "blogId": 3,
+      "comment": "listen\nto me",
+      "id": 10
+    },
+    {
+      "blogId": 3,
+      "comment": "aj ektu beshi deri hoye gelo",
+      "id": 11
+    },
+    {
+      "blogId": 3,
+      "comment": "problem nai\n",
+      "id": 12
     }
   ]
 }

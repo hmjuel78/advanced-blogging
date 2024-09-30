@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { blogSelector, singleBlog } from "../../features/blog/blogSlice"
 import { useParams } from "react-router-dom"
 import CommentsForm from "../comments/CommentsForm"
+import { commentCreate } from "../../features/comments/commentSlice"
 
 
 const BlogDetails = () => {
@@ -12,9 +13,22 @@ const BlogDetails = () => {
     const dispatch = useDispatch()
     const { id } = useParams()
 
+
+    const commentOnSubmit = (e) => {
+        e.preventDefault()
+
+        const newComment = {
+            blogId: parseInt(id),
+            comment: commentText
+        }
+        dispatch(commentCreate(newComment))
+
+        setCommentText('')
+    }
+
     useEffect(() => {
         dispatch(singleBlog(id))
-    }, [dispatch, id])
+    }, [dispatch, id, commentText])
 
     return (
         <div className="max-w-7xl  mx-auto mt-6 space-y-4">
@@ -38,7 +52,11 @@ const BlogDetails = () => {
                 }
             </div>
 
-            <CommentsForm _state={commentText} _setState={setCommentText} />
+            <CommentsForm
+                _state={commentText}
+                _setState={setCommentText}
+                _onChangeHandle={commentOnSubmit}
+            />
 
         </div>
     )

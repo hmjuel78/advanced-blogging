@@ -18,6 +18,7 @@ export const commentFetch = createAsyncThunk('comment/commentFetch',
 
 export const commentCreate = createAsyncThunk('comment/commentCreate',
     async (content) => {
+
         const newComment = await fetch(BASE_URL, {
             method: 'POST',
             body: JSON.stringify(content),

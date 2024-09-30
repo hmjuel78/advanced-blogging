@@ -1,28 +1,26 @@
 
 
-const CommentsForm = ({ _state, _setState }) => {
 
+const CommentsForm = ({ _state, _setState, _onChangeHandle }) => {
 
     const commentTextChange = (e) => {
         _setState(e.target.value)
     }
-    const commentOnSubmit = (e) => {
-        e.preventDefault()
-        console.log(_state)
-        _setState('')
-    }
-
 
     return (
         <div>
-            <form onSubmit={commentOnSubmit}>
+            <form
+                onSubmit={_onChangeHandle}
+                className="text-right space-y-3"
+
+            >
                 <textarea
                     onChange={commentTextChange}
                     value={_state}
-                    className="textarea textarea-bordered w-full"
+                    className="textarea textarea-bordered w-full min-h-36 resize-none"
                     placeholder="Say something"
                 ></textarea>
-                <button className="btn btn-success btn-outline">Comment</button>
+                <button type="submit" className="btn btn-success btn-outline">Comment</button>
             </form>
         </div>
     )
