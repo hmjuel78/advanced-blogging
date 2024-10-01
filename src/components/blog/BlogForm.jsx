@@ -64,7 +64,7 @@ const BlogForm = (props) => {
         if (editableBlog) {
             dispatch(blogUpdate({
                 id: editableBlog.id,
-                content: newBlog,
+                payload: newBlog,
                 lastModifiedDate: dayjs().utc()
             }))
             toast.success("Blog update Successfully !!!")

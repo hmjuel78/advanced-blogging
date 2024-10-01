@@ -52,7 +52,7 @@ const DropdownWithSearch = (props) => {
                 <ul className={`w-full mt-2 overflow-y-auto absolute z-20 border rounded-md bg-slate-700 ${open ? "max-h-60" : "max-h-0 hidden"} `} >
                     {
                         isSearch &&
-                        <div className="flex items-center sticky top-0 w-full">
+                        <li className="flex items-center sticky top-0 w-full">
                             <input
                                 type="text"
                                 value={searchValue}
@@ -60,7 +60,7 @@ const DropdownWithSearch = (props) => {
                                 placeholder="Search.."
                                 className="placeholder:text-gray-700 text-white py-2 px-3 outline-none w-full"
                             />
-                        </div>
+                        </li>
                     }
 
                     {dropDatas &&

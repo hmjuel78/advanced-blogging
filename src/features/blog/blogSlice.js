@@ -62,18 +62,18 @@ export const blogDelete = createAsyncThunk("blog/blogDelete", async (id) => {
     })
     return id
 })
-export const blogUpdate = createAsyncThunk("blog/blogUpdate", async ({ content, id, lastModifiedDate }) => {
-    console.log(content)
+export const blogUpdate = createAsyncThunk("blog/blogUpdate", async ({ payload, id, lastModifiedDate }) => {
+
     const newBlog = await fetch(`${BASE_URL}/${id}`, {
         method: "PUT",
         body: JSON.stringify({
-            authorId: content.authorId,
-            categoryId: content.categoryId,
-            title: content.title,
-            desc: content.desc,
-            dateTime: content.dateTime,
+            authorId: payload.authorId,
+            categoryId: payload.categoryId,
+            title: payload.title,
+            desc: payload.desc,
+            dateTime: payload.dateTime,
             lastModified: lastModifiedDate,
-            tags: content.tags
+            tags: payload.tags
         }),
         headers: {
             "Content-type": "application/json"
