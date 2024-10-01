@@ -109,6 +109,9 @@ const Blogs = () => {
 
     useEffect(() => {
         initialBlogFetch()
+        if (shouldFetch) {
+            initialBlogFetch()
+        }
     }, [selectFilter.currentPage])
 
     useEffect(() => {
@@ -184,7 +187,7 @@ const Blogs = () => {
                         <BlogCard
                             key={blog.id}
                             blog={blog}
-                            onCategoryFilter={categoryFilterByClick}
+                            _onCategoryFilter={categoryFilterByClick}
                             _onAuthorFilter={authorFilterByClick}
                             _onTagFilter={tagFilterByClick}
                         />)
