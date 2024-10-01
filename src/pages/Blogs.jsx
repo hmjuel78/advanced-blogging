@@ -31,9 +31,9 @@ const Blogs = () => {
     const dispatch = useDispatch()
     const [shouldFetch, setShouldFetch] = useState(false);
 
-    const initialBlogFetch = () => {
+    const initialBlogFetch = (initSelect) => {
         dispatch(
-            blogFetch(selectFilter)
+            blogFetch(initSelect ?? selectFilter)
         )
     }
 
@@ -58,11 +58,6 @@ const Blogs = () => {
         dispatch(
             blogFetch(selectFilter)
         )
-    }
-
-    const resetFilter = () => {
-        setSelectFilter(initSelect)
-        initialBlogFetch()
     }
 
     const handleFilterChange = (key, value, fetch = false) => {
@@ -106,6 +101,12 @@ const Blogs = () => {
         }))
     }
 
+    const resetFilter = () => {
+        setSelectFilter(initSelect)
+
+        initialBlogFetch(initSelect)
+    }
+
     useEffect(() => {
         initialBlogFetch()
     }, [selectFilter.currentPage])
@@ -144,7 +145,7 @@ const Blogs = () => {
                 {/* Author dropdown */}
                 <DropdownWithSearch
                     isSearch={true}
-                    dropDatas={selectFilter.selectedCategory !== "" ? authorsByCat : authors}
+                    dropDatas={selectFilter.selectedCategory !== null ? authorsByCat : authors}
                     selectDropData={selectFilter.selectedAuthor}
                     setSelectDropData={authorChangeHandle}
                     mapKey="name"
