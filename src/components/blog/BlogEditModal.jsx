@@ -1,18 +1,20 @@
-import BlogForm from "./BlogForm";
+import { CgClose } from "react-icons/cg";
+import BlogForm from "./BlogForm"
 
-const BlogEditModal = () => {
+const BlogEditModal = (props) => {
+    const {
+        open,
+        setOpen
+    } = props
+
     return (
         <>
-            <dialog id="blog_edit_form" className="modal">
+            <dialog className={`modal ${open && 'modal-open'}`}>
                 <div className="modal-box">
-                    <BlogForm />
-
-
-                    <div className="modal-action">
-                        <form method="dialog">
-                            <button className="btn">Close</button>
-                        </form>
-                    </div>
+                    <BlogForm setOpenModal={setOpen} />
+                    <button onClick={() => setOpen(false)} className="btn btn-sm btn-circle hover:btn-error absolute right-2 top-2">
+                        <CgClose />
+                    </button>
                 </div>
             </dialog>
         </>

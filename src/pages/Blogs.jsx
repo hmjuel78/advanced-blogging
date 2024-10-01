@@ -12,12 +12,12 @@ import Loading from "../components/Loading/Loading"
 
 const Blogs = () => {
     const initSelect = {
-        selectedCategory: "",
-        selectedAuthor: "",
-        selectedTag: "",
-        searchTitle: "",
-        startDate: "",
-        endDate: "",
+        selectedCategory: null,
+        selectedAuthor: null,
+        selectedTag: null,
+        searchTitle: '',
+        startDate: null,
+        endDate: null,
         currentPage: 1,
         viewPerPage: 1
     }
@@ -33,23 +33,24 @@ const Blogs = () => {
 
     const initialBlogFetch = () => {
         dispatch(
-            blogFetch({
-                currentPage: selectFilter.currentPage,
-                viewPerPage: selectFilter.viewPerPage
+            // blogFetch({
+            //     currentPage: selectFilter.currentPage,
+            //     viewPerPage: selectFilter.viewPerPage
 
-            })
+            // })
+            blogFetch(selectFilter)
         )
     }
 
     const archiveSearchFilter = (e) => {
         e.preventDefault()
         if (
-            selectFilter.selectedCategory === "" &&
-            selectFilter.selectedAuthor === "" &&
-            selectFilter.selectedTag === "" &&
+            selectFilter.selectedCategory === null &&
+            selectFilter.selectedAuthor === null &&
+            selectFilter.selectedTag === null &&
             selectFilter.searchTitle === "" &&
-            selectFilter.startDate === "" &&
-            selectFilter.endDate === ""
+            selectFilter.startDate === null &&
+            selectFilter.endDate === null
         ) {
             return toast.error("Minium select one item for search!!!")
         }
@@ -135,7 +136,8 @@ const Blogs = () => {
 
     useEffect(() => {
         if (shouldFetch) {
-            dispatch(blogFetch(selectFilter))
+            // dispatch(blogFetch(selectFilter))
+            initialBlogFetch()
             setShouldFetch(false)
         }
     }, [selectFilter, shouldFetch])

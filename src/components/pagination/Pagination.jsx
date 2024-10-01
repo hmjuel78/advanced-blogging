@@ -18,7 +18,12 @@ const Pagination = (props) => {
 
             {
                 Array.from({ length: _totalPage }, (_, idx) => (
-                    <button key={idx} onClick={_onChange} value={idx + 1} className={`join-item btn btn-md rounded-none ${_state === idx + 1 && 'btn-disabled'}`}>
+                    <button
+                        key={idx}
+                        onClick={_onChange}
+                        value={idx + 1}
+                        className={`join-item btn btn-md rounded-none ${_state === idx + 1 && 'btn-disabled'} `}
+                    >
                         {idx + 1}
                     </button>
                 ))
@@ -26,7 +31,7 @@ const Pagination = (props) => {
             {/* <button onClick={handleIncrement} className={`join-item btn btn-md rounded-none ${_state === _totalPage && 'btn-disabled'}`}>
                 »
             </button> */}
-        </div>
+        </div >
     )
 }
 

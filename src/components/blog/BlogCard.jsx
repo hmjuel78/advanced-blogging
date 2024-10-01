@@ -8,9 +8,15 @@ import { categorySelector } from "../../features/category/categorySlice"
 import { authorSelector } from "../../features/author/authorSlice"
 import { _EDITABLEBLOG } from "../../features/blog/blogSlice"
 import BlogEditModal from "./BlogEditModal"
+import { useState } from "react"
 
 const BlogCard = (props) => {
-    const { blog, _onCategoryFilter, _onAuthorFilter, _onTagFilter } = props
+    const { blog,
+        _onCategoryFilter,
+        _onAuthorFilter,
+        _onTagFilter
+    } = props
+    const [openModal, setOpenModal] = useState(false)
 
     const dispatch = useDispatch()
     const { tags } = useSelector(tagSelector)
@@ -20,7 +26,7 @@ const BlogCard = (props) => {
 
     const blogEditHandle = (blog) => {
         dispatch(_EDITABLEBLOG(blog))
-        document.getElementById('blog_edit_form').showModal()
+        setOpenModal(true)
     }
 
     return (
@@ -76,7 +82,7 @@ const BlogCard = (props) => {
                                             <li
                                                 onClick={() => _onAuthorFilter(author.id)}
                                                 key={author.id}
-                                                className="border border-blue-700 px-3 rounded text-sm cursor-pointer cursor-pointer"
+                                                className="border border-blue-700 px-3 rounded text-sm cursor-pointer"
                                             >
                                                 {author.name}
                                             </li>
@@ -130,7 +136,7 @@ const BlogCard = (props) => {
                     </Link>
                 </div>
             </div>
-            <BlogEditModal />
+            <BlogEditModal open={openModal} setOpen={setOpenModal} />
         </div>
     )
 }

@@ -3,7 +3,15 @@ import useOutsideClick from '../../hooks/useOutsiteClick'
 
 
 const DropdownWithSearch = (props) => {
-    const { selectDropData, setSelectDropData, isSearch = false, disable = false, dropDatas = [], mapKey = 'name', selectPlaceholder = "select ...." } = props
+    const {
+        selectDropData,
+        setSelectDropData,
+        isSearch = false,
+        disable = false,
+        dropDatas = [],
+        mapKey = 'name',
+        selectPlaceholder = "select ...."
+    } = props
     const [searchValue, setSearchValue] = useState('')
     const [open, setOpen] = useState(false)
     const ref = useRef()

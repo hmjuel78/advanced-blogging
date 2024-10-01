@@ -12,7 +12,10 @@ import { tagSelector } from "../../features/tags/tagSlice"
 
 dayjs.extend(utc)
 
-const BlogForm = () => {
+const BlogForm = (props) => {
+    const {
+        setOpenModal
+    } = props
     const initState = {
         blogTitle: '',
         blogBody: '',
@@ -65,7 +68,8 @@ const BlogForm = () => {
                 lastModifiedDate: dayjs().utc()
             }))
             toast.success("Blog update Successfully !!!")
-            document.getElementById('blog_edit_form').close()
+
+            setOpenModal(false)
         } else {
             dispatch(blogCreate(newBlog))
             toast.success("Blog Create Successfully !!!")
