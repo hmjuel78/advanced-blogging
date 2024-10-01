@@ -155,8 +155,13 @@
     },
     {
       "commentId": 1,
-      "comment":"We are fool",
+      "comment": "We are fool",
       "id": 11
+    },
+    {
+      "blogId": 4,
+      "comment": "hello",
+      "id": 12
     }
   ],
   "likes": [
