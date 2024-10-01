@@ -9,6 +9,7 @@ import { authorSelector } from "../../features/author/authorSlice"
 import { _EDITABLEBLOG } from "../../features/blog/blogSlice"
 import BlogEditModal from "./BlogEditModal"
 import { useState } from "react"
+import { LiaCommentSolid } from "react-icons/lia"
 
 const BlogCard = (props) => {
     const { blog,
@@ -19,10 +20,10 @@ const BlogCard = (props) => {
     const [openModal, setOpenModal] = useState(false)
 
     const dispatch = useDispatch()
+
     const { tags } = useSelector(tagSelector)
     const { categories } = useSelector(categorySelector)
     const { authors } = useSelector(authorSelector)
-
 
     const blogEditHandle = (blog) => {
         dispatch(_EDITABLEBLOG(blog))
@@ -31,7 +32,7 @@ const BlogCard = (props) => {
 
     return (
         <div className={`card bg-base-100 w-full shadow-xl border border-white`}>
-            <div className="card-body">
+            <div className="card-body space-y-5">
                 <h2 className="card-title">{blog.title}</h2>
                 <p>{blog.desc}</p>
                 <div className="flex gap-2 items-center justify-between my-3">
@@ -39,9 +40,16 @@ const BlogCard = (props) => {
                         <MdOutlineWatchLater />
                         <span>{dayjs(blog.dateTime).format('DD/MM/YYYY, h:mm A')}</span>
                     </div>
-                    <div className="flex gap-1 items-center text-sm">
-                        <SlLike />
-                        <span>{blog.like ? blog.like : 0}</span>
+                    <div className="flex gap-2">
+                        <div className="flex gap-1 items-center text-sm">
+                            <SlLike />
+                            <span>{blog?.likes ? blog.likes.map(blog => blog.like) : 0}</span>
+                        </div>
+                        <div className="flex gap-1 items-center text-sm">
+                            <LiaCommentSolid />
+
+                            <span>{blog?.comments ? blog.comments.length : 0}</span>
+                        </div>
                     </div>
                 </div>
 

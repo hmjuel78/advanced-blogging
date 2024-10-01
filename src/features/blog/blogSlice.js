@@ -12,33 +12,36 @@ const initialState = {
 }
 
 export const blogFetch = createAsyncThunk("blog/blogFetch", async (payload) => {
-    console.log(payload)
+
     let url = `${BASE_URL}`
 
-    const params = {}
+    const params = new URLSearchParams()
 
     if (payload.selectedCategory) {
-        params.categoryId = payload.selectedCategory
+        params.append('categoryId', payload.selectedCategory)
     }
     if (payload.selectedAuthor) {
-        params.authorId = payload.selectedAuthor
+        params.append('authorId', payload.selectedAuthor)
     }
     if (payload.selectedTag) {
-        params.tags = payload.selectedTag
+        params.append('tags', payload.selectedTag)
     }
     if (payload.searchTitle) {
-        params.title = payload.searchTitle
+        params.append('title', payload.searchTitle)
     }
 
-    params._page = payload.currentPage || 1
-    params._limit = payload.viewPerPage
+    params.append('_page', payload.currentPage || 1)
+    params.append('_limit', payload.viewPerPage || 10)
+    params.append('_embed', 'comments')
+    params.append('_embed', 'likes')
 
     try {
-        const response = await axios.get(url, { params })
-        return response.data
+        // Ensure the URL is correctly constructed only once
+        const response = await axios.get(`${url}?${params.toString()}`);
+        return response.data;
     } catch (error) {
-        console.error("Error fetching blogs:", error)
-        throw error
+        console.error("Error fetching blogs:", error);
+        throw error;
     }
 })
 
@@ -79,8 +82,21 @@ export const blogUpdate = createAsyncThunk("blog/blogUpdate", async ({ content, 
     return newBlog.json()
 })
 export const singleBlog = createAsyncThunk("blog/singleBlog", async (id) => {
-    const single = await fetch(`${BASE_URL}/${id}?_embed=comments`)
-    return single.json()
+
+    let url = `${BASE_URL}`
+    const params = new URLSearchParams()
+    params.append('_embed', 'comments')
+    params.append('_embed', 'likes')
+    params.append('_expand', 'category')
+    params.append('_expand', 'author')
+
+    try {
+        const response = await axios.get(`${url}/${id}?${params.toString()}`)
+        return response.data
+    } catch (error) {
+        console.error("Error fetching blogs:", error)
+        throw error
+    }
 })
 export const blogSlice = createSlice({
     name: "blog",

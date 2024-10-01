@@ -30,15 +30,17 @@ const BlogDetails = () => {
         dispatch(singleBlog(id))
     }, [dispatch, id, commentText])
 
+
     return (
         <div className="max-w-7xl  mx-auto mt-6 space-y-4">
             <h2 className="text-2xl font-bold">Blog Details</h2>
+            <p className="font-bold">{blogs?.category?.name}</p>
+            <p>By <span className="font-bold underline">{blogs?.author?.name}</span></p>
             <h3 className="text-xl font-medium">Title: {blogs.title} </h3>
             <p>Description: {blogs.desc} </p>
             <div className="flex justify-between items-center gap-3 border-b border-gray-600 pb-3">
-                <p className="">Comments: {blogs.comments && blogs?.comments?.length > 0 ? blogs?.comments?.length : '0'}</p>
-                <p>Likes: <span>{blogs.like ? blogs.like : 0}</span> </p>
-
+                <p className="">Comments: {blogs?.comments && blogs?.comments?.length > 0 ? blogs?.comments?.length : '0'}</p>
+                <p>Likes: <span>{blogs?.likes?.length ? blogs?.likes?.map(like => like.like) : 0}</span> </p>
             </div>
             <div className="space-y-4">
                 {blogs.comments &&

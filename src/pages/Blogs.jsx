@@ -33,11 +33,6 @@ const Blogs = () => {
 
     const initialBlogFetch = () => {
         dispatch(
-            // blogFetch({
-            //     currentPage: selectFilter.currentPage,
-            //     viewPerPage: selectFilter.viewPerPage
-
-            // })
             blogFetch(selectFilter)
         )
     }
@@ -102,11 +97,7 @@ const Blogs = () => {
             startDate: startDate,
             endDate: endDate
         }))
-        // dispatch(blogFetch({
-        //     tagId: tagId || null
-        // }))
     }
-
 
     const changeCurrentPage = (e) => {
         setSelectFilter((selectFilter) => ({
@@ -118,6 +109,7 @@ const Blogs = () => {
     useEffect(() => {
         initialBlogFetch()
     }, [selectFilter.currentPage])
+
     useEffect(() => {
         setTotalPage(Math.ceil(totalPosts / selectFilter.viewPerPage))
     }, [])
@@ -134,19 +126,13 @@ const Blogs = () => {
         }
     }, [dispatch, selectFilter.selectedCategory])
 
-    useEffect(() => {
-        if (shouldFetch) {
-            // dispatch(blogFetch(selectFilter))
-            initialBlogFetch()
-            setShouldFetch(false)
-        }
-    }, [selectFilter, shouldFetch])
 
     return (
         <div className="max-w-7xl mx-auto m-10 px-6">
             <h2 className="mb-3">Blogs</h2>
 
             <div className="my-10 grid grid-cols-6 gap-3">
+                {/* Category dropdown */}
                 <DropdownWithSearch
                     isSearch={true}
                     dropDatas={categories}
@@ -155,6 +141,7 @@ const Blogs = () => {
                     mapKey="name"
                     selectPlaceholder="Select Category"
                 />
+                {/* Author dropdown */}
                 <DropdownWithSearch
                     isSearch={true}
                     dropDatas={selectFilter.selectedCategory !== "" ? authorsByCat : authors}
@@ -163,9 +150,23 @@ const Blogs = () => {
                     mapKey="name"
                     selectPlaceholder="Select Author"
                 />
-                <DropdownWithSearch isSearch={true} dropDatas={tags} selectDropData={selectFilter.selectedTag} setSelectDropData={tagChangeHandle} mapKey="name" selectPlaceholder="Select Tag" />
-
-                <input onChange={searchKeywordHandle} value={selectFilter.searchTitle} type="text" placeholder="Search Blog" className="input input-bordered w-full max-w-xs" />
+                {/* Tag dropdown */}
+                <DropdownWithSearch
+                    isSearch={true}
+                    dropDatas={tags}
+                    selectDropData={selectFilter.selectedTag}
+                    setSelectDropData={tagChangeHandle}
+                    mapKey="name"
+                    selectPlaceholder="Select Tag"
+                />
+                {/* input title search */}
+                <input
+                    onChange={searchKeywordHandle}
+                    value={selectFilter.searchTitle}
+                    type="text"
+                    placeholder="Search Blog"
+                    className="input input-bordered w-full max-w-xs"
+                />
 
                 <button onClick={archiveSearchFilter} type="submit" className="btn btn-outline btn-accent">
                     Filter
@@ -178,7 +179,14 @@ const Blogs = () => {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3  gap-4">
                 {isLoading && <Loading />}
                 {blogs && blogs.length > 0 ? (
-                    blogs?.map((blog) => <BlogCard key={blog.id} blog={blog} _onCategoryFilter={categoryFilterByClick} _onAuthorFilter={authorFilterByClick} _onTagFilter={tagFilterByClick} />)
+                    blogs?.map((blog) =>
+                        <BlogCard
+                            key={blog.id}
+                            blog={blog}
+                            onCategoryFilter={categoryFilterByClick}
+                            _onAuthorFilter={authorFilterByClick}
+                            _onTagFilter={tagFilterByClick}
+                        />)
                 ) : (
                     <h2 className="text-xl text-center">Blogs Not Found !!!</h2>
                 )}

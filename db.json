@@ -177,6 +177,18 @@
       "blogId": 2,
       "comment": "Well done",
       "id": 13
+    },
+    {
+      "blogId": 1,
+      "comment": "",
+      "id": 14
+    }
+  ],
+  "likes": [
+    {
+      "id": 1,
+      "blogId": 1,
+      "like": 230
     }
   ]
 }
