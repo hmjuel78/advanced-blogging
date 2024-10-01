@@ -180,8 +180,28 @@
     },
     {
       "blogId": 1,
-      "comment": "",
+      "comment": "fldsajflk",
       "id": 14
+    },
+    {
+      "blogId": 1,
+      "comment": "hello world",
+      "id": 15
+    },
+    {
+      "blogId": 1,
+      "comment": "Mission Impossible",
+      "id": 16
+    },
+    {
+      "blogId": 1,
+      "comment": "new comment\n",
+      "id": 17
+    },
+    {
+      "blogId": 1,
+      "comment": "hello world",
+      "id": 18
     }
   ],
   "likes": [

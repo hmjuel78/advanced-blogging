@@ -5,13 +5,15 @@ import { blogSelector, singleBlog } from "../../features/blog/blogSlice"
 import { useParams } from "react-router-dom"
 import CommentsForm from "../comments/CommentsForm"
 import { commentCreate } from "../../features/comments/commentSlice"
+import Loading from "../Loading/Loading"
 
 
 const BlogDetails = () => {
     const [commentText, setCommentText] = useState('')
-    const { blogs } = useSelector(blogSelector)
+    const { blogs, isLoading } = useSelector(blogSelector)
     const dispatch = useDispatch()
     const { id } = useParams()
+    const [nComment, setNcomment] = useState(false)
 
 
     const commentOnSubmit = (e) => {
@@ -22,13 +24,13 @@ const BlogDetails = () => {
             comment: commentText
         }
         dispatch(commentCreate(newComment))
-
         setCommentText('')
+        setNcomment(true)
     }
 
     useEffect(() => {
         dispatch(singleBlog(id))
-    }, [dispatch, id, commentText])
+    }, [nComment])
 
 
     return (
@@ -43,6 +45,7 @@ const BlogDetails = () => {
                 <p>Likes: <span>{blogs?.likes?.length ? blogs?.likes?.map(like => like.like) : 0}</span> </p>
             </div>
             <div className="space-y-4">
+                {isLoading && <Loading />}
                 {blogs.comments &&
                     blogs.comments.length > 0 ?
                     blogs.comments?.map(comment => (
