@@ -20,7 +20,7 @@ const CommentsForm = ({ _state, _setState, _onChangeHandle }) => {
                     className="textarea textarea-bordered w-full min-h-36 resize-none"
                     placeholder="Say something"
                 ></textarea>
-                <button type="submit" className="btn btn-success btn-outline">Comment</button>
+                <button type="submit" className={`btn btn-success btn-outline ${!_state && 'btn-disabled'}`}>Comment</button>
             </form>
         </div>
     )

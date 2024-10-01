@@ -139,16 +139,6 @@
       "id": 5
     },
     {
-      "blogId": 4,
-      "comment": "hello guys",
-      "id": 6
-    },
-    {
-      "blogId": 4,
-      "comment": "another one blogs dependency_",
-      "id": 7
-    },
-    {
       "blogId": 3,
       "comment": "the cow is a domestic animal",
       "id": 8
@@ -159,49 +149,14 @@
       "id": 9
     },
     {
-      "blogId": 3,
-      "comment": "listen\nto me",
+      "blogId": 2,
+      "comment": "Well done",
       "id": 10
     },
     {
-      "blogId": 3,
-      "comment": "aj ektu beshi deri hoye gelo",
+      "commentId": 1,
+      "comment":"We are fool",
       "id": 11
-    },
-    {
-      "blogId": 3,
-      "comment": "problem nai\n",
-      "id": 12
-    },
-    {
-      "blogId": 2,
-      "comment": "Well done",
-      "id": 13
-    },
-    {
-      "blogId": 1,
-      "comment": "fldsajflk",
-      "id": 14
-    },
-    {
-      "blogId": 1,
-      "comment": "hello world",
-      "id": 15
-    },
-    {
-      "blogId": 1,
-      "comment": "Mission Impossible",
-      "id": 16
-    },
-    {
-      "blogId": 1,
-      "comment": "new comment\n",
-      "id": 17
-    },
-    {
-      "blogId": 1,
-      "comment": "hello world",
-      "id": 18
     }
   ],
   "likes": [
