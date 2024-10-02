@@ -1,4 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { handleApiError } from '../../helpers/handleApiErrors'
+import axios from 'axios'
 
 const BASE_URL = 'http://localhost:3000/authors'
 
@@ -10,52 +12,80 @@ const initialState = {
     authorsByCat: [],
 }
 export const authorFetch = createAsyncThunk('author/authorFetch',
-    async () => {
-        const authors = await fetch(BASE_URL)
-        return authors.json()
+    async (_, { rejectWithValue, signal }) => {
+        try {
+            const response = await axios.get(BASE_URL, {
+                signal: signal
+            })
+            return response.data
+        } catch (error) {
+            return rejectWithValue(handleApiError(error))
+        }
     }
 )
+
 export const authorByCatId = createAsyncThunk('author/authorByCatId',
-    async (id) => {
-        const authors = await fetch(`${BASE_URL}?categoryId=${id}`)
-        return authors.json()
+    async (id, { rejectWithValue, signal }) => {
+        try {
+            const response = await axios.get(`${BASE_URL}?categoryId=${id}`, {
+                signal: signal
+            })
+
+            return response.data
+        } catch (error) {
+            return rejectWithValue(handleApiError(error))
+        }
     }
 )
 export const authorCreate = createAsyncThunk('author/authorCreate',
-    async (content) => {
-        const newAuthor = await fetch(BASE_URL, {
-            method: 'POST',
-            body: JSON.stringify(content),
-            headers: {
-                'Content-type': 'application/json',
-            }
-        })
-        return newAuthor.json()
+    async (payload, { rejectWithValue, signal }) => {
+        try {
+            const newAuthor = await axios.post(BASE_URL, payload, {
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                signal: signal
+            })
+            return newAuthor.data
+        } catch (error) {
+            return rejectWithValue(handleApiError(error))
+        }
+
     }
 )
 
 export const authorDelete = createAsyncThunk('author/authorDelete',
-    async (id) => {
-        await fetch(`${BASE_URL}/${id}`, {
-            method: "DELETE"
-        })
-        return id
+    async (id, { rejectWithValue, signal }) => {
+        try {
+            await axios.delete(`${BASE_URL}/${id}`, {
+                signal: signal
+            })
+            return id
+        } catch (error) {
+            return rejectWithValue(handleApiError(error))
+        }
     }
 )
 
 export const authorUpdate = createAsyncThunk('author/authorUpdate',
-    async (content) => {
-        const newAuthor = await fetch(`${BASE_URL}/${content.id}`, {
-            method: 'PUT',
-            body: JSON.stringify({
-                name: content.name,
-                categoryId: content.categoryId
-            }),
-            headers: {
-                'Content-type': 'application/json',
-            }
-        })
-        return newAuthor.json()
+    async (payload, { rejectWithValue, signal }) => {
+        try {
+            const response = await axios.put(`${BASE_URL}/${payload.id}`,
+                {
+                    name: payload.name,
+                    categoryId: payload.categoryId
+                },
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                    signal: signal
+                }
+            )
+            return response.data
+        } catch (error) {
+            return rejectWithValue(handleApiError(error))
+        }
     }
 )
 

@@ -50,70 +50,77 @@ export const blogFetch = createAsyncThunk("blog/blogFetch", async (payload, { re
     }
 })
 
-export const blogCreate = createAsyncThunk("blog/blogCreate", async (payload, { rejectWithValue, signal }) => {
+export const blogCreate = createAsyncThunk("blog/blogCreate",
+    async (payload, { rejectWithValue, signal }) => {
 
-    try {
-        const response = await axios.post(BASE_URL, payload, {
-            headers: {
-                "Content-Type": "application/json"
-            },
-            signal: signal
-        })
-        return response.data
-
-    } catch (error) {
-        return rejectWithValue(handleApiError(error))
-    }
-})
-
-export const blogDelete = createAsyncThunk("blog/blogDelete", async (id) => {
-    await axios.delete(`${BASE_URL}/${id}`);
-    return id
-})
-export const blogUpdate = createAsyncThunk("blog/blogUpdate", async ({ payload, id, lastModifiedDate }, { rejectWithValue, signal }) => {
-
-    try {
-        const newBlog = await axios.put(
-            `${BASE_URL}/${id}`,
-            {
-                authorId: payload.authorId,
-                categoryId: payload.categoryId,
-                title: payload.title,
-                desc: payload.desc,
-                dateTime: payload.dateTime,
-                lastModified: lastModifiedDate,
-                tags: payload.tags
-            },
-            {
+        try {
+            const response = await axios.post(BASE_URL, payload, {
                 headers: {
                     "Content-Type": "application/json"
                 },
                 signal: signal
-            }
-        )
-        return newBlog.data
-    } catch (error) {
-        return rejectWithValue(handleApiError(error))
-    }
-})
-export const singleBlog = createAsyncThunk("blog/singleBlog", async (id, { rejectWithValue, signal }) => {
+            })
+            return response.data
 
-    let url = `${BASE_URL}`
-    const params = new URLSearchParams()
-    params.append('_embed', 'comments')
-    params.append('_embed', 'likes')
-    params.append('_expand', 'category')
-    params.append('_expand', 'author')
-
-    try {
-        const response = await axios.get(`${url}/${id}?${params.toString()}`, {
-            signal: signal
-        })
-        return response.data
-    } catch (error) {
-        return rejectWithValue(handleApiError(error))
+        } catch (error) {
+            return rejectWithValue(handleApiError(error))
+        }
     }
-})
+)
+
+export const blogDelete = createAsyncThunk("blog/blogDelete",
+    async (id) => {
+        await axios.delete(`${BASE_URL}/${id}`);
+        return id
+    }
+)
+export const blogUpdate = createAsyncThunk("blog/blogUpdate",
+    async ({ payload, id, lastModifiedDate }, { rejectWithValue, signal }) => {
+        try {
+            const newBlog = await axios.put(
+                `${BASE_URL}/${id}`,
+                {
+                    authorId: payload.authorId,
+                    categoryId: payload.categoryId,
+                    title: payload.title,
+                    desc: payload.desc,
+                    dateTime: payload.dateTime,
+                    lastModified: lastModifiedDate,
+                    tags: payload.tags
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    signal: signal
+                }
+            )
+            return newBlog.data
+        } catch (error) {
+            return rejectWithValue(handleApiError(error))
+        }
+    }
+)
+export const singleBlog = createAsyncThunk("blog/singleBlog",
+    async (id, { rejectWithValue, signal }) => {
+
+        let url = `${BASE_URL}`
+        const params = new URLSearchParams()
+        params.append('_embed', 'comments')
+        params.append('_embed', 'likes')
+        params.append('_expand', 'category')
+        params.append('_expand', 'author')
+
+        try {
+            const response = await axios.get(`${url}/${id}?${params.toString()}`, {
+                signal: signal
+            })
+            return response.data
+        } catch (error) {
+            return rejectWithValue(handleApiError(error))
+        }
+    }
+)
 export const blogSlice = createSlice({
     name: "blog",
     initialState,

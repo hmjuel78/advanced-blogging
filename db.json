@@ -60,29 +60,6 @@
       "id": 5
     },
     {
-      "authorId": 5,
-      "categoryId": 4,
-      "title": "Online create",
-      "desc": "dsfa",
-      "dateTime": "2024-10-02T04:14:44.043Z",
-      "tags": [
-        1
-      ],
-      "id": 6
-    },
-    {
-      "authorId": 5,
-      "categoryId": 4,
-      "title": "Test up",
-      "desc": "fsdaf",
-      "dateTime": "2024-10-02T06:56:12.429Z",
-      "lastModified": "2024-10-02T09:07:36.862Z",
-      "tags": [
-        2
-      ],
-      "id": 7
-    },
-    {
       "authorId": 2,
       "categoryId": 2,
       "title": "bangla clock",
@@ -218,18 +195,6 @@
       "blogId": 2,
       "comment": "fdsaf",
       "id": 13
-    },
-    {
-      "parentId": null,
-      "blogId": 7,
-      "comment": "Hello guys!!!",
-      "id": 14
-    },
-    {
-      "parentId": null,
-      "blogId": 7,
-      "comment": "awesome!!!",
-      "id": 15
     }
   ],
   "likes": [
