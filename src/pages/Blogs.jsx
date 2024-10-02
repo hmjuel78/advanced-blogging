@@ -22,7 +22,7 @@ const Blogs = () => {
         viewPerPage: 3
     }
     const [selectFilter, setSelectFilter] = useState(initSelect)
-    const [totalPosts, setTotalPosts] = useState(6)
+    const [totalPosts, setTotalPosts] = useState(7)
     const [totalPage, setTotalPage] = useState(0)
     const { blogs, isLoading } = useSelector(blogSelector)
     const { categories } = useSelector(categorySelector)
@@ -51,14 +51,7 @@ const Blogs = () => {
             return toast.error("Minium select one item for search!!!")
         }
 
-        setSelectFilter((selectFilter) => ({
-            ...selectFilter,
-            currentPage: 1
-        }))
-
-        dispatch(
-            blogFetch(selectFilter)
-        )
+        initialBlogFetch()
     }
     const handleFilterChange = (key, value, fetch = false) => {
         setSelectFilter((selectFilter) => ({
@@ -70,6 +63,13 @@ const Blogs = () => {
             setSelectFilter((selectFilter) => ({
                 ...selectFilter,
                 selectedAuthor: null
+
+            }))
+        }
+        if (key !== 'currentPage') {
+            setSelectFilter((selectFilter) => ({
+                ...selectFilter,
+                currentPage: 1
 
             }))
         }
@@ -100,13 +100,6 @@ const Blogs = () => {
         }))
     }
 
-    // const changeCurrentPage = (e) => {
-    //     setSelectFilter((selectFilter) => ({
-    //         ...selectFilter,
-    //         currentPage: parseInt(e.target.value)
-    //     }))
-    // }
-
     const changeCurrentPage = (e) => handleFilterChange('currentPage', parseInt(e.target.value))
 
     const resetFilter = () => {
@@ -119,11 +112,18 @@ const Blogs = () => {
     }, [selectFilter.currentPage])
 
     useEffect(() => {
+        console.log(shouldFetch)
+        if (shouldFetch === true) {
+            initialBlogFetch()
+            console.log('hhfdsa')
+        }
+    }, [shouldFetch])
+
+    useEffect(() => {
         setTotalPage(Math.ceil(totalPosts / selectFilter.viewPerPage))
     }, [])
 
     useEffect(() => {
-        // dispatch(categoryFetch())
         dispatch(authorFetch())
         dispatch(tagFetch())
     }, [dispatch])

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios"
+import { handleApiError } from "../../helpers/handleApiErrors"
 
 const BASE_URL = "http://localhost:3000/blogs"
 
@@ -41,23 +42,28 @@ export const blogFetch = createAsyncThunk("blog/blogFetch", async (payload) => {
 
     try {
         // Ensure the URL is correctly constructed only once
-        const response = await axios.get(`${url}?${params.toString()}`);
-        return response.data;
+        const response = await axios.get(`${url}?${params.toString()}`)
+        return response.data
     } catch (error) {
-        console.error("Error fetching blogs:", error);
+        console.error("Error fetching blogs:", error)
         throw error
     }
 })
 
-export const blogCreate = createAsyncThunk("blog/blogCreate", async (content) => {
-    const newTag = await fetch(BASE_URL, {
-        method: "POST",
-        body: JSON.stringify(content),
-        headers: {
-            "Content-type": "application/json"
-        }
-    })
-    return newTag.json()
+export const blogCreate = createAsyncThunk("blog/blogCreate", async (payload, { rejectWithValue, signal }) => {
+
+    try {
+        const response = await axios.post(BASE_URL, payload, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            signal: signal
+        })
+        return response.data
+
+    } catch (error) {
+        return rejectWithValue(handleApiError(error))
+    }
 })
 
 export const blogDelete = createAsyncThunk("blog/blogDelete", async (id) => {

@@ -116,7 +116,7 @@ const BlogForm = (props) => {
 
     useEffect(() => {
         dispatch(categoryFetch())
-    }, [dispatch])
+    }, [])
 
     useEffect(() => {
         if (editableBlog) {

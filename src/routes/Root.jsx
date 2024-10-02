@@ -24,7 +24,9 @@ const Root = () => {
                                 </svg>
                             </label>
                         </div>
-                        <div className="mx-2 flex-1 px-2">Navbar Title</div>
+                        <div className="mx-2 flex-1 px-2">
+                            <Link to="/">Navbar Title</Link>
+                        </div>
                         <div className="hidden flex-none md:block">
                             <ul className="menu menu-horizontal">
                                 <li>

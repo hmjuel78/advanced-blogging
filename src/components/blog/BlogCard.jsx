@@ -43,7 +43,7 @@ const BlogCard = (props) => {
                     <div className="flex gap-2">
                         <div className="flex gap-1 items-center text-sm">
                             <SlLike />
-                            <span>{blog?.likes ? blog.likes.map(blog => blog.like) : 0}</span>
+                            <span>{blog?.likes.length ? blog.likes.map(blog => blog.like) : 0}</span>
                         </div>
                         <div className="flex gap-1 items-center text-sm">
                             <LiaCommentSolid />
@@ -52,16 +52,14 @@ const BlogCard = (props) => {
                         </div>
                     </div>
                 </div>
+                {
+                    categories &&
+                    <div className="flex items-center gap-2 justify-between">
+                        <div className="flex items-center gap-2">
+                            <p className={`text-base max-w-max `}>Category:</p>
 
-                <div className="flex items-center gap-2 justify-between">
-                    <div className="flex items-center gap-2">
-                        <p className={`text-base max-w-max `}>Category:</p>
-
-                        <ul className="flex flex-wrap gap-2">
-                            {categories &&
-                                categories.length > 0 &&
-
-                                categories?.map((cat) => {
+                            <ul className="flex flex-wrap gap-2">
+                                {categories?.map((cat) => {
                                     if (parseInt(cat.id) === parseInt(blog.categoryId)) {
                                         return (
                                             <li
@@ -74,41 +72,41 @@ const BlogCard = (props) => {
                                         )
                                     }
                                 })
-                            }
-                        </ul>
-                    </div>
+                                }
+                            </ul>
+                        </div>
 
+                        <div className="flex items-center gap-2">
+                            <p className="text-base max-w-max">Post by:</p>
+                            <ul className="flex flex-wrap gap-2">
+                                {authors &&
+                                    authors.length > 0 &&
+
+                                    authors?.map((author) => {
+                                        if (parseInt(author.id) === parseInt(blog.authorId)) {
+                                            return (
+                                                <li
+                                                    onClick={() => _onAuthorFilter(author.id)}
+                                                    key={author.id}
+                                                    className="border border-blue-700 px-3 rounded text-sm cursor-pointer"
+                                                >
+                                                    {author.name}
+                                                </li>
+                                            )
+                                        }
+                                    })
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+
+                {
+                    blog.tags &&
                     <div className="flex items-center gap-2">
-                        <p className="text-base max-w-max">Post by:</p>
+                        <p className={`max-w-max`}>Tags:</p>
                         <ul className="flex flex-wrap gap-2">
-                            {authors &&
-                                authors.length > 0 &&
-
-                                authors?.map((author) => {
-                                    if (parseInt(author.id) === parseInt(blog.authorId)) {
-                                        return (
-                                            <li
-                                                onClick={() => _onAuthorFilter(author.id)}
-                                                key={author.id}
-                                                className="border border-blue-700 px-3 rounded text-sm cursor-pointer"
-                                            >
-                                                {author.name}
-                                            </li>
-                                        )
-                                    }
-                                })
-                            }
-                        </ul>
-                    </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                    <p className={`max-w-max`}>Tags:</p>
-                    <ul className="flex flex-wrap gap-2">
-                        {blog.tags &&
-                            blog.tags.length > 0 &&
-
-                            blog?.tags?.map((tag) => {
+                            {blog?.tags?.map((tag) => {
                                 const blogTag = tags.find(t => parseInt(t.id) === parseInt(tag))
 
                                 if (blogTag) {
@@ -123,9 +121,10 @@ const BlogCard = (props) => {
                                     )
                                 }
                             })
-                        }
-                    </ul>
-                </div>
+                            }
+                        </ul>
+                    </div>
+                }
 
                 <div className="card-actions justify-between mt-3">
                     <button
