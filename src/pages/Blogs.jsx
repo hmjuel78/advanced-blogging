@@ -3,7 +3,7 @@ import { blogFetch, blogSelector } from "../features/blog/blogSlice"
 import { useEffect, useState } from "react"
 import BlogCard from "../components/blog/BlogCard"
 import DropdownWithSearch from "../components/custom-dropdown-with-search/DropdownWithSearch"
-import { categoryFetch, categorySelector } from "../features/category/categorySlice"
+import { categorySelector } from "../features/category/categorySlice"
 import { authorByCatId, authorFetch, authorSelector } from "../features/author/authorSlice"
 import { tagFetch, tagSelector } from "../features/tags/tagSlice"
 import toast from "react-hot-toast"
@@ -18,7 +18,7 @@ const Blogs = () => {
         searchTitle: '',
         startDate: null,
         endDate: null,
-        currentPage: null,
+        currentPage: 1,
         viewPerPage: 3
     }
     const [selectFilter, setSelectFilter] = useState(initSelect)
@@ -63,8 +63,7 @@ const Blogs = () => {
     const handleFilterChange = (key, value, fetch = false) => {
         setSelectFilter((selectFilter) => ({
             ...selectFilter,
-            [key]: value,
-            currentPage: 1
+            [key]: value
 
         }))
         if (key === 'selectedCategory') {
@@ -101,12 +100,14 @@ const Blogs = () => {
         }))
     }
 
-    const changeCurrentPage = (e) => {
-        setSelectFilter((selectFilter) => ({
-            ...selectFilter,
-            currentPage: parseInt(e.target.value)
-        }))
-    }
+    // const changeCurrentPage = (e) => {
+    //     setSelectFilter((selectFilter) => ({
+    //         ...selectFilter,
+    //         currentPage: parseInt(e.target.value)
+    //     }))
+    // }
+
+    const changeCurrentPage = (e) => handleFilterChange('currentPage', parseInt(e.target.value))
 
     const resetFilter = () => {
         setSelectFilter(initSelect)
