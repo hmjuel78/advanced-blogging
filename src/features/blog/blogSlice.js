@@ -29,9 +29,13 @@ export const blogFetch = createAsyncThunk("blog/blogFetch", async (payload) => {
     if (payload.searchTitle) {
         params.append('title', payload.searchTitle)
     }
+    if (payload.currentPage) {
+        params.append('_page', payload.currentPage)
+    }
+    if (payload.viewPerPage) {
+        params.append('_limit', payload.viewPerPage)
+    }
 
-    params.append('_page', payload.currentPage || 1)
-    params.append('_limit', payload.viewPerPage || 10)
     params.append('_embed', 'comments')
     params.append('_embed', 'likes')
 
@@ -41,7 +45,7 @@ export const blogFetch = createAsyncThunk("blog/blogFetch", async (payload) => {
         return response.data;
     } catch (error) {
         console.error("Error fetching blogs:", error);
-        throw error;
+        throw error
     }
 })
 

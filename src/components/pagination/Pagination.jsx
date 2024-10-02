@@ -17,7 +17,7 @@ const Pagination = (props) => {
             </button> */}
 
             {
-                Array.from({ length: _totalPage }, (_, idx) => (
+                Array?.from({ length: _totalPage }, (_, idx) => (
                     <button
                         key={idx}
                         onClick={_onChange}

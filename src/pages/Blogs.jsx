@@ -18,11 +18,11 @@ const Blogs = () => {
         searchTitle: '',
         startDate: null,
         endDate: null,
-        currentPage: 1,
-        viewPerPage: 1
+        currentPage: null,
+        viewPerPage: 3
     }
     const [selectFilter, setSelectFilter] = useState(initSelect)
-    const [totalPosts, setTotalPosts] = useState(4)
+    const [totalPosts, setTotalPosts] = useState(6)
     const [totalPage, setTotalPage] = useState(0)
     const { blogs, isLoading } = useSelector(blogSelector)
     const { categories } = useSelector(categorySelector)
@@ -31,12 +31,13 @@ const Blogs = () => {
     const dispatch = useDispatch()
     const [shouldFetch, setShouldFetch] = useState(false)
 
+
+
     const initialBlogFetch = (initValue) => {
         dispatch(
             blogFetch(initValue ?? selectFilter)
         )
     }
-
     const archiveSearchFilter = (e) => {
         e.preventDefault()
         if (
@@ -59,19 +60,25 @@ const Blogs = () => {
             blogFetch(selectFilter)
         )
     }
-
     const handleFilterChange = (key, value, fetch = false) => {
         setSelectFilter((selectFilter) => ({
             ...selectFilter,
             [key]: value,
             currentPage: 1
+
         }))
+        if (key === 'selectedCategory') {
+            setSelectFilter((selectFilter) => ({
+                ...selectFilter,
+                selectedAuthor: null
+
+            }))
+        }
 
         if (fetch) {
             setShouldFetch(true)
         }
     }
-
     const categoryChangeHandle = (cat) => handleFilterChange('selectedCategory', cat)
 
     const authorChangeHandle = (auth) => handleFilterChange('selectedAuthor', auth)
@@ -108,15 +115,14 @@ const Blogs = () => {
 
     useEffect(() => {
         initialBlogFetch()
-
-    }, [selectFilter.currentPage, shouldFetch])
+    }, [selectFilter.currentPage])
 
     useEffect(() => {
         setTotalPage(Math.ceil(totalPosts / selectFilter.viewPerPage))
     }, [])
 
     useEffect(() => {
-        dispatch(categoryFetch())
+        // dispatch(categoryFetch())
         dispatch(authorFetch())
         dispatch(tagFetch())
     }, [dispatch])
