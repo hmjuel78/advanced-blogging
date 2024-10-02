@@ -115,7 +115,7 @@ const BlogForm = (props) => {
     }
 
     useEffect(() => {
-        dispatch(categoryFetch())
+        // dispatch(categoryFetch())
     }, [])
 
     useEffect(() => {
