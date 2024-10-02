@@ -12,7 +12,7 @@ const initialState = {
     editableBlog: null
 }
 
-export const blogFetch = createAsyncThunk("blog/blogFetch", async (payload) => {
+export const blogFetch = createAsyncThunk("blog/blogFetch", async (payload, { rejectWithValue, signal }) => {
 
     let url = `${BASE_URL}`
 
@@ -41,12 +41,12 @@ export const blogFetch = createAsyncThunk("blog/blogFetch", async (payload) => {
     params.append('_embed', 'likes')
 
     try {
-        // Ensure the URL is correctly constructed only once
-        const response = await axios.get(`${url}?${params.toString()}`)
+        const response = await axios.get(`${url}?${params.toString()}`, {
+            signal: signal,
+        })
         return response.data
     } catch (error) {
-        console.error("Error fetching blogs:", error)
-        throw error
+        return rejectWithValue(handleApiError(error))
     }
 })
 
@@ -67,31 +67,36 @@ export const blogCreate = createAsyncThunk("blog/blogCreate", async (payload, { 
 })
 
 export const blogDelete = createAsyncThunk("blog/blogDelete", async (id) => {
-    await fetch(`${BASE_URL}/${id}`, {
-        method: "DELETE"
-    })
+    await axios.delete(`${BASE_URL}/${id}`);
     return id
 })
-export const blogUpdate = createAsyncThunk("blog/blogUpdate", async ({ payload, id, lastModifiedDate }) => {
+export const blogUpdate = createAsyncThunk("blog/blogUpdate", async ({ payload, id, lastModifiedDate }, { rejectWithValue, signal }) => {
 
-    const newBlog = await fetch(`${BASE_URL}/${id}`, {
-        method: "PUT",
-        body: JSON.stringify({
-            authorId: payload.authorId,
-            categoryId: payload.categoryId,
-            title: payload.title,
-            desc: payload.desc,
-            dateTime: payload.dateTime,
-            lastModified: lastModifiedDate,
-            tags: payload.tags
-        }),
-        headers: {
-            "Content-type": "application/json"
-        }
-    })
-    return newBlog.json()
+    try {
+        const newBlog = await axios.put(
+            `${BASE_URL}/${id}`,
+            {
+                authorId: payload.authorId,
+                categoryId: payload.categoryId,
+                title: payload.title,
+                desc: payload.desc,
+                dateTime: payload.dateTime,
+                lastModified: lastModifiedDate,
+                tags: payload.tags
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                signal: signal
+            }
+        )
+        return newBlog.data
+    } catch (error) {
+        return rejectWithValue(handleApiError(error))
+    }
 })
-export const singleBlog = createAsyncThunk("blog/singleBlog", async (id) => {
+export const singleBlog = createAsyncThunk("blog/singleBlog", async (id, { rejectWithValue, signal }) => {
 
     let url = `${BASE_URL}`
     const params = new URLSearchParams()
@@ -101,11 +106,12 @@ export const singleBlog = createAsyncThunk("blog/singleBlog", async (id) => {
     params.append('_expand', 'author')
 
     try {
-        const response = await axios.get(`${url}/${id}?${params.toString()}`)
+        const response = await axios.get(`${url}/${id}?${params.toString()}`, {
+            signal: signal
+        })
         return response.data
     } catch (error) {
-        console.error("Error fetching blogs:", error)
-        throw error
+        return rejectWithValue(handleApiError(error))
     }
 })
 export const blogSlice = createSlice({

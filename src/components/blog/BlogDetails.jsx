@@ -39,6 +39,7 @@ const BlogDetails = () => {
 
     useEffect(() => {
         dispatch(singleBlog(id))
+        setNcomment(false)
     }, [nComment])
 
     return (

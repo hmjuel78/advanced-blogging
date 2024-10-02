@@ -43,7 +43,7 @@ const BlogCard = (props) => {
                     <div className="flex gap-2">
                         <div className="flex gap-1 items-center text-sm">
                             <SlLike />
-                            <span>{blog?.likes.length ? blog.likes.map(blog => blog.like) : 0}</span>
+                            <span>{blog?.likes?.length ? blog.likes.map(blog => blog.like) : 0}</span>
                         </div>
                         <div className="flex gap-1 items-center text-sm">
                             <LiaCommentSolid />
