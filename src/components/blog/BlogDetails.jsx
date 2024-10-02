@@ -63,12 +63,14 @@ const BlogDetails = () => {
                             >
                                 {comment.comment}
                             </p>
-                            <p
-                                onClick={() => replyCommentHandle(comment)}
-                                className={`text-right text-xs text-info mt-2 mr-2 cursor-pointer ${comment.parentId && 'hidden'}`}
-                            >
-                                Reply
-                            </p>
+                            {!comment.parentId &&
+                                <p
+                                    onClick={() => replyCommentHandle(comment)}
+                                    className={`text-right text-xs text-info mt-2 mr-2 cursor-pointer`}
+                                >
+                                    Reply
+                                </p>
+                            }
                         </div>
                     ))
                     : <p>No Comments yet!!</p>
@@ -76,7 +78,7 @@ const BlogDetails = () => {
             </div>
             {
                 replyComment &&
-                <div className="">
+                <div>
                     <p>Reply to: {replyComment.comment}</p>
                     <p onClick={resetReplyComment} className="text-sm text-error cursor-pointer">Cancel</p>
                 </div>
