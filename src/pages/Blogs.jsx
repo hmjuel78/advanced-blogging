@@ -29,11 +29,11 @@ const Blogs = () => {
     const { authors, authorsByCat } = useSelector(authorSelector)
     const { tags } = useSelector(tagSelector)
     const dispatch = useDispatch()
-    const [shouldFetch, setShouldFetch] = useState(false);
+    const [shouldFetch, setShouldFetch] = useState(false)
 
-    const initialBlogFetch = (initSelect) => {
+    const initialBlogFetch = (initValue) => {
         dispatch(
-            blogFetch(initSelect ?? selectFilter)
+            blogFetch(initValue ?? selectFilter)
         )
     }
 
@@ -109,10 +109,15 @@ const Blogs = () => {
 
     useEffect(() => {
         initialBlogFetch()
-        if (shouldFetch) {
-            initialBlogFetch()
-        }
-    }, [selectFilter.currentPage])
+
+    }, [selectFilter.currentPage, shouldFetch])
+
+    // useEffect(() => {
+    //     if (shouldFetch) {
+    //         initialBlogFetch()
+    //     }
+    // }, [])
+
 
     useEffect(() => {
         setTotalPage(Math.ceil(totalPosts / selectFilter.viewPerPage))

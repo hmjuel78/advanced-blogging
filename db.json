@@ -162,6 +162,12 @@
       "blogId": 4,
       "comment": "hello",
       "id": 12
+    },
+    {
+      "blogId": 4,
+      "comment": "hello",
+      "id": 13,
+      "parentId": 12
     }
   ],
   "likes": [
