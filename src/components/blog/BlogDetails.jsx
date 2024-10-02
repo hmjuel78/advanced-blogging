@@ -14,24 +14,32 @@ const BlogDetails = () => {
     const dispatch = useDispatch()
     const { id } = useParams()
     const [nComment, setNcomment] = useState(false)
+    const [replyComment, setReplyComment] = useState(null)
 
 
     const commentOnSubmit = (e) => {
         e.preventDefault()
 
         const newComment = {
+            parentId: replyComment ? replyComment.id : null,
             blogId: parseInt(id),
             comment: commentText
         }
         dispatch(commentCreate(newComment))
         setCommentText('')
         setNcomment(true)
+        setReplyComment(null)
+    }
+    const replyCommentHandle = (comment) => {
+        setReplyComment(comment)
+    }
+    const resetReplyComment = () => {
+        setReplyComment(null)
     }
 
     useEffect(() => {
         dispatch(singleBlog(id))
     }, [nComment])
-
 
     return (
         <div className="max-w-7xl  mx-auto mt-6 space-y-4">
@@ -50,13 +58,29 @@ const BlogDetails = () => {
                     blogs.comments.length > 0 ?
                     blogs.comments?.map(comment => (
                         <div key={comment.id}>
-                            <p className="border border-gray-600 p-3 rounded-md">{comment.comment}</p>
+                            <p
+                                className={`border border-gray-600 p-3 rounded-md ${comment.parentId && 'ml-auto max-w-[90%] border-slate-500'}`}
+                            >
+                                {comment.comment}
+                            </p>
+                            <p
+                                onClick={() => replyCommentHandle(comment)}
+                                className={`text-right text-xs text-info mt-2 mr-2 cursor-pointer ${comment.parentId && 'hidden'}`}
+                            >
+                                Reply
+                            </p>
                         </div>
                     ))
                     : <p>No Comments yet!!</p>
                 }
             </div>
-
+            {
+                replyComment &&
+                <div className="">
+                    <p>Reply to: {replyComment.comment}</p>
+                    <p onClick={resetReplyComment} className="text-sm text-error cursor-pointer">Cancel</p>
+                </div>
+            }
             <CommentsForm
                 _state={commentText}
                 _setState={setCommentText}

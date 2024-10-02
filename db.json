@@ -168,6 +168,30 @@
       "comment": "hello",
       "id": 13,
       "parentId": 12
+    },
+    {
+      "parentId": null,
+      "blogId": 4,
+      "comment": "Reply comment test for parent comment",
+      "id": 14
+    },
+    {
+      "parentId": 14,
+      "blogId": 4,
+      "comment": "this is reply comment ",
+      "id": 15
+    },
+    {
+      "parentId": 14,
+      "blogId": 4,
+      "comment": "another reply comment",
+      "id": 16
+    },
+    {
+      "parentId": 5,
+      "blogId": 4,
+      "comment": "Prev comment reply",
+      "id": 17
     }
   ],
   "likes": [

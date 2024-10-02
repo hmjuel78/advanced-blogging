@@ -103,7 +103,6 @@ const Blogs = () => {
 
     const resetFilter = () => {
         setSelectFilter(initSelect)
-
         initialBlogFetch(initSelect)
     }
 
@@ -111,13 +110,6 @@ const Blogs = () => {
         initialBlogFetch()
 
     }, [selectFilter.currentPage, shouldFetch])
-
-    // useEffect(() => {
-    //     if (shouldFetch) {
-    //         initialBlogFetch()
-    //     }
-    // }, [])
-
 
     useEffect(() => {
         setTotalPage(Math.ceil(totalPosts / selectFilter.viewPerPage))
