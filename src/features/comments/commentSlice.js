@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
+import { handleApiError } from '../../helpers/handleApiErrors'
 
-const BASE_URL = 'http://localhost:3000/comments'
+const BASE_URL = 'http://localhost:3000'
 
 const initialState = {
     isLoading: false,
@@ -10,38 +12,51 @@ const initialState = {
 }
 
 export const commentFetch = createAsyncThunk('comment/commentFetch',
-    async () => {
-        const comments = await fetch(BASE_URL)
-        return comments.json()
+    async (_, { rejectWithValue, signal }) => {
+        try {
+            const response = await axios.get(`${BASE_URL}/comments`, signal)
+            return response.data
+        } catch (error) {
+            return rejectWithValue(handleApiError(error))
+        }
+
     }
 )
 
 export const commentCreate = createAsyncThunk('comment/commentCreate',
-    async (content) => {
+    async (payload, { rejectWithValue, signal }) => {
+        try {
+            const response = await axios.post(`${BASE_URL}/comments`, payload, {
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                signal: signal
+            })
+            return response.data
+        } catch (error) {
+            return rejectWithValue(handleApiError(error))
+        }
 
-        const newComment = await fetch(BASE_URL, {
-            method: 'POST',
-            body: JSON.stringify(content),
-            headers: {
-                'Content-type': 'application/json',
-            }
-        })
-        return newComment.json()
     }
 )
 
 export const commentUpdate = createAsyncThunk('comment/commentUpdate',
-    async (content) => {
-        const newComment = await fetch(`${BASE_URL}/${content.id}`, {
-            method: 'PUT',
-            body: JSON.stringify({
-                name: content.name
-            }),
-            headers: {
-                'Content-type': 'application/json',
-            }
-        })
-        return newComment.json()
+    async (payload, { rejectWithValue, signal }) => {
+        try {
+            const response = await axios.put(`${BASE_URL}/comments/${payload.id}`,
+                {
+                    name: payload.name
+                },
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                    signal: signal
+                })
+            return response.data
+        } catch (error) {
+            return rejectWithValue(handleApiError(error))
+        }
     }
 )
 

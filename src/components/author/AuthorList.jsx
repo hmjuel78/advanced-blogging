@@ -12,7 +12,6 @@ const AuthorList = (props) => {
     const dispatch = useDispatch()
 
     const authorEditHandle = (author) => {
-        console.log(author)
         setEditableAuthor(author)
     }
     const authorDeleteHandle = (authorId) => {

@@ -1,4 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios'
+import { handleApiError } from '../../helpers/handleApiErrors'
 
 const BASE_URL = 'http://localhost:3000/categories'
 
@@ -11,56 +13,67 @@ const initialState = {
 }
 
 export const categoryFetch = createAsyncThunk('category/categoryFetch',
-    async () => {
+    async (_, { rejectWithValue, signal }) => {
         try {
-            const categories = await fetch(BASE_URL)
-            return categories.json()
+            const response = await axios.get(BASE_URL, signal)
+            return response.data
         } catch (error) {
-            console.log(error)
+            return rejectWithValue(handleApiError(error))
         }
     }
 )
 export const categoryCreate = createAsyncThunk('category/categoryCreate',
-    async (content) => {
-        const newCategory = await fetch(BASE_URL, {
-            method: 'POST',
-            body: JSON.stringify(content),
-            headers: {
-                'Content-type': 'application/json',
-            }
-        })
-        return newCategory.json()
+    async (payload, { rejectWithValue, signal }) => {
+        try {
+            const response = await axios.post(BASE_URL, payload, {
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                signal: signal
+            })
+            return response.data
+        } catch (error) {
+            return rejectWithValue(handleApiError(error))
+        }
     }
 )
 export const categoryDelete = createAsyncThunk('category/categoryDelete',
-    async (id) => {
-        await fetch(`${BASE_URL}/${id}`, {
-            method: "DELETE"
-        })
-        return id
+    async (id, { rejectWithValue, signal }) => {
+        try {
+            await axios.delete(`${BASE_URL}/${id}`, signal)
+            return id
+        } catch (error) {
+            return rejectWithValue(handleApiError(error))
+        }
+
     }
 )
 export const categoryUpdate = createAsyncThunk('category/categoryUpdate',
-    async (content) => {
-        const newCategory = await fetch(`${BASE_URL}/${content.id}`, {
-            method: 'PUT',
-            body: JSON.stringify({
-                name: content.name
-            }),
-            headers: {
-                'Content-type': 'application/json',
-            }
-        })
-        return newCategory.json()
+    async (payload, { rejectWithValue, signal }) => {
+        try {
+            const response = await axios.put(`${BASE_URL}/${payload.id}`,
+                {
+                    name: payload.name
+                },
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                    }
+                }, signal)
+            return response.data
+        } catch (error) {
+            return rejectWithValue(handleApiError(error))
+        }
+
     }
 )
 export const categoryFetchById = createAsyncThunk('category/categoryFetchById',
-    async (id) => {
+    async (id, { rejectWithValue, signal }) => {
         try {
-            const categories = await fetch(`${BASE_URL}?id=${id}`)
-            return categories.json()
+            const response = await axios.get(`${BASE_URL}?id=${id}`, signal)
+            return response.data
         } catch (error) {
-            console.log(error)
+            return rejectWithValue(handleApiError(error))
         }
     }
 )

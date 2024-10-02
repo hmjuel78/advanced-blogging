@@ -180,7 +180,7 @@ const Blogs = () => {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3  gap-4">
                 {isLoading && <Loading />}
                 {blogs && blogs.length > 0 ? (
-                    blogs?.map((blog) =>
+                    [...blogs].reverse()?.map((blog) =>
                         <BlogCard
                             key={blog.id}
                             blog={blog}
