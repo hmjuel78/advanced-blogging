@@ -78,7 +78,7 @@ const Blogs = () => {
         }
 
         if (fetch) {
-            setShouldFetch(true)
+            setShouldFetch(!shouldFetch)
         }
     }
     const categoryChangeHandle = (cat) => handleFilterChange('selectedCategory', cat)
@@ -130,7 +130,7 @@ const Blogs = () => {
         }
     }, [dispatch, selectFilter.selectedCategory])
 
-
+    console.log(shouldFetch)
     return (
         <div className="max-w-7xl mx-auto m-10 px-6">
             <h2 className="mb-3">Blogs</h2>
