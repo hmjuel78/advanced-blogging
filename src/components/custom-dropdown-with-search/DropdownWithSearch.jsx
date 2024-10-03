@@ -62,10 +62,16 @@ const DropdownWithSearch = (props) => {
                             />
                         </li>
                     }
+                    <li
 
+                        onClick={() => dropDownhandler(null)}
+                        className={`p-2 text-sm hover:bg-sky-600 hover:text-white capitalize cursor-pointer bg-slate-500`}
+                    >
+                        {selectPlaceholder || 'Select...'}
+                    </li>
                     {dropDatas &&
                         dropDatas?.map((dropData) => (
-                            <li key={dropData.id} className={`p-2 text-sm hover:bg-sky-600 hover:text-white capitalize
+                            <li key={dropData.id} className={`p-2 text-sm hover:bg-sky-600 hover:text-white capitalize cursor-pointer
                             ${dropData?.[mapKey]?.toLowerCase() === selectDropData && "bg-sky-600 text-white"}
                             ${dropData?.[mapKey]?.toLowerCase().includes(searchValue.toLowerCase()) ? "block" : "hidden"} `}
 
@@ -77,7 +83,7 @@ const DropdownWithSearch = (props) => {
                         ))
                     }
                 </ul>
-            </div>
+            </div >
         </>
     )
 }

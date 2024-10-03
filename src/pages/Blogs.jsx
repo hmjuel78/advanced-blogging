@@ -23,8 +23,8 @@ const Blogs = () => {
         currentPage: 1,
         viewPerPage: 3
     }
-    const [openModal, setOpenModal] = useState(false)
     const [selectFilter, setSelectFilter] = useState(initSelect)
+    const [openModal, setOpenModal] = useState(false)
     const [totalPosts, setTotalPosts] = useState(7)
     const [totalPage, setTotalPage] = useState(0)
     const { blogs, isLoading } = useSelector(blogSelector)
