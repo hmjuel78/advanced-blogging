@@ -7,17 +7,15 @@ import { Link } from "react-router-dom"
 import { categorySelector } from "../../features/category/categorySlice"
 import { authorSelector } from "../../features/author/authorSlice"
 import { _EDITABLEBLOG } from "../../features/blog/blogSlice"
-import BlogEditModal from "./BlogEditModal"
-import { useState } from "react"
 import { LiaCommentSolid } from "react-icons/lia"
 
 const BlogCard = (props) => {
     const { blog,
         _onCategoryFilter,
         _onAuthorFilter,
-        _onTagFilter
+        _onTagFilter,
+        _onOpenModal
     } = props
-    const [openModal, setOpenModal] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -27,7 +25,7 @@ const BlogCard = (props) => {
 
     const blogEditHandle = (blog) => {
         dispatch(_EDITABLEBLOG(blog))
-        setOpenModal(true)
+        _onOpenModal(true)
     }
 
     return (
@@ -143,7 +141,7 @@ const BlogCard = (props) => {
                     </Link>
                 </div>
             </div>
-            <BlogEditModal open={openModal} setOpen={setOpenModal} />
+
         </div>
     )
 }

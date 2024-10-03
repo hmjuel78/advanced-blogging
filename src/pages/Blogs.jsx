@@ -9,6 +9,8 @@ import { tagFetch, tagSelector } from "../features/tags/tagSlice"
 import toast from "react-hot-toast"
 import Pagination from "../components/pagination/Pagination"
 import Loading from "../components/Loading/Loading"
+import BlogEditModal from "../components/blog/BlogEditModal"
+
 
 const Blogs = () => {
     const initSelect = {
@@ -21,6 +23,7 @@ const Blogs = () => {
         currentPage: 1,
         viewPerPage: 3
     }
+    const [openModal, setOpenModal] = useState(false)
     const [selectFilter, setSelectFilter] = useState(initSelect)
     const [totalPosts, setTotalPosts] = useState(7)
     const [totalPage, setTotalPage] = useState(0)
@@ -187,6 +190,7 @@ const Blogs = () => {
                             _onCategoryFilter={categoryFilterByClick}
                             _onAuthorFilter={authorFilterByClick}
                             _onTagFilter={tagFilterByClick}
+                            _onOpenModal={setOpenModal}
                         />)
                 ) : (
                     <h2 className="text-xl text-center">Blogs Not Found !!!</h2>
@@ -198,6 +202,8 @@ const Blogs = () => {
                 _onChange={changeCurrentPage}
                 _totalPage={totalPage}
             />
+
+            <BlogEditModal open={openModal} setOpen={setOpenModal} />
         </div>
     )
 }
