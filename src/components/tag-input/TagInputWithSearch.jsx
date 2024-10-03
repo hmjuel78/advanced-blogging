@@ -9,7 +9,7 @@ const TagInputWithSearch = (props) => {
     const { isSearch, selectDropData, setSelectDropData } = props
     const [searchValue, setSearchValue] = useState('')
     const [open, setOpen] = useState(false)
-    const ref = useRef()
+    const ref = useRef(null)
     const dispatch = useDispatch()
     const { tagsByName: dropDatas } = useSelector(tagSelector)
 
