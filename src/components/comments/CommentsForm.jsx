@@ -1,6 +1,3 @@
-
-
-
 const CommentsForm = ({ _state, _setState, _onChangeHandle }) => {
 
     const commentTextChange = (e) => {

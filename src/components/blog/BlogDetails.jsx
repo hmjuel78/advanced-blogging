@@ -17,6 +17,7 @@ const BlogDetails = () => {
     const [replyComment, setReplyComment] = useState(null)
 
 
+
     const commentOnSubmit = (e) => {
         e.preventDefault()
 
@@ -27,7 +28,7 @@ const BlogDetails = () => {
         }
         dispatch(commentCreate(newComment))
         setCommentText('')
-        setNcomment(true)
+        setNcomment(!nComment)
         setReplyComment(null)
     }
     const replyCommentHandle = (comment) => {
@@ -55,25 +56,32 @@ const BlogDetails = () => {
             </div>
             <div className="space-y-4">
                 {isLoading && <Loading />}
-                {blogs.comments &&
-                    blogs.comments.length > 0 ?
-                    blogs.comments?.map(comment => (
-                        <div key={comment.id}>
-                            <p
-                                className={`border border-gray-600 p-3 rounded-md ${comment.parentId && 'ml-auto max-w-[90%] border-slate-500'}`}
-                            >
-                                {comment.comment}
-                            </p>
-                            {!comment.parentId &&
-                                <p
-                                    onClick={() => replyCommentHandle(comment)}
-                                    className={`text-right text-xs text-info mt-2 mr-2 cursor-pointer`}
-                                >
-                                    Reply
+
+                {blogs.comments.length > 0 ?
+                    blogs?.comments?.filter(comment => comment.parentId === null || comment.parentId === undefined)
+                        ?.map(comment => (
+                            <div key={comment.id} className="mb-4">
+                                <p className="border border-gray-600 p-3 rounded-md">
+                                    {comment.comment}
                                 </p>
-                            }
-                        </div>
-                    ))
+                                {!comment.parentId &&
+                                    <p
+                                        onClick={() => replyCommentHandle(comment)}
+                                        className={`text-right text-xs text-info mt-2 mr-2 cursor-pointer`}
+                                    >
+                                        Reply
+                                    </p>
+                                }
+
+                                {blogs?.comments
+                                    ?.filter(reply => reply.parentId === comment.id)
+                                    ?.map(reply => (
+                                        <p key={reply.id} className="border border-gray-600 p-3 rounded-md ml-5 mt-4">
+                                            {reply.comment}
+                                        </p>
+                                    ))}
+                            </div>
+                        ))
                     : <p>No Comments yet!!</p>
                 }
             </div>
@@ -81,7 +89,7 @@ const BlogDetails = () => {
                 replyComment &&
                 <div>
                     <p>Reply to: {replyComment.comment}</p>
-                    <p onClick={resetReplyComment} className="text-sm text-error cursor-pointer">Cancel</p>
+                    <p onClick={resetReplyComment} className="text-xs text-error cursor-pointer">Cancel</p>
                 </div>
             }
             <CommentsForm
