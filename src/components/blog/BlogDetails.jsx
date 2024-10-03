@@ -7,7 +7,6 @@ import CommentsForm from "../comments/CommentsForm"
 import { commentCreate } from "../../features/comments/commentSlice"
 import Loading from "../Loading/Loading"
 
-
 const BlogDetails = () => {
     const [commentText, setCommentText] = useState('')
     const { blogs, isLoading } = useSelector(blogSelector)
@@ -15,7 +14,6 @@ const BlogDetails = () => {
     const { id } = useParams()
     const [nComment, setNcomment] = useState(false)
     const [replyComment, setReplyComment] = useState(null)
-
 
 
     const commentOnSubmit = (e) => {
@@ -45,6 +43,7 @@ const BlogDetails = () => {
 
     return (
         <div className="max-w-7xl  mx-auto mt-6 space-y-4">
+
             <h2 className="text-2xl font-bold">Blog Details</h2>
             <p className="font-bold">{blogs?.category?.name}</p>
             <p>By <span className="font-bold underline">{blogs?.author?.name}</span></p>
@@ -57,7 +56,7 @@ const BlogDetails = () => {
             <div className="space-y-4">
                 {isLoading && <Loading />}
 
-                {blogs.comments.length > 0 ?
+                {blogs?.comments?.length > 0 ?
                     blogs?.comments?.filter(comment => comment.parentId === null || comment.parentId === undefined)
                         ?.map(comment => (
                             <div key={comment.id} className="mb-4">
