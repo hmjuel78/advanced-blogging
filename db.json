@@ -274,6 +274,12 @@
       "blogId": 2,
       "comment": "test reply",
       "id": 19
+    },
+    {
+      "parentId": 1,
+      "blogId": 1,
+      "comment": "dsaf",
+      "id": 20
     }
   ],
   "likes": [

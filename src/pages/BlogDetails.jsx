@@ -1,11 +1,11 @@
 
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { blogSelector, singleBlog } from "../../features/blog/blogSlice"
+import { blogSelector, singleBlog } from "../features/blog/blogSlice"
 import { useParams } from "react-router-dom"
-import CommentsForm from "../comments/CommentsForm"
-import { commentCreate } from "../../features/comments/commentSlice"
-import Loading from "../Loading/Loading"
+import { commentCreate } from "../features/comments/commentSlice"
+import Loading from "../components/Loading/Loading"
+import CommentsForm from "../components/comments/CommentsForm"
 
 const BlogDetails = () => {
     const [commentText, setCommentText] = useState('')

@@ -2,16 +2,16 @@ import { createBrowserRouter } from "react-router-dom"
 import Root from "./Root"
 import Blogs from "../pages/Blogs.jsx"
 import Categories from "../pages/Categories"
-import ErrorPage from "../pages/ErrorPage"
 import CreateBlog from "../pages/CreateBlog.jsx"
-import BlogDetails from "../components/blog/BlogDetails.jsx"
+import BlogDetails from "../pages/BlogDetails.jsx"
+import NotFound from "../pages/NotFound.jsx"
 
 
 export const Router = createBrowserRouter([
     {
         path: "/",
         element: <Root />,
-        errorElement: <ErrorPage />,
+        errorElement: <NotFound />,
         children: [
             {
                 index: true,
