@@ -38,10 +38,11 @@ export const categoryCreate = createAsyncThunk('category/categoryCreate',
     }
 )
 export const categoryDelete = createAsyncThunk('category/categoryDelete',
-    async (id, { rejectWithValue, signal }) => {
+    async (payload, { rejectWithValue, signal }) => {
+
         try {
-            await axios.delete(`${BASE_URL}/${id}`, signal)
-            return id
+            await axios.delete(`${BASE_URL}/${payload}?_dependent=authors`, signal)
+            return payload
         } catch (error) {
             return rejectWithValue(handleApiError(error))
         }

@@ -1,18 +1,6 @@
 {
   "blogs": [
     {
-      "authorId": 1,
-      "categoryId": 1,
-      "title": "English Blog",
-      "desc": "ERlkfjdsa",
-      "dateTime": "2024-09-28T07:10:52.684Z",
-      "lastModified": "2024-10-02T06:19:52.395Z",
-      "tags": [
-        1
-      ],
-      "id": 1
-    },
-    {
       "authorId": 2,
       "categoryId": 2,
       "title": "How to clean .",
@@ -37,29 +25,6 @@
       "id": 3
     },
     {
-      "authorId": 4,
-      "categoryId": 3,
-      "title": "fdasf",
-      "desc": "fdsa",
-      "dateTime": "2024-09-30T07:20:52.253Z",
-      "lastModified": "2024-09-30T09:46:33.503Z",
-      "tags": [
-        1727437324672
-      ],
-      "id": 4
-    },
-    {
-      "authorId": 4,
-      "categoryId": 3,
-      "title": "New blog 3",
-      "desc": "fdsa",
-      "dateTime": "2024-10-01T05:16:36.399Z",
-      "tags": [
-        1727572124070
-      ],
-      "id": 5
-    },
-    {
       "authorId": 2,
       "categoryId": 2,
       "title": "bangla clock",
@@ -72,17 +37,6 @@
       "id": 8
     },
     {
-      "authorId": 6,
-      "categoryId": 5,
-      "title": "Blog 00",
-      "desc": "car car car",
-      "dateTime": "2024-10-02T10:33:45.775Z",
-      "tags": [
-        1727865215093
-      ],
-      "id": 9
-    },
-    {
       "authorId": 5,
       "categoryId": 4,
       "title": "How to edit a blog",
@@ -93,17 +47,6 @@
         1727437324672
       ],
       "id": 10
-    },
-    {
-      "authorId": 1,
-      "categoryId": 1,
-      "title": "dsaf",
-      "desc": "fdsaf",
-      "dateTime": "2024-10-03T08:42:21.979Z",
-      "tags": [
-        1727572124070
-      ],
-      "id": 11
     }
   ],
   "categories": [
@@ -122,18 +65,9 @@
     {
       "name": "hindi",
       "id": 4
-    },
-    {
-      "name": "car bike",
-      "id": 5
     }
   ],
   "authors": [
-    {
-      "name": "Alax",
-      "categoryId": 1,
-      "id": 1
-    },
     {
       "name": "Abul",
       "categoryId": 2,
@@ -145,19 +79,14 @@
       "id": 3
     },
     {
-      "name": "Dj",
-      "categoryId": 3,
-      "id": 4
-    },
-    {
       "name": "Juel",
       "categoryId": 4,
       "id": 5
     },
     {
-      "name": "JustinT",
-      "categoryId": 5,
-      "id": 6
+      "name": "amir",
+      "categoryId": 2,
+      "id": 7
     }
   ],
   "tags": [
@@ -180,33 +109,17 @@
     {
       "name": "bangladesh",
       "id": 1727860025873
+    },
+    {
+      "name": "new ",
+      "id": 1728022696356
     }
   ],
   "comments": [
     {
-      "blogId": 1,
-      "comment": "goog job",
-      "id": 1
-    },
-    {
       "blogId": 2,
       "comment": "goog job",
       "id": 2
-    },
-    {
-      "blogId": 4,
-      "comment": "wonderfull!\ni like it very much\nwow\n",
-      "id": 3
-    },
-    {
-      "blogId": 4,
-      "comment": "another comments",
-      "id": 4
-    },
-    {
-      "blogId": 4,
-      "comment": "previous comment not show",
-      "id": 5
     },
     {
       "blogId": 3,
@@ -222,16 +135,6 @@
       "blogId": 2,
       "comment": "Well done",
       "id": 10
-    },
-    {
-      "commentId": 1,
-      "comment": "We are fool",
-      "id": 11
-    },
-    {
-      "blogId": 4,
-      "comment": "hello",
-      "id": 12
     },
     {
       "parentId": 2,
@@ -274,19 +177,7 @@
       "blogId": 2,
       "comment": "test reply",
       "id": 19
-    },
-    {
-      "parentId": 1,
-      "blogId": 1,
-      "comment": "dsaf",
-      "id": 20
     }
   ],
-  "likes": [
-    {
-      "id": 1,
-      "blogId": 1,
-      "like": 230
-    }
-  ]
+  "likes": []
 }

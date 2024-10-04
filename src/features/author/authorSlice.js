@@ -55,12 +55,12 @@ export const authorCreate = createAsyncThunk('author/authorCreate',
 )
 
 export const authorDelete = createAsyncThunk('author/authorDelete',
-    async (id, { rejectWithValue, signal }) => {
+    async (payload, { rejectWithValue, signal }) => {
         try {
-            await axios.delete(`${BASE_URL}/${id}`, {
+            await axios.delete(`${BASE_URL}/${payload}`, {
                 signal: signal
             })
-            return id
+            return payload
         } catch (error) {
             return rejectWithValue(handleApiError(error))
         }

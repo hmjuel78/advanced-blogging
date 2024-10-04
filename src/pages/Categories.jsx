@@ -8,6 +8,7 @@ import { MdOutlineDeleteOutline, MdOutlineModeEdit } from "react-icons/md"
 import toast from "react-hot-toast"
 
 import { authorDelete, authorFetch, authorSelector } from "../features/author/authorSlice"
+import Input from "../components/form/Input"
 
 
 
@@ -20,9 +21,12 @@ const Categories = () => {
     const { categories } = useSelector(categorySelector)
     const dispatch = useDispatch()
 
+    const [test, setTest] = useState()
+
 
     const handleCatDelete = (catId) => {
         dispatch(categoryDelete(catId))
+        // dispatch(authorDelete(catId))
         toast.success('Category delete successfully!!')
     }
 
@@ -35,6 +39,7 @@ const Categories = () => {
     }
     const authorDeleteHandle = (authorId) => {
         dispatch(authorDelete(authorId))
+
         toast.success('Author Successfully Delete !!!')
     }
 
@@ -49,6 +54,14 @@ const Categories = () => {
 
     return (
         <div className="grid md:grid-cols-2 gap-10 max-w-7xl mx-auto my-10 px-4">
+            {/* 
+            <Input
+                _value={test}
+                _onChnage={setTest}
+                _name='name'
+                type='email'
+            /> */}
+
             {/* Category Form */}
             <CategoryForm editableCat={editableCat} setEditableCat={setEditableCat} />
 
@@ -98,6 +111,7 @@ const Categories = () => {
                             </tr>
                         </thead>
                         <tbody>
+
                             {
                                 authors?.map((author, idx) => {
                                     const category = categories.find(cat => parseInt(cat.id) === parseInt(author.categoryId))
