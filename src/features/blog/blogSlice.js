@@ -70,7 +70,7 @@ export const blogCreate = createAsyncThunk("blog/blogCreate",
 
 export const blogDelete = createAsyncThunk("blog/blogDelete",
     async (id) => {
-        await axios.delete(`${BASE_URL}/${id}`);
+        await axios.delete(`${BASE_URL}/${id}?_dependent=comments`);
         return id
     }
 )
