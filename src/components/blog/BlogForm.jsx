@@ -55,7 +55,7 @@ const BlogForm = (props) => {
         const newBlog = {
             authorId: blogData.selectAuthor,
             categoryId: blogData.selectCategory,
-            title: blogData.blogTitle,
+            title: blogData.blogTitle.toLowerCase(),
             desc: blogData.blogBody,
             dateTime: editableBlog ? editableBlog.dateTime : dayjs().utc(),
             tags: tagArray,
