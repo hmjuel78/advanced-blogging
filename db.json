@@ -47,15 +47,6 @@
         1727437324672
       ],
       "id": 10
-    },
-    {
-      "authorId": 8,
-      "categoryId": 5,
-      "title": "nm",
-      "desc": "fdasf nmnmnmnmnmm",
-      "dateTime": "2024-10-04T11:42:01.914Z",
-      "tags": [],
-      "id": 11
     }
   ],
   "categories": [
@@ -195,18 +186,6 @@
       "blogId": 2,
       "comment": "test reply",
       "id": 19
-    },
-    {
-      "parentId": null,
-      "blogId": 11,
-      "comment": "ffdsa",
-      "id": 20
-    },
-    {
-      "parentId": null,
-      "blogId": 11,
-      "comment": "fdsaf",
-      "id": 21
     }
   ],
   "likes": []

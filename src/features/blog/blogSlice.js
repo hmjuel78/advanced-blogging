@@ -69,9 +69,9 @@ export const blogCreate = createAsyncThunk("blog/blogCreate",
 )
 
 export const blogDelete = createAsyncThunk("blog/blogDelete",
-    async (id) => {
-        await axios.delete(`${BASE_URL}/${id}?_dependent=comments`);
-        return id
+    async (payload) => {
+        await axios.delete(`${BASE_URL}/${payload}?_dependent=comments`);
+        return payload
     }
 )
 export const blogUpdate = createAsyncThunk("blog/blogUpdate",
@@ -161,12 +161,17 @@ export const blogSlice = createSlice({
             })
             .addCase(blogDelete.fulfilled, (state, action) => {
                 state.isLoading = false
+                console.log(action.payload)
                 state.blogs = state.blogs.filter((blog) => blog.id !== action.payload)
             })
             .addCase(blogUpdate.fulfilled, (state, action) => {
                 state.isLoading = false
-                const index = state.blogs.findIndex((blog) => blog.id === action.payload.id)
+                const index = state.blogs.findIndex((blog) => blog.id === action.payload)
                 state.blogs[index] = action.payload
+            })
+            .addCase(blogUpdate.rejected, (state, action) => {
+                state.isLoading = false
+                state.error = action.error
             })
             .addCase(singleBlog.fulfilled, (state, action) => {
                 state.isLoading = false

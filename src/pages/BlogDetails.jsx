@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { blogSelector, singleBlog } from "../features/blog/blogSlice"
+import { blogDelete, blogSelector, singleBlog } from "../features/blog/blogSlice"
 import { useParams } from "react-router-dom"
 import { commentCreate } from "../features/comments/commentSlice"
 import Loading from "../components/Loading/Loading"
@@ -34,6 +34,11 @@ const BlogDetails = () => {
     }
     const resetReplyComment = () => {
         setReplyComment(null)
+    }
+
+    const blogDeleteHandle = (id) => {
+        dispatch(blogDelete(id))
+
     }
 
     useEffect(() => {
@@ -97,6 +102,8 @@ const BlogDetails = () => {
                 _onChangeHandle={commentOnSubmit}
             />
 
+
+            <button onClick={() => blogDeleteHandle(id)} className="btn btn-error btn-sm">Delete</button>
         </div>
     )
 }
