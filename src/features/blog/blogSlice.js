@@ -69,9 +69,20 @@ export const blogCreate = createAsyncThunk("blog/blogCreate",
 )
 
 export const blogDelete = createAsyncThunk("blog/blogDelete",
-    async (payload) => {
-        await axios.delete(`${BASE_URL}/${payload}?_dependent=comments`);
-        return payload
+    async (payload, { rejectWithValue, signal }) => {
+        try {
+            const response = await axios.delete(`${BASE_URL}/${payload}?_dependent=comments`, signal)
+
+            if (response.status >= 200 && response.status < 400) {
+                return payload
+            } else {
+                return response
+            }
+        } catch (error) {
+            rejectWithValue(handleApiError(error))
+            return error
+        }
+
     }
 )
 export const blogUpdate = createAsyncThunk("blog/blogUpdate",
@@ -151,6 +162,7 @@ export const blogSlice = createSlice({
             .addCase(blogCreate.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.blogs.push(action.payload)
+
             })
             .addCase(blogCreate.rejected, (state, action) => {
                 state.error = action.error
@@ -160,9 +172,19 @@ export const blogSlice = createSlice({
                 state.isLoading = true
             })
             .addCase(blogDelete.fulfilled, (state, action) => {
+                if (action.payload.status > 400) {
+                    console.log('fulfiled', action.payload.status)
+                    state.isError = true
+                    state.error = action.payload.message
+                }
                 state.isLoading = false
-                console.log(action.payload)
-                state.blogs = state.blogs.filter((blog) => blog.id !== action.payload)
+                // state.blogs = state.blogs.filter((blog) => blog.id != action.payload)
+            })
+            .addCase(blogDelete.rejected, (state, action) => {
+                console.log(action.payload, 'action.payload error')
+                state.isLoading = false
+                state.isError = true
+                state.error = action.payload.message
             })
             .addCase(blogUpdate.fulfilled, (state, action) => {
                 state.isLoading = false
@@ -171,7 +193,7 @@ export const blogSlice = createSlice({
             })
             .addCase(blogUpdate.rejected, (state, action) => {
                 state.isLoading = false
-                state.error = action.error
+                state.error = action.payload.message
             })
             .addCase(singleBlog.fulfilled, (state, action) => {
                 state.isLoading = false
@@ -179,6 +201,7 @@ export const blogSlice = createSlice({
             })
     }
 })
+
 
 export const { _EDITABLEBLOG } = blogSlice.actions
 export const blogSelector = (state) => state.blogReducer

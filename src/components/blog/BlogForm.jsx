@@ -27,7 +27,7 @@ const BlogForm = (props) => {
     const [selectTags, setSelectTags] = useState([])
     const { categories } = useSelector(categorySelector)
     const { authorsByCat } = useSelector(authorSelector)
-    const { editableBlog } = useSelector(blogSelector)
+    const { editableBlog, blogs } = useSelector(blogSelector)
     const { tags } = useSelector(tagSelector)
 
     const dispatch = useDispatch()
@@ -44,6 +44,7 @@ const BlogForm = (props) => {
         setBlogData(initState)
         dispatch(_EDITABLEBLOG(null))
     }
+    // console.log(blogs)
 
     const blogOnSubmit = (e) => {
         e.preventDefault()
@@ -59,6 +60,10 @@ const BlogForm = (props) => {
             desc: blogData.blogBody,
             dateTime: editableBlog ? editableBlog.dateTime : dayjs().utc(),
             tags: tagArray,
+        }
+
+        if (blogs.find(blog => blog.title === blogData.blogTitle.toLowerCase() && blog.id !== editableBlog?.id)) {
+            return toast.error('This name already taken!!!')
         }
 
         if (editableBlog) {
@@ -112,6 +117,9 @@ const BlogForm = (props) => {
 
             setSelectTags(tagUpdate)
         }
+    }
+    const cancelEditModeHandle = () => {
+        resetField()
     }
 
     useEffect(() => {
@@ -183,6 +191,9 @@ const BlogForm = (props) => {
                 >
                 </textarea>
                 <button onClick={blogOnSubmit} className="btn btn-outline">{editableBlog === null ? 'Create' : 'Update'}</button>
+                {editableBlog &&
+                    <button onClick={() => cancelEditModeHandle()} className="btn btn-error ml-2">Cancel</button>
+                }
             </div>
         </div>
     )

@@ -3,50 +3,11 @@
     {
       "authorId": 2,
       "categoryId": 2,
-      "title": "How to clean .",
-      "desc": "fsad",
-      "dateTime": "2024-09-29T07:11:06.519Z",
-      "lastModified": "2024-10-03T10:12:03.717Z",
-      "tags": [
-        2
-      ],
-      "id": 2
-    },
-    {
-      "authorId": 3,
-      "categoryId": 3,
-      "title": "fdas axios",
-      "desc": "update",
-      "dateTime": "2024-09-30T07:11:21.360Z",
-      "lastModified": "2024-10-02T09:05:17.069Z",
-      "tags": [
-        1727572124070
-      ],
-      "id": 3
-    },
-    {
-      "authorId": 2,
-      "categoryId": 2,
-      "title": "bangla clock",
-      "desc": "fdasfsa asdfasf",
-      "dateTime": "2024-10-02T09:07:10.386Z",
-      "tags": [
-        1727437324672,
-        1727860025873
-      ],
-      "id": 8
-    },
-    {
-      "authorId": 5,
-      "categoryId": 4,
-      "title": "How to edit a blog",
-      "desc": "fasdf fsadf",
-      "dateTime": "2024-10-03T06:54:41.591Z",
-      "lastModified": "2024-10-03T06:55:27.424Z",
-      "tags": [
-        1727437324672
-      ],
-      "id": 10
+      "title": "blog 1",
+      "desc": "dfsa",
+      "dateTime": "2024-10-06T09:07:16.250Z",
+      "tags": [],
+      "id": 1
     }
   ],
   "categories": [
@@ -123,69 +84,6 @@
       "id": 1727860025875
     }
   ],
-  "comments": [
-    {
-      "blogId": 2,
-      "comment": "goog job",
-      "id": 2
-    },
-    {
-      "blogId": 3,
-      "comment": "the cow is a domestic animal",
-      "id": 8
-    },
-    {
-      "blogId": 3,
-      "comment": "We are formal animal",
-      "id": 9
-    },
-    {
-      "blogId": 2,
-      "comment": "Well done",
-      "id": 10
-    },
-    {
-      "parentId": 2,
-      "blogId": 2,
-      "comment": "fdsaf",
-      "id": 13
-    },
-    {
-      "parentId": null,
-      "blogId": 8,
-      "comment": "How are you ~~~~",
-      "id": 14
-    },
-    {
-      "parentId": 14,
-      "blogId": 8,
-      "comment": "reply",
-      "id": 15
-    },
-    {
-      "parentId": null,
-      "blogId": 10,
-      "comment": "New comment!!",
-      "id": 16
-    },
-    {
-      "parentId": null,
-      "blogId": 10,
-      "comment": "another comment",
-      "id": 17
-    },
-    {
-      "parentId": 16,
-      "blogId": 10,
-      "comment": "First comment reply\n",
-      "id": 18
-    },
-    {
-      "parentId": 2,
-      "blogId": 2,
-      "comment": "test reply",
-      "id": 19
-    }
-  ],
+  "comments": [],
   "likes": []
 }

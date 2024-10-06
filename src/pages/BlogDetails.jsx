@@ -2,18 +2,20 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { blogDelete, blogSelector, singleBlog } from "../features/blog/blogSlice"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { commentCreate } from "../features/comments/commentSlice"
 import Loading from "../components/Loading/Loading"
 import CommentsForm from "../components/comments/CommentsForm"
+import toast from "react-hot-toast"
 
 const BlogDetails = () => {
     const [commentText, setCommentText] = useState('')
-    const { blogs, isLoading } = useSelector(blogSelector)
+    const { blogs, isLoading, isError, error } = useSelector(blogSelector)
     const dispatch = useDispatch()
     const { id } = useParams()
     const [nComment, setNcomment] = useState(false)
     const [replyComment, setReplyComment] = useState(null)
+    const navigate = useNavigate()
 
 
     const commentOnSubmit = (e) => {
@@ -39,6 +41,13 @@ const BlogDetails = () => {
     const blogDeleteHandle = (id) => {
         dispatch(blogDelete(id))
 
+        if (!isError) {
+            navigate('/blogs')
+            toast.success("Blog Delete Successfully!!!")
+        } else {
+            console.error(error)
+            toast.error(error)
+        }
     }
 
     useEffect(() => {
@@ -60,6 +69,7 @@ const BlogDetails = () => {
             </div>
             <div className="space-y-4">
                 {isLoading && <Loading />}
+
 
                 {blogs?.comments?.length > 0 ?
                     blogs?.comments?.filter(comment => comment.parentId === null || comment.parentId === undefined)
