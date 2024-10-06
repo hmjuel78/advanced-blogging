@@ -17,7 +17,7 @@ const Categories = () => {
 
 
     const handleCatDelete = (catId) => {
-        if (editableCat.id === catId) {
+        if (editableCat?.id === catId) {
             setEditableCat(null)
         }
         dispatch(categoryDelete(catId))
@@ -32,7 +32,7 @@ const Categories = () => {
         setEditableAuthor(author)
     }
     const authorDeleteHandle = (authorId) => {
-        if (editableAuthor.id === authorId) {
+        if (editableAuthor?.id === authorId) {
             setEditableAuthor(null)
         }
         dispatch(authorDelete(authorId))

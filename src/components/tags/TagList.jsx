@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { tagSelector, tagCreate, tagDelete, tagFetch, tagUpdate } from "../../features/tags/tagSlice"
+
 import { MdOutlineDeleteOutline, MdOutlineModeEdit } from "react-icons/md"
 import toast from "react-hot-toast"
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { tagCreate, tagDelete, tagFetch, tagSelector, tagUpdate } from "../../features/tags/tagSlice";
 
-const Tags = () => {
+const TagList = () => {
     const [tagName, setTagName] = useState('')
     const [editableTag, setEditableTag] = useState(null)
     const { tags } = useSelector(tagSelector)
@@ -19,7 +20,10 @@ const Tags = () => {
             return toast.error('Type Tag Name Properly')
         }
         const newTag = {
-            name: tagName
+            name: tagName.toLowerCase()
+        }
+        if (tags.find(tag => tag.name.toLowerCase() === tagName.toLowerCase() && tag.id !== editableTag?.id)) {
+            return toast.error('This name already taken !!!')
         }
         if (editableTag === null) {
             dispatch(tagCreate(newTag))
@@ -27,7 +31,7 @@ const Tags = () => {
         } else {
             dispatch(tagUpdate({
                 id: editableTag.id,
-                name: tagName
+                name: tagName.toLowerCase()
             }))
             toast.success('Tag name update successfully !!!')
             setEditableTag(null)
@@ -39,12 +43,24 @@ const Tags = () => {
         setTagName(tag.name)
     }
     const handleTagDelete = (tagId) => {
+        if (editableTag?.id === tagId) {
+            setEditableTag(null)
+            setTagName('')
+        }
         dispatch(tagDelete(tagId))
         toast.success('Tag delete successfully !!!')
     }
+    const cancelEditModeHandle = () => {
+        setEditableTag(null)
+        setTagName('')
+    }
+
+
     useEffect(() => {
         dispatch(tagFetch())
     }, [dispatch])
+
+
 
     return (
         <div>
@@ -58,6 +74,10 @@ const Tags = () => {
                     className="input input-bordered w-full"
                 />
                 <button className="btn btn-outline">{editableTag === null ? 'Create' : 'Update'}</button>
+                {
+                    editableTag &&
+                    <button onClick={() => cancelEditModeHandle()} className="btn btn-error ml-2">Cancel</button>
+                }
             </form>
 
             <h2 className="text-xl my-3">All Tags</h2>
@@ -88,7 +108,7 @@ const Tags = () => {
                 }
             </ul>
         </div>
-    )
-}
+    );
+};
 
-export default Tags
+export default TagList;

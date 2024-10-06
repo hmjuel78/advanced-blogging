@@ -22,7 +22,7 @@ const CategoryForm = (props) => {
         const newCategory = {
             name: categoryName.toLowerCase()
         }
-        if (categories.find(cat => cat.name.toLowerCase() === categoryName.toLowerCase() && cat.id !== editableCat.id)) {
+        if (categories.find(cat => cat.name.toLowerCase() === categoryName.toLowerCase() && cat.id !== editableCat?.id)) {
             return toast.error("This name already taken!!!")
         }
         if (editableCat === null) {

@@ -30,7 +30,7 @@ const AuthorForm = (props) => {
             name: authorName.toLowerCase(),
             categoryId: selectedCategory
         }
-        if (authors.find(auth => auth.name.toLowerCase() === authorName.toLowerCase() && auth.id !== editableAuthor.id)) {
+        if (authors.find(auth => auth.name.toLowerCase() === authorName.toLowerCase() && auth.id !== editableAuthor?.id)) {
             return toast.error("This name already taken!!!")
         }
         if (editableAuthor) {
