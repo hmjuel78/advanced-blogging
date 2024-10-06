@@ -51,15 +51,15 @@
   ],
   "categories": [
     {
-      "name": "English",
+      "name": "english",
       "id": 1
     },
     {
-      "name": "Bangla",
+      "name": "bangla",
       "id": 2
     },
     {
-      "name": "Books",
+      "name": "books",
       "id": 3
     },
     {
@@ -67,8 +67,12 @@
       "id": 4
     },
     {
-      "name": "n",
-      "id": 5
+      "name": "ffff fsadf",
+      "id": 13
+    },
+    {
+      "name": "dfsa fdsa",
+      "id": 14
     }
   ],
   "authors": [
@@ -91,11 +95,6 @@
       "name": "amir",
       "categoryId": 2,
       "id": 7
-    },
-    {
-      "name": "m",
-      "categoryId": 5,
-      "id": 8
     }
   ],
   "tags": [

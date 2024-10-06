@@ -22,6 +22,9 @@ const Categories = () => {
 
 
     const handleCatDelete = (catId) => {
+        if (editableCat.id === catId) {
+            setEditableCat(null)
+        }
         dispatch(categoryDelete(catId))
         toast.success('Category delete successfully!!')
     }
