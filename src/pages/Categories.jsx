@@ -1,19 +1,14 @@
 import { useState, useEffect } from "react"
 import AuthorForm from "../components/author/AuthorForm"
 import CategoryForm from "../components/category/CategoryForm"
-
 import { useDispatch, useSelector } from "react-redux"
 import { categoryDelete, categoryFetch, categorySelector } from "../features/category/categorySlice"
 import { MdOutlineDeleteOutline, MdOutlineModeEdit } from "react-icons/md"
 import toast from "react-hot-toast"
-
 import { authorDelete, authorFetch, authorSelector } from "../features/author/authorSlice"
 
 
-
-
 const Categories = () => {
-
     const [editableCat, setEditableCat] = useState(null)
     const [editableAuthor, setEditableAuthor] = useState(null)
     const { authors } = useSelector(authorSelector)
@@ -37,6 +32,9 @@ const Categories = () => {
         setEditableAuthor(author)
     }
     const authorDeleteHandle = (authorId) => {
+        if (editableAuthor.id === authorId) {
+            setEditableAuthor(null)
+        }
         dispatch(authorDelete(authorId))
         toast.success('Author Successfully Delete !!!')
     }
@@ -87,7 +85,7 @@ const Categories = () => {
 
             <AuthorForm editableAuthor={editableAuthor} setEditableAuthor={setEditableAuthor} />
 
-
+            {/* Author List */}
             <div>
                 <h2 className='text-xl mb-4'>Author List</h2>
 

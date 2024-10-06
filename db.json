@@ -69,15 +69,11 @@
     {
       "name": "ffff fsadf",
       "id": 13
-    },
-    {
-      "name": "dfsa fdsa",
-      "id": 14
     }
   ],
   "authors": [
     {
-      "name": "Abul",
+      "name": "abul",
       "categoryId": 2,
       "id": 2
     },
@@ -95,6 +91,11 @@
       "name": "amir",
       "categoryId": 2,
       "id": 7
+    },
+    {
+      "name": "fdsaf df",
+      "categoryId": 13,
+      "id": 9
     }
   ],
   "tags": [

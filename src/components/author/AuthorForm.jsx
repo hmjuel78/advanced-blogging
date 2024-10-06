@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { categorySelector } from "../../features/category/categorySlice"
-import { authorCreate, authorUpdate } from "../../features/author/authorSlice"
+import { authorCreate, authorSelector, authorUpdate } from "../../features/author/authorSlice"
 import toast from "react-hot-toast"
 import DropdownWithSearch from "../custom-dropdown-with-search/DropdownWithSearch"
 
@@ -9,13 +9,14 @@ import DropdownWithSearch from "../custom-dropdown-with-search/DropdownWithSearc
 const AuthorForm = (props) => {
     const { editableAuthor, setEditableAuthor } = props
     const [authorName, setAuthorName] = useState('')
-    const [selectCategory, setSelectCategory] = useState('')
+    const [selectedCategory, setSelectedCategory] = useState('')
     const { categories } = useSelector(categorySelector)
+    const { authors } = useSelector(authorSelector)
     const dispatch = useDispatch()
 
     const changeHandle = (e) => {
         if (e.target.name === "selectCategory") {
-            setSelectCategory(e.target.value)
+            setSelectedCategory(e.target.value)
         }
         if (e.target.name === "authorName") {
             setAuthorName(e.target.value)
@@ -26,14 +27,17 @@ const AuthorForm = (props) => {
         e.preventDefault()
 
         const newAuthor = {
-            name: authorName,
-            categoryId: selectCategory
+            name: authorName.toLowerCase(),
+            categoryId: selectedCategory
+        }
+        if (authors.find(auth => auth.name.toLowerCase() === authorName.toLowerCase() && auth.id !== editableAuthor.id)) {
+            return toast.error("This name already taken!!!")
         }
         if (editableAuthor) {
             dispatch(authorUpdate({
                 id: editableAuthor.id,
-                name: authorName,
-                categoryId: selectCategory
+                name: authorName.toLowerCase(),
+                categoryId: selectedCategory
             }))
             toast.success('Author update successfully!!')
         } else {
@@ -46,13 +50,20 @@ const AuthorForm = (props) => {
 
     const resetField = () => {
         setAuthorName('')
-        setSelectCategory('')
+        setSelectedCategory('')
+    }
+
+    const cancelEditModeHandle = () => {
+        setEditableAuthor(null)
+        resetField()
     }
 
     useEffect(() => {
         if (editableAuthor) {
-            setSelectCategory(editableAuthor?.categoryId)
+            setSelectedCategory(editableAuthor?.categoryId)
             setAuthorName(editableAuthor?.name)
+        } else {
+            resetField()
         }
     }, [editableAuthor])
 
@@ -61,8 +72,8 @@ const AuthorForm = (props) => {
             <h2 className='text-xl mb-4'>Create Author</h2>
             <form onSubmit={authOnSubmit} className="space-y-4">
                 <DropdownWithSearch
-                    selectDropData={selectCategory}
-                    setSelectDropData={setSelectCategory}
+                    selectDropData={selectedCategory}
+                    setSelectDropData={setSelectedCategory}
                     isSearch={false}
                     dropDatas={categories}
                     mapKey="name"
@@ -79,6 +90,9 @@ const AuthorForm = (props) => {
                 <button className="btn btn-outline">
                     {editableAuthor !== null ? 'Update' : 'Create'}
                 </button>
+                {editableAuthor &&
+                    <button onClick={() => cancelEditModeHandle()} className="btn btn-error ml-2">Cancel</button>
+                }
             </form>
         </div>
     )
