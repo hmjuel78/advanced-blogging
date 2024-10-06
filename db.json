@@ -84,6 +84,29 @@
       "id": 1727860025875
     }
   ],
-  "comments": [],
-  "likes": []
+  "comments": [
+    {
+      "parentId": null,
+      "blogId": 1,
+      "comment": "fsaf",
+      "id": 1
+    }
+  ],
+  "likes": [
+    {
+      "like": 230,
+      "blogId": 1,
+      "id": 1
+    },
+    {
+      "like": 230,
+      "blogId": 3,
+      "id": 2
+    },
+    {
+      "like": 230,
+      "blogId": 2,
+      "id": 3
+    }
+  ]
 }

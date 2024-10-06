@@ -4,6 +4,7 @@ import authorReducer from '../features/author/authorSlice'
 import tagReducer from '../features/tags/tagSlice'
 import blogReducer from '../features/blog/blogSlice'
 import commentReducer from '../features/comments/commentSlice'
+import likeReducer from '../features/likes/likeSlice'
 
 
 export const store = configureStore({
@@ -13,5 +14,6 @@ export const store = configureStore({
         tagReducer,
         blogReducer,
         commentReducer,
+        likeReducer
     },
 })

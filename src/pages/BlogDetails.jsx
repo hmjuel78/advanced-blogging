@@ -7,6 +7,9 @@ import { commentCreate } from "../features/comments/commentSlice"
 import Loading from "../components/Loading/Loading"
 import CommentsForm from "../components/comments/CommentsForm"
 import toast from "react-hot-toast"
+import { SlHeart } from "react-icons/sl"
+import { ImHeart } from "react-icons/im"
+import { likeCreate } from "../features/likes/likeSlice"
 
 const BlogDetails = () => {
     const [commentText, setCommentText] = useState('')
@@ -16,6 +19,7 @@ const BlogDetails = () => {
     const [nComment, setNcomment] = useState(false)
     const [replyComment, setReplyComment] = useState(null)
     const navigate = useNavigate()
+    const [like, setLike] = useState(false)
 
 
     const commentOnSubmit = (e) => {
@@ -50,6 +54,11 @@ const BlogDetails = () => {
         }
     }
 
+    const likeClickHandle = (id) => {
+        setLike(!like)
+        dispatch(likeCreate(id))
+    }
+
     useEffect(() => {
         dispatch(singleBlog(id))
         setNcomment(false)
@@ -65,7 +74,16 @@ const BlogDetails = () => {
             <p>Description: {blogs.desc} </p>
             <div className="flex justify-between items-center gap-3 border-b border-gray-600 pb-3">
                 <p className="">Comments: {blogs?.comments && blogs?.comments?.length > 0 ? blogs?.comments?.length : '0'}</p>
-                <p>Likes: <span>{blogs?.likes?.length ? blogs?.likes?.map(like => like.like) : 0}</span> </p>
+                <div className="flex items-center gap-2">
+                    <button onClick={() => likeClickHandle(id)}>
+                        {like ?
+                            <ImHeart className="text-xl" />
+                            :
+                            <SlHeart className="text-xl" />
+                        }
+                    </button>
+                    <p>Likes: <span>{blogs?.likes?.length ? blogs?.likes?.map(like => like.like) : 0}</span> </p>
+                </div>
             </div>
             <div className="space-y-4">
                 {isLoading && <Loading />}
