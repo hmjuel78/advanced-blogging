@@ -38,6 +38,9 @@ const Root = () => {
                                 <li>
                                     <Link to="/blogs">Blogs</Link>
                                 </li>
+                                <li>
+                                    <Link to="/demo">Demo</Link>
+                                </li>
                             </ul>
                         </div>
                     </div>

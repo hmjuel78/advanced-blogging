@@ -5,6 +5,7 @@ import Categories from "../pages/Categories"
 import CreateBlog from "../pages/CreateBlog.jsx"
 import BlogDetails from "../pages/BlogDetails.jsx"
 import NotFound from "../pages/NotFound.jsx"
+import Demo from "../pages/Demo.jsx"
 
 
 export const Router = createBrowserRouter([
@@ -28,6 +29,10 @@ export const Router = createBrowserRouter([
             {
                 path: '/blogs/:id',
                 element: <BlogDetails />
+            },
+            {
+                path: '/demo',
+                element: <Demo />
             }
         ]
     },

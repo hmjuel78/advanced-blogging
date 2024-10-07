@@ -100,8 +100,8 @@ const SearchableMultiSelectbox = (props) => {
                     )}
 
                     {
-                        _multiSelect && _showLength && <div className="flex items-center gap-2">
-                            ({_selectedData.length})
+                        _multiSelect && <div className="flex items-center gap-2">
+                            {_showLength && `(${_selectedData.length})`}
 
                             {_selectedData.length > 0 && <button onClick={() => removeAllItems()} className="btn btn-outline btn-xs btn-error">Clear all</button>}
                         </div>
