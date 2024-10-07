@@ -6,6 +6,7 @@ import { categoryDelete, categoryFetch, categorySelector } from "../features/cat
 import { MdOutlineDeleteOutline, MdOutlineModeEdit } from "react-icons/md"
 import toast from "react-hot-toast"
 import { authorDelete, authorFetch, authorSelector } from "../features/author/authorSlice"
+import SearchableMultiSelectbox from "../components/custom-dropdown-with-search/SearchableMultiSelectbox"
 
 
 const Categories = () => {
@@ -14,6 +15,8 @@ const Categories = () => {
     const { authors } = useSelector(authorSelector)
     const { categories } = useSelector(categorySelector)
     const dispatch = useDispatch()
+
+    const [selectedCat, setSelectedCat] = useState([])
 
 
     const handleCatDelete = (catId) => {
@@ -56,6 +59,15 @@ const Categories = () => {
 
             {/* Categories list */}
             <div>
+                <SearchableMultiSelectbox
+                    _selectedData={selectedCat}
+                    _onSelectedData={setSelectedCat}
+                    _lists={categories}
+                    _placeholder='Select Category'
+                    _isSearch={true}
+                    _multiSelect={true}
+                    _showLength={true}
+                />
                 <h2 className="text-xl mb-3">Category list</h2>
                 <ul className="space-y-4 max-h-96 overflow-y-auto">
                     {

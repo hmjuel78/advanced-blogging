@@ -1,27 +1,9 @@
 {
-  "blogs": [
-    {
-      "authorId": 2,
-      "categoryId": 2,
-      "title": "blog 1",
-      "desc": "dfsa",
-      "dateTime": "2024-10-06T09:07:16.250Z",
-      "tags": [],
-      "id": 1
-    }
-  ],
+  "blogs": [],
   "categories": [
     {
       "name": "english",
       "id": 1
-    },
-    {
-      "name": "bangla",
-      "id": 2
-    },
-    {
-      "name": "books",
-      "id": 3
     },
     {
       "name": "hindi",
@@ -30,28 +12,37 @@
     {
       "name": "urdu",
       "id": 5
+    },
+    {
+      "name": "html",
+      "id": 6
+    },
+    {
+      "name": "js",
+      "id": 7
+    },
+    {
+      "name": "react",
+      "id": 8
+    },
+    {
+      "name": "bangla",
+      "id": 9
+    },
+    {
+      "name": "news",
+      "id": 10
+    },
+    {
+      "name": "sports",
+      "id": 11
     }
   ],
   "authors": [
     {
-      "name": "abul",
-      "categoryId": 2,
-      "id": 2
-    },
-    {
-      "name": "John",
-      "categoryId": 3,
-      "id": 3
-    },
-    {
       "name": "Juel",
       "categoryId": 4,
       "id": 5
-    },
-    {
-      "name": "amir",
-      "categoryId": 2,
-      "id": 7
     }
   ],
   "tags": [
@@ -84,29 +75,6 @@
       "id": 1727860025875
     }
   ],
-  "comments": [
-    {
-      "parentId": null,
-      "blogId": 1,
-      "comment": "fsaf",
-      "id": 1
-    }
-  ],
-  "likes": [
-    {
-      "like": 230,
-      "blogId": 1,
-      "id": 1
-    },
-    {
-      "like": 230,
-      "blogId": 3,
-      "id": 2
-    },
-    {
-      "like": 230,
-      "blogId": 2,
-      "id": 3
-    }
-  ]
+  "comments": [],
+  "likes": []
 }
